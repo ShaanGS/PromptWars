@@ -2,7 +2,20 @@
 
 Append ≤10 lines per session: done / decisions / gotchas. Newest at top.
 
-## NEXT SESSION: frontend / design pass only
+## 2026-08-25 · S2 (Fable) — design pass, MVP complete
+- Replaced the dark Linear theme with the moodboard system: light lavender
+  canvas, single purple accent, pill controls, soft rounded cards, Poppins.
+- `AppShell` = desktop sidebar rail + mobile bottom tab bar; `Page`/`PageHead`
+  frame every screen. Old `nav.tsx` deleted.
+- Guild mark redrawn as SVG (`components/brand.tsx`) with deterministic avatar
+  tints. Landing rebuilt around the orbit hero. New `/home` feed.
+- Verified in-browser at 375px and 1100px: no overflow, auto-draft 55%→80%,
+  every page renders. 17 engine tests green, tsc clean.
+- GOTCHA: Tailwind 4 cannot `@apply` a class defined in `@layer components`
+  (e.g. `@apply g-card`) — duplicate the declarations instead.
+- STILL OPEN: enable Anonymous sign-in in the Supabase dashboard.
+
+## Earlier plan for this session (kept for reference)
 
 Backend, data, engine, routing, and security are DONE and verified. The next
 session is a **pure design pass** — Shaan supplies a moodboard, Pinterest refs,
