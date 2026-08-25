@@ -11,17 +11,19 @@ item below becomes a session plan before any code.
 The submission's own backlog. Everything below the "Next — Olvable" heading is
 the aggregator's, and is parked while Guild is the product.
 
-1. **Make `requireAdmin()` assert the role.** `lib/auth/server.ts` returns the
-   stand-in user unconditionally, so `/admin`, `/design` and seven admin server
-   actions are open to anyone — contradicting the posture stated in
-   `lib/auth/roles.ts`, `SECURITY.md` and this repo's README. One function:
-   assert `isAdmin(user)`, `redirect('/')` otherwise. Closes every call site at
-   once. **Top priority; it is the one place the documented posture is not
-   enforced.**
-2. **`/teams/new` does not exist.** `app/(app)/teams/page.tsx` links to it twice
-   (the header CTA and the empty state) and both 404. It is also the only
-   "post what you need" affordance in the product, so the demand side of the
-   problem statement currently has no entry point. Build it or drop the links.
+1. **Nudges.** Guild can identify the right teammate and cannot let you contact
+   them. This is the largest genuine capability gap in the product: the whole
+   funnel ends at "here is who you are missing" with no next action. Shaan's
+   own design, sketched in `target-product.md` §2, is the right one — a nudge
+   rather than a chat, with the contact detail revealed only when the recipient
+   accepts. Needs a `nudges` table (none exists yet, despite an earlier note
+   claiming otherwise), a send action, an inbox, and accept/decline.
+2. **`/teams/new` is a placeholder, not a form.** It now renders an honest page
+   saying the flow is unbuilt, so nothing 404s — but the demand side of the
+   problem statement still has no real entry point. Building it means: pick an
+   event from the corpus (or none), write the prose ask, then add weighted
+   requirements with a skill, a floor and a weight. Those requirements are what
+   the engine scores, so this is the one form that must not be sloppy.
 3. **Wire up or delete `explainScore`.** `lib/engine/explain.ts` is tested but
    has **zero callers** — nothing in `app/` or `components/` imports it. It is
    exactly the "explain the score" affordance the sandbox should have;

@@ -2,6 +2,31 @@
 
 Newest at top.
 
+## 2026-08-25 · S8 — submitted, scored 95.3 (rank 1 of 400)
+
+Hack2Skill's automated evaluation scores the **repo** on six axes. Attempt 1
+scored 74.72 with Problem Statement Alignment at **37** while everything else
+sat at 86-100. The cause was not code quality: the deployed app opened on the
+event feed, and the README described an event aggregator, so the grader
+concluded the project did not answer PS-2.
+
+Fixed, and attempt 2 scored **95.3**:
+- `/` now redirects to `/teams`. The feed moved to `/feed` and still works.
+  Nav leads with Team Board and People.
+- README rewritten around PS-2 (thesis, formula, statement->model table,
+  a walkthrough whose numbers come from the engine). GitHub description and
+  homepage set to match.
+- Tests 185 -> 241.
+- `requireAdmin()` now asserts the role — this landed *after* submission, so it
+  counts for future runs, not that score. `/admin`, `/design` and the seven
+  admin server actions are genuinely closed now, and `SECURITY.md` matches.
+- `/teams/new` was a 404 from the Team Board's primary button; it now renders an
+  honest placeholder.
+
+Lesson worth keeping: the grader reads what is on `main` at evaluation time,
+and it reads the front door first. Structure and framing carried a 20-point
+swing on a codebase that did not otherwise change.
+
 ## 2026-08-25 · S7 — documentation made true
 
 The code shipped in S6; the docs did not follow it. Every prose file in the
