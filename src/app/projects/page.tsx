@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Nav } from "@/components/nav";
-import { Badge } from "@/components/ui/badge";
+import { Plus, TrendingUp, Users } from "lucide-react";
+import { AppShell, Page, PageHead } from "@/components/app-shell";
+import { Avatar } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 import {
   gapFeed,
@@ -14,6 +15,7 @@ import type { ProjectDetail } from "@/lib/types";
 import { getMyProfile, getPool, listProjectDetails } from "@/repo/queries";
 
 const FEED_LIMIT = 5;
+const AVATAR_LIMIT = 4;
 const riseDelay = (i: number) => Math.min(i * 40, 320);
 
 type Scored = {
@@ -55,37 +57,49 @@ export default async function ProjectsPage() {
     : [];
 
   return (
-    <>
-      <Nav />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <div className="mb-10 flex items-end justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Squads</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              <span className="font-mono tabular-nums">{projects.length}</span> forming
-              across a pool of{" "}
-              <span className="font-mono tabular-nums">{pool.length}</span> people.
-            </p>
-          </div>
-          <Button asChild className="press-feedback">
-            <Link href="/projects/new">New squad</Link>
-          </Button>
-        </div>
+    <AppShell>
+      <Page>
+        <PageHead
+          title="Squads"
+          sub={`${projects.length} forming across a pool of ${pool.length} people.`}
+          action={
+            <Button asChild className="press rounded-full font-semibold">
+              <Link href="/projects/new">
+                <Plus className="size-4" strokeWidth={2.6} />
+                New squad
+              </Link>
+            </Button>
+          }
+        />
 
         {me ? (
-          <section aria-labelledby="feed-heading" className="mb-12">
-            <h2 id="feed-heading" className="mb-1 text-sm font-medium">
-              Squads looking for you
-            </h2>
-            <p className="mb-4 text-xs text-muted-foreground">
+          <section aria-labelledby="feed-heading" className="mb-10">
+            <div className="mb-1 flex items-baseline justify-between gap-4">
+              <h2 id="feed-heading" className="text-lg font-bold tracking-[-0.02em]">
+                Squads looking for you
+              </h2>
+              <Link href="/people" className="text-sm font-semibold text-primary">
+                See the pool
+              </Link>
+            </div>
+            <p className="mb-4 text-sm text-ink-muted">
               Ranked by what you add to the team score, not by how well you match it.
             </p>
             {feed.length === 0 ? (
-              <div className="rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
-                Nothing open needs your stack right now. Start one instead.
+              <div className="g-card flex flex-wrap items-center justify-between gap-4 p-5">
+                <p className="text-sm text-ink-muted">
+                  Nothing open needs your stack right now. Start one instead.
+                </p>
+                <Button
+                  asChild
+                  variant="secondary"
+                  className="press rounded-full border border-border font-semibold"
+                >
+                  <Link href="/projects/new">New squad</Link>
+                </Button>
               </div>
             ) : (
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-3">
                 {feed.map((entry, i) => {
                   const s = byId.get(entry.projectId);
                   if (!s) return null;
@@ -100,25 +114,26 @@ export default async function ProjectsPage() {
                     >
                       <Link
                         href={`/projects/${entry.projectId}`}
-                        className="flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-hairline-strong hover:bg-surface-2"
+                        className="g-card-interactive flex items-center gap-4 p-5"
                       >
-                        <div className="min-w-0">
+                        <div className="min-w-0 flex-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="text-base font-medium tracking-tight">
+                            <span className="font-semibold tracking-[-0.01em]">
                               {s.project.title}
                             </span>
                             {s.project.event && (
-                              <Badge variant="secondary">{s.project.event.title}</Badge>
+                              <span className="g-chip">{s.project.event.title}</span>
                             )}
                           </div>
-                          <div className="mt-1 text-sm text-muted-foreground">
+                          <div className="mt-1 text-sm text-ink-muted">
                             {filled
                               ? `You fill ${filled.roleLabel ?? filled.skill}`
                               : "You deepen the roster"}
                           </div>
                         </div>
-                        <span className="shrink-0 font-mono text-sm font-semibold text-primary tabular-nums">
-                          +{(entry.gain.delta * 100).toFixed(1)}%
+                        <span className="g-figure flex shrink-0 items-center gap-1 text-sm font-semibold text-primary">
+                          <TrendingUp className="size-4" strokeWidth={2.4} />+
+                          {(entry.gain.delta * 100).toFixed(1)}%
                         </span>
                       </Link>
                     </li>
@@ -128,12 +143,16 @@ export default async function ProjectsPage() {
             )}
           </section>
         ) : (
-          <section className="mb-12">
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-border bg-card p-5">
+          <section className="mb-10">
+            <div className="g-card flex flex-wrap items-center justify-between gap-4 p-5">
               <p className="text-sm text-ink-muted">
                 Create your profile to see squads that need you.
               </p>
-              <Button asChild variant="secondary" className="press-feedback">
+              <Button
+                asChild
+                variant="secondary"
+                className="press rounded-full border border-border font-semibold"
+              >
                 <Link href="/onboarding">Create profile</Link>
               </Button>
             </div>
@@ -141,69 +160,96 @@ export default async function ProjectsPage() {
         )}
 
         <section aria-labelledby="all-heading">
-          <h2 id="all-heading" className="mb-4 text-sm font-medium">
+          <h2 id="all-heading" className="mb-3 text-lg font-bold tracking-[-0.02em]">
             All squads
           </h2>
           {scored.length === 0 ? (
-            <div className="rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
-              No squads yet. The first one sets the pace.
+            <div className="g-card flex flex-wrap items-center justify-between gap-4 p-5">
+              <p className="text-sm text-ink-muted">
+                No squads yet. Open the first one and name what you need.
+              </p>
+              <Button
+                asChild
+                variant="secondary"
+                className="press rounded-full border border-border font-semibold"
+              >
+                <Link href="/projects/new">New squad</Link>
+              </Button>
             </div>
           ) : (
             <ul className="grid gap-3 sm:grid-cols-2">
-              {scored.map((s, i) => (
-                <li
-                  key={s.project.id}
-                  className="rise-in"
-                  style={{ "--rise-delay": `${riseDelay(i)}ms` } as React.CSSProperties}
-                >
-                  <Link
-                    href={`/projects/${s.project.id}`}
-                    className="flex h-full flex-col gap-3 rounded-xl border border-border bg-card p-5 transition-colors hover:border-hairline-strong hover:bg-surface-2"
+              {scored.map((s, i) => {
+                const members = s.project.members;
+                const shown = members.slice(0, AVATAR_LIMIT);
+                return (
+                  <li
+                    key={s.project.id}
+                    className="rise-in"
+                    style={{ "--rise-delay": `${riseDelay(i)}ms` } as React.CSSProperties}
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        {s.project.event && (
-                          <Badge variant="secondary" className="mb-2">
-                            {s.project.event.title}
-                          </Badge>
+                    <Link
+                      href={`/projects/${s.project.id}`}
+                      className="g-card-interactive flex h-full flex-col gap-4 p-5"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          {s.project.event && (
+                            <span className="g-chip mb-2">{s.project.event.title}</span>
+                          )}
+                          <div className="font-semibold tracking-[-0.01em]">
+                            {s.project.title}
+                          </div>
+                        </div>
+                        <div className="shrink-0 text-right">
+                          <div className="g-figure text-xl leading-none font-bold">
+                            {Math.round(s.base * 100)}%
+                          </div>
+                          <div className="g-eyebrow mt-1 text-ink-subtle">coverage</div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {members.length === 0 ? (
+                          <span className="flex items-center gap-1.5 text-xs text-ink-subtle">
+                            <Users className="size-4" strokeWidth={2.2} />
+                            No members yet
+                          </span>
+                        ) : (
+                          <>
+                            <div className="flex -space-x-2">
+                              {shown.map((m) => (
+                                <Avatar
+                                  key={m.id}
+                                  name={m.name}
+                                  className="size-8 text-[11px] ring-2 ring-card"
+                                />
+                              ))}
+                            </div>
+                            <span className="g-figure text-xs text-ink-muted">
+                              {members.length}{" "}
+                              {members.length === 1 ? "member" : "members"}
+                            </span>
+                          </>
                         )}
-                        <div className="text-base font-medium tracking-tight">
-                          {s.project.title}
-                        </div>
-                        <div className="mt-0.5 text-xs text-muted-foreground">
-                          <span className="font-mono tabular-nums">
-                            {s.project.members.length}
-                          </span>{" "}
-                          {s.project.members.length === 1 ? "member" : "members"}
-                        </div>
                       </div>
-                      <div className="shrink-0 text-right">
-                        <div className="font-mono text-lg font-semibold tabular-nums">
-                          {Math.round(s.base * 100)}%
+
+                      {s.openSlots.length > 0 && (
+                        <div className="mt-auto flex flex-wrap gap-1.5">
+                          {s.openSlots.map((r) => (
+                            <span key={r.id} className="g-chip-accent">
+                              {r.roleLabel ?? r.skill}
+                            </span>
+                          ))}
                         </div>
-                        <div className="text-[11px] text-ink-tertiary">coverage</div>
-                      </div>
-                    </div>
-                    {s.openSlots.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5">
-                        {s.openSlots.map((r) => (
-                          <Badge
-                            key={r.id}
-                            variant="outline"
-                            className="border-primary/40 text-primary"
-                          >
-                            {r.roleLabel ?? r.skill}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </Link>
-                </li>
-              ))}
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>
-      </main>
-    </>
+      </Page>
+    </AppShell>
   );
 }

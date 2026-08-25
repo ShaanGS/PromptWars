@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { BadgeCheck } from "lucide-react";
 import { guildScore } from "@/engine";
 import { toMember, toRequirement } from "@/lib/mappers";
-import { Initials, Nav } from "@/components/nav";
+import { AppShell, Page, PageHead } from "@/components/app-shell";
+import { Avatar } from "@/components/brand";
 import { getPool, listProjectDetails } from "@/repo/queries";
 import type { SkillRow } from "@/lib/types";
 
@@ -30,76 +32,66 @@ export default async function PeoplePage() {
     );
 
   return (
-    <>
-      <Nav />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-semibold tracking-tight">People</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Guild Score ={" "}
-            <span className="font-mono tabular-nums">
-              0.40·credibility + 0.25·versatility + 0.35·scarcity
-            </span>{" "}
-            — proofs, breadth, and skills squads want but few have.
-          </p>
-        </div>
+    <AppShell>
+      <Page>
+        <PageHead
+          title="People"
+          sub="Guild Score weighs proofs, breadth, and skills squads want but few have. Highest first."
+        />
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {scored.map(({ profile, gs }, i) => (
-            <Link
-              key={profile.id}
-              href={`/p/${profile.handle}`}
-              style={
-                { "--rise-delay": `${Math.min(i * 40, 320)}ms` } as React.CSSProperties
-              }
-              className="rise-in rounded-xl border border-border bg-card p-5 transition-colors hover:border-hairline-strong hover:bg-surface-2"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <Initials name={profile.name} />
-                  <div>
-                    <div className="text-sm font-medium">{profile.name}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {profile.dept}
-                      {profile.year != null && (
-                        <>
-                          {" · "}
-                          <span className="font-mono tabular-nums">Y{profile.year}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-mono text-2xl leading-none font-semibold tabular-nums">
-                    {Math.round(gs.total * 100)}
-                  </div>
-                  <div className="mt-1 text-[10px] tracking-[0.08em] text-muted-foreground uppercase">
-                    Guild Score
-                  </div>
-                </div>
-              </div>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {topSkills(profile.skills).map((s) => (
-                  <span
-                    key={s.skill}
-                    className="inline-flex items-center gap-1 rounded-full border border-border bg-surface-2 px-2 py-0.5 text-xs text-ink-muted"
-                  >
-                    {s.proof_url != null && <span className="text-success">✓</span>}
-                    {s.skill}
-                  </span>
-                ))}
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {scored.length === 0 && (
-          <p className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
+        {scored.length === 0 ? (
+          <p className="g-card p-6 text-sm text-ink-muted">
             No profiles in the pool yet.
           </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {scored.map(({ profile, gs }, i) => (
+              <Link
+                key={profile.id}
+                href={`/p/${profile.handle}`}
+                style={
+                  { "--rise-delay": `${Math.min(i * 40, 320)}ms` } as React.CSSProperties
+                }
+                className="rise-in g-card-interactive flex flex-col p-5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <Avatar name={profile.name} className="size-11 text-sm" />
+                    <div className="min-w-0">
+                      <div className="truncate font-semibold">{profile.name}</div>
+                      <div className="truncate text-xs text-ink-muted">
+                        {profile.dept}
+                        {profile.year != null && (
+                          <> {"·"} Year <span className="g-figure">{profile.year}</span></>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="shrink-0 text-right">
+                    <div className="g-figure text-3xl leading-none font-semibold">
+                      {Math.round(gs.total * 100)}
+                    </div>
+                    <div className="g-eyebrow mt-1.5 text-ink-subtle">Guild score</div>
+                  </div>
+                </div>
+
+                {profile.skills.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-1.5">
+                    {topSkills(profile.skills).map((s) => (
+                      <span key={s.skill} className="g-chip">
+                        {s.proof_url != null && (
+                          <BadgeCheck className="size-3.5 text-success" />
+                        )}
+                        {s.skill}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </Link>
+            ))}
+          </div>
         )}
-      </main>
-    </>
+      </Page>
+    </AppShell>
   );
 }

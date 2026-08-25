@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Nav } from "@/components/nav";
-import { Badge } from "@/components/ui/badge";
+import { ArrowUpRight, CalendarDays, Globe, MapPin, Users } from "lucide-react";
+import { AppShell, Page, PageHead } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { getPool, listEvents, listProjectDetails } from "@/repo/queries";
 import type { EventRow } from "@/lib/types";
@@ -13,6 +13,12 @@ const MODE_LABEL: Record<NonNullable<EventRow["mode"]>, string> = {
 
 function closesOn(iso: string): string {
   return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+}
+
+/** Inside a week the date stops being reference material and becomes a warning. */
+function closingSoon(iso: string): boolean {
+  const ms = new Date(iso).getTime() - Date.now();
+  return ms >= 0 && ms <= 7 * 24 * 60 * 60 * 1000;
 }
 
 /** A closed competition is noise. Undated events keep their place at the back. */
@@ -43,27 +49,28 @@ export default async function EventsPage() {
   const posterName = new Map(pool.map((p) => [p.id, p.name]));
 
   return (
-    <>
-      <Nav />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <div className="mb-8 flex items-end justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight">Events</h1>
-            <p className="mt-1 max-w-xl text-sm text-muted-foreground">
-              Hackathons and competitions with squads forming. Soonest deadline first.
-            </p>
-          </div>
-          <Button asChild variant="secondary" className="press-feedback">
-            <Link href="/events/post">Post an event</Link>
-          </Button>
-        </div>
+    <AppShell>
+      <Page>
+        <PageHead
+          title="Events"
+          sub="Hackathons and competitions with squads forming. Soonest deadline first."
+          action={
+            <Button
+              asChild
+              variant="secondary"
+              className="press rounded-full border border-border font-semibold"
+            >
+              <Link href="/events/post">Post an event</Link>
+            </Button>
+          }
+        />
 
         {open.length === 0 ? (
-          <p className="rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
-            Nothing open right now. Post the one you are running.
-          </p>
+          <div className="g-card p-6 text-sm text-ink-muted">
+            Nothing is open right now — post the event you are running.
+          </div>
         ) : (
-          <ul className="flex flex-col gap-3">
+          <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {open.map((e, i) => {
               const squads = squadCount.get(e.id) ?? 0;
               const poster = e.posted_by_profile_id
@@ -72,78 +79,92 @@ export default async function EventsPage() {
               const meta = [e.host, e.mode ? MODE_LABEL[e.mode] : null, e.location].filter(
                 Boolean,
               );
+              const PlaceIcon = e.mode === "online" ? Globe : MapPin;
+              const showPlaceIcon = e.mode !== null || e.location !== null;
+              const soon = e.deadline_at !== null && closingSoon(e.deadline_at);
+
               return (
                 <li
                   key={e.id}
                   style={
                     { "--rise-delay": `${Math.min(i * 40, 320)}ms` } as React.CSSProperties
                   }
-                  className="rise-in relative rounded-xl border border-border bg-card p-5 transition-colors hover:border-hairline-strong hover:bg-surface-2"
+                  className="rise-in"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        {e.source === "organiser" ? (
-                          <Badge variant="secondary" className="font-mono">
-                            campus
-                          </Badge>
-                        ) : (
-                          <span className="font-mono text-[11px] text-ink-tertiary">
-                            {e.source}
-                          </span>
-                        )}
-                        {poster && (
-                          <span className="truncate text-xs text-muted-foreground">
-                            posted by {poster}
-                          </span>
-                        )}
-                      </div>
-                      <Link
-                        href={`/events/${e.id}`}
-                        className="mt-2 block text-lg font-medium tracking-tight after:absolute after:inset-0"
-                      >
-                        {e.title}
-                      </Link>
-                      {meta.length > 0 && (
-                        <div className="mt-1 truncate text-sm text-muted-foreground">
-                          {meta.join(" · ")}
-                        </div>
+                  <article className="g-card-interactive relative flex h-full flex-col p-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {e.source === "organiser" ? (
+                        <span className="g-chip-accent">campus</span>
+                      ) : (
+                        <span className="g-chip">{e.source}</span>
+                      )}
+                      {poster && (
+                        <span className="min-w-0 truncate text-xs text-ink-subtle">
+                          posted by {poster}
+                        </span>
                       )}
                     </div>
-                    <div className="shrink-0 text-right">
+
+                    <h2 className="mt-3 text-[17px] leading-snug font-semibold tracking-[-0.01em]">
+                      <Link href={`/events/${e.id}`} className="after:absolute after:inset-0">
+                        {e.title}
+                      </Link>
+                    </h2>
+
+                    {meta.length > 0 && (
+                      <p className="mt-1.5 flex items-center gap-1.5 text-sm text-ink-muted">
+                        {showPlaceIcon && (
+                          <PlaceIcon className="size-4 shrink-0" strokeWidth={2} />
+                        )}
+                        <span className="truncate">{meta.join(" · ")}</span>
+                      </p>
+                    )}
+
+                    <div className="mt-4 mb-4">
                       {e.deadline_at ? (
-                        <span className="font-mono text-sm text-ink-muted tabular-nums">
-                          closes {closesOn(e.deadline_at)}
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
+                            soon
+                              ? "border-warn/20 bg-cream text-warn"
+                              : "border-border bg-surface-2 text-ink-muted"
+                          }`}
+                        >
+                          <CalendarDays className="size-4" strokeWidth={2} />
+                          closes <span className="g-figure">{closesOn(e.deadline_at)}</span>
                         </span>
                       ) : (
-                        <span className="font-mono text-sm text-ink-tertiary">
+                        <span className="g-chip">
+                          <CalendarDays className="size-4" strokeWidth={2} />
                           no deadline
                         </span>
                       )}
                     </div>
-                  </div>
 
-                  <div className="mt-4 flex items-center justify-between gap-4 border-t border-border pt-3">
-                    <span className="font-mono text-xs text-muted-foreground tabular-nums">
-                      {squads} {squads === 1 ? "squad" : "squads"} forming
-                    </span>
-                    {e.external_url && (
-                      <a
-                        href={e.external_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="relative z-10 text-xs text-muted-foreground transition-colors hover:text-primary"
-                      >
-                        Event site ↗
-                      </a>
-                    )}
-                  </div>
+                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-3.5">
+                      <span className="flex items-center gap-1.5 text-xs text-ink-muted">
+                        <Users className="size-4 shrink-0" strokeWidth={2} />
+                        <span className="g-figure">{squads}</span>{" "}
+                        {squads === 1 ? "squad" : "squads"} forming
+                      </span>
+                      {e.external_url && (
+                        <a
+                          href={e.external_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="relative z-10 flex items-center gap-1 text-xs font-medium text-ink-muted transition-colors hover:text-primary"
+                        >
+                          Event site
+                          <ArrowUpRight className="size-4" strokeWidth={2} />
+                        </a>
+                      )}
+                    </div>
+                  </article>
                 </li>
               );
             })}
           </ul>
         )}
-      </main>
-    </>
+      </Page>
+    </AppShell>
   );
 }

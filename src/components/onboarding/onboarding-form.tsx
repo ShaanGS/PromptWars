@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { Link2, Plus, X } from "lucide-react";
 import { saveProfile, type ProfileInput } from "@/actions/onboarding";
 import { DEPTS, SKILL_VOCAB } from "@/lib/constants";
 import type { AvailabilityWindow } from "@/engine";
@@ -64,7 +65,8 @@ export function OnboardingForm() {
     }
     const input: ProfileInput = {
       name,
-      handle: handle || name.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").slice(0, 24),
+      handle:
+        handle || name.toLowerCase().replaceAll(/[^a-z0-9]+/g, "-").slice(0, 24),
       dept: dept as ProfileInput["dept"],
       year,
       bio: bio || undefined,
@@ -86,23 +88,32 @@ export function OnboardingForm() {
     });
   };
 
+  const verified = skills.filter((s) => s.proofUrl).length;
+
   return (
-    <div className="flex max-w-2xl flex-col gap-8">
-      <section className="flex flex-col gap-4">
-        <div className="grid gap-4 sm:grid-cols-2">
+    <div className="flex flex-col gap-5">
+      <section className="g-card p-5 sm:p-7">
+        <h2 className="text-base font-bold tracking-[-0.02em]">Who you are</h2>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Field label="Name">
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Priya Menon" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Priya Menon"
+              className="rounded-xl"
+            />
           </Field>
-          <Field label="Handle">
+          <Field label="Handle" hint="your profile URL">
             <Input
               value={handle}
               onChange={(e) => setHandle(e.target.value)}
               placeholder="priya"
+              className="rounded-xl"
             />
           </Field>
           <Field label="Department">
             <Select value={dept} onValueChange={setDept}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full rounded-xl">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -116,7 +127,7 @@ export function OnboardingForm() {
           </Field>
           <Field label="Year">
             <Select value={String(year)} onValueChange={(v) => setYear(Number(v))}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full rounded-xl">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -129,84 +140,132 @@ export function OnboardingForm() {
             </Select>
           </Field>
         </div>
-        <Field label="One line about you">
-          <Textarea value={bio} onChange={(e) => setBio(e.target.value)} rows={2} maxLength={200} />
-        </Field>
+        <div className="mt-4">
+          <Field label="One line about you" hint="optional">
+            <Textarea
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              rows={2}
+              maxLength={200}
+              placeholder="Third-year CSE. Built two ML side projects, want a designer."
+              className="rounded-xl"
+            />
+          </Field>
+        </div>
       </section>
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-sm font-medium">Skills — proof links count 1.0×, claims 0.6×</h2>
-        {skills.map((s, i) => (
-          <div key={i} className="grid items-center gap-2 sm:grid-cols-[150px_1fr_1fr_24px]">
-            <Select
-              value={s.skill}
-              onValueChange={(v) => setSkills((xs) => xs.map((x, j) => (j === i ? { ...x, skill: v } : x)))}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="skill" />
-              </SelectTrigger>
-              <SelectContent>
-                {SKILL_VOCAB.map((sk) => (
-                  <SelectItem key={sk} value={sk}>
-                    {sk}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <div className="flex items-center gap-3">
-              <Slider
-                value={[s.proficiency * 100]}
-                min={10}
-                max={100}
-                step={10}
-                onValueChange={([v]) =>
-                  setSkills((xs) => xs.map((x, j) => (j === i ? { ...x, proficiency: v / 100 } : x)))
-                }
-              />
-              <span className="w-10 font-mono text-xs text-muted-foreground tabular-nums">
-                {Math.round(s.proficiency * 100)}%
-              </span>
+      <section className="g-card p-5 sm:p-7">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-base font-bold tracking-[-0.02em]">What you bring</h2>
+          <p className="text-xs text-ink-muted">
+            <span className="g-figure font-semibold text-foreground">{verified}</span> of{" "}
+            <span className="g-figure font-semibold text-foreground">{skills.length}</span>{" "}
+            backed by a link
+          </p>
+        </div>
+        <p className="mt-1 text-xs leading-relaxed text-ink-muted">
+          A skill with a proof link counts in full. Without one it counts at 0.6× —
+          self-reported tags are the least reliable thing on any profile.
+        </p>
+
+        <div className="mt-4 flex flex-col gap-3">
+          {skills.map((s, i) => (
+            <div key={i} className="rounded-xl border border-border bg-surface-2 p-4">
+              <div className="flex items-center gap-2">
+                <Select
+                  value={s.skill}
+                  onValueChange={(v) =>
+                    setSkills((xs) => xs.map((x, j) => (j === i ? { ...x, skill: v } : x)))
+                  }
+                >
+                  <SelectTrigger className="w-full rounded-lg bg-card">
+                    <SelectValue placeholder="pick a skill" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SKILL_VOCAB.map((sk) => (
+                      <SelectItem key={sk} value={sk}>
+                        {sk}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {skills.length > 1 && (
+                  <button
+                    aria-label="Remove skill"
+                    onClick={() => setSkills((xs) => xs.filter((_, j) => j !== i))}
+                    className="press flex size-9 shrink-0 items-center justify-center rounded-full text-ink-subtle transition-colors hover:bg-surface-3 hover:text-destructive"
+                  >
+                    <X className="size-4" strokeWidth={2.4} />
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-3 flex items-center gap-3">
+                <span className="w-20 shrink-0 text-xs text-ink-muted">Proficiency</span>
+                <Slider
+                  value={[s.proficiency * 100]}
+                  min={10}
+                  max={100}
+                  step={10}
+                  onValueChange={([v]) =>
+                    setSkills((xs) =>
+                      xs.map((x, j) => (j === i ? { ...x, proficiency: v / 100 } : x)),
+                    )
+                  }
+                />
+                <span className="g-figure w-10 shrink-0 text-right text-xs font-semibold">
+                  {Math.round(s.proficiency * 100)}%
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center gap-2">
+                <Link2 className="size-4 shrink-0 text-ink-subtle" strokeWidth={2.2} />
+                <Input
+                  value={s.proofUrl}
+                  onChange={(e) =>
+                    setSkills((xs) =>
+                      xs.map((x, j) => (j === i ? { ...x, proofUrl: e.target.value } : x)),
+                    )
+                  }
+                  placeholder="Link a repo or past project"
+                  className="rounded-lg bg-card"
+                />
+              </div>
             </div>
-            <Input
-              value={s.proofUrl}
-              onChange={(e) =>
-                setSkills((xs) => xs.map((x, j) => (j === i ? { ...x, proofUrl: e.target.value } : x)))
-              }
-              placeholder="proof URL (repo, project)"
-            />
-            <button
-              aria-label="Remove skill"
-              className="text-muted-foreground transition-colors hover:text-destructive"
-              onClick={() => setSkills((xs) => xs.filter((_, j) => j !== i))}
-            >
-              ×
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
+
         {skills.length < 6 && (
           <Button
             variant="secondary"
             size="sm"
-            className="self-start press-feedback"
-            onClick={() => setSkills((xs) => [...xs, { skill: "", proficiency: 0.5, proofUrl: "" }])}
+            className="press mt-3 rounded-full border border-border font-semibold"
+            onClick={() =>
+              setSkills((xs) => [...xs, { skill: "", proficiency: 0.5, proofUrl: "" }])
+            }
           >
+            <Plus className="size-3.5" strokeWidth={2.6} />
             Add skill
           </Button>
         )}
       </section>
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-sm font-medium">When can you actually work?</h2>
-        <div className="overflow-x-auto">
-          <div className="grid min-w-105 grid-cols-[70px_repeat(7,1fr)] gap-1 text-center text-xs">
+      <section className="g-card p-5 sm:p-7">
+        <h2 className="text-base font-bold tracking-[-0.02em]">When you are free</h2>
+        <p className="mt-1 text-xs text-ink-muted">
+          Squads score on shared hours, not just skills. Tap the blocks you can
+          actually show up for.
+        </p>
+        <div className="mt-4 overflow-x-auto">
+          <div className="grid min-w-[420px] grid-cols-[64px_repeat(7,1fr)] gap-1.5 text-center text-xs">
             <span />
             {DAYS.map((d) => (
-              <span key={d} className="py-1 text-muted-foreground">
+              <span key={d} className="pb-1 font-medium text-ink-subtle">
                 {d}
               </span>
             ))}
             {BLOCKS.map((block) => (
-              <FragmentRow
+              <BlockRow
                 key={block.key}
                 block={block}
                 slots={slots}
@@ -215,40 +274,73 @@ export function OnboardingForm() {
             ))}
           </div>
         </div>
+
+        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+          <Field label={`Experience — ${experience} of 5`}>
+            <Slider
+              value={[experience]}
+              min={1}
+              max={5}
+              step={1}
+              onValueChange={([v]) => setExperience(v)}
+            />
+          </Field>
+          <Field label={`Commitment — ${commitment} of 5`}>
+            <Slider
+              value={[commitment]}
+              min={1}
+              max={5}
+              step={1}
+              onValueChange={([v]) => setCommitment(v)}
+            />
+          </Field>
+        </div>
       </section>
 
-      <section className="grid gap-6 sm:grid-cols-2">
-        <Field label={`Experience — ${experience}/5`}>
-          <Slider value={[experience]} min={1} max={5} step={1} onValueChange={([v]) => setExperience(v)} />
-        </Field>
-        <Field label={`Commitment — ${commitment}/5`}>
-          <Slider value={[commitment]} min={1} max={5} step={1} onValueChange={([v]) => setCommitment(v)} />
-        </Field>
-      </section>
+      {error && (
+        <p className="rounded-xl bg-destructive/8 px-4 py-3 text-sm font-medium text-destructive">
+          {error}
+        </p>
+      )}
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
-      <Button
-        size="lg"
-        onClick={submit}
-        disabled={pending || name.trim().length < 2}
-        className="press-feedback self-start"
-      >
-        {pending ? "Saving…" : "Join the pool"}
-      </Button>
+      <div className="flex flex-wrap items-center gap-4">
+        <Button
+          size="lg"
+          onClick={submit}
+          disabled={pending || name.trim().length < 2}
+          className="press h-12 rounded-full px-7 font-semibold"
+        >
+          {pending ? "Saving" : "Join the pool"}
+        </Button>
+        <span className="text-xs text-ink-subtle">
+          You show up in squad rankings straight away.
+        </span>
+      </div>
     </div>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-2">
-      <Label className="text-muted-foreground">{label}</Label>
+      <Label className="justify-between text-xs font-semibold text-ink-muted">
+        {label}
+        {hint && <span className="font-normal text-ink-subtle">{hint}</span>}
+      </Label>
       {children}
     </div>
   );
 }
 
-function FragmentRow({
+function BlockRow({
   block,
   slots,
   toggleSlot,
@@ -259,18 +351,21 @@ function FragmentRow({
 }) {
   return (
     <>
-      <span className="py-1.5 text-left text-muted-foreground">{block.label}</span>
+      <span className="flex items-center text-left text-xs font-medium text-ink-muted">
+        {block.label}
+      </span>
       {DAYS.map((_, day) => {
         const key = `${block.key}-${day}`;
         const on = slots.has(key);
         return (
           <button
             key={key}
+            aria-label={`${block.label} ${DAYS[day]}`}
             aria-pressed={on}
             onClick={() => toggleSlot(key)}
-            className={`h-7 rounded-sm border transition-colors ${
+            className={`h-9 rounded-lg border transition-colors duration-150 ${
               on
-                ? "border-primary/60 bg-primary/25"
+                ? "border-primary bg-primary-soft"
                 : "border-border bg-card hover:bg-surface-2"
             }`}
           />

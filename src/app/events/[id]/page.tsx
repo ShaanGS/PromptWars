@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowUpRight, Globe, MapPin, Users } from "lucide-react";
 import { scoreTeam, UNMET_THRESHOLD } from "@/engine";
 import { toMember, toRequirement } from "@/lib/mappers";
 import type { EventRow, ProjectDetail } from "@/lib/types";
 import { getEvent, getPool, listProjectDetails } from "@/repo/queries";
-import { Nav } from "@/components/nav";
-import { Badge } from "@/components/ui/badge";
+import { AppShell, Page } from "@/components/app-shell";
+import { Avatar } from "@/components/brand";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 
 const MODE_LABEL: Record<NonNullable<EventRow["mode"]>, string> = {
   online: "online",
@@ -47,99 +47,106 @@ export default async function EventPage({
   if (event.deadline_at)
     dates.push({ label: "Closes", value: fullDate(event.deadline_at) });
 
+  const meta = [event.host, event.mode ? MODE_LABEL[event.mode] : null, event.location]
+    .filter(Boolean)
+    .join(" · ");
+  const PlaceIcon = event.mode === "online" ? Globe : MapPin;
+  const showPlaceIcon = event.mode !== null || event.location !== null;
+
   return (
-    <>
-      <Nav />
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8">
+    <AppShell>
+      <Page>
         <Link
           href="/events"
-          className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+          className="mb-5 inline-flex items-center gap-1.5 text-sm font-medium text-ink-muted transition-colors hover:text-foreground"
         >
-          ← Events
+          <ArrowLeft className="size-4" strokeWidth={2} />
+          Events
         </Link>
 
-        <header className="mt-4">
-          <div className="flex items-center gap-2">
+        <header className="g-card p-6 sm:p-8">
+          <div className="flex flex-wrap items-center gap-2">
             {event.source === "organiser" ? (
-              <Badge variant="secondary" className="font-mono">
-                campus
-              </Badge>
+              <span className="g-chip-accent">campus</span>
             ) : (
-              <span className="font-mono text-[11px] text-ink-tertiary">
-                {event.source}
-              </span>
+              <span className="g-chip">{event.source}</span>
             )}
             {poster && (
-              <span className="text-xs text-muted-foreground">posted by {poster.name}</span>
+              <span className="text-xs text-ink-subtle">posted by {poster.name}</span>
             )}
           </div>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-balance">
+
+          <h1 className="mt-4 text-2xl font-bold tracking-[-0.03em] text-balance sm:text-3xl">
             {event.title}
           </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            {[event.host, event.mode ? MODE_LABEL[event.mode] : null, event.location]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
+
+          {meta && (
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-ink-muted">
+              {showPlaceIcon && <PlaceIcon className="size-4 shrink-0" strokeWidth={2} />}
+              {meta}
+            </p>
+          )}
+
           {event.tags.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
+            <div className="mt-4 flex flex-wrap gap-1.5">
               {event.tags.map((t) => (
-                <Badge key={t} variant="outline" className="font-mono text-ink-muted">
+                <span key={t} className="g-chip">
                   {t}
-                </Badge>
+                </span>
               ))}
             </div>
           )}
+
+          {dates.length > 0 && (
+            <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4 border-t border-border pt-5">
+              {dates.map((d) => (
+                <div key={d.label}>
+                  <dt className="g-eyebrow text-ink-subtle">{d.label}</dt>
+                  <dd className="g-figure mt-1 text-sm text-foreground">{d.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button asChild className="press h-11 rounded-full font-semibold">
+              <Link href={`/projects/new?event=${event.id}`}>Create a squad request</Link>
+            </Button>
+            {event.external_url && (
+              <Button
+                asChild
+                variant="secondary"
+                className="press h-11 rounded-full border border-border font-semibold"
+              >
+                <a href={event.external_url} target="_blank" rel="noreferrer">
+                  Event site
+                  <ArrowUpRight className="size-4" strokeWidth={2} />
+                </a>
+              </Button>
+            )}
+          </div>
         </header>
 
-        {dates.length > 0 && (
-          <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-3">
-            {dates.map((d) => (
-              <div key={d.label}>
-                <dt className="text-[11px] tracking-[0.08em] text-ink-tertiary uppercase">
-                  {d.label}
-                </dt>
-                <dd className="mt-0.5 font-mono text-sm tabular-nums">{d.value}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
+        <section className="mt-8">
+          <div className="mb-4 flex items-baseline justify-between gap-4">
+            <h2 className="text-lg font-semibold tracking-[-0.02em]">Squads forming</h2>
+            <span className="g-figure text-sm text-ink-muted">{squads.length}</span>
+          </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Button asChild className="press-feedback">
-            <Link href={`/projects/new?event=${event.id}`}>Create a squad request</Link>
-          </Button>
-          {event.external_url && (
-            <Button asChild variant="secondary" className="press-feedback">
-              <a href={event.external_url} target="_blank" rel="noreferrer">
-                Event site ↗
-              </a>
-            </Button>
+          {squads.length === 0 ? (
+            <div className="g-card p-6 text-sm text-ink-muted">
+              No squads yet — create the first request and people can join it.
+            </div>
+          ) : (
+            <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {squads.map((squad, i) => (
+                <SquadCard key={squad.id} squad={squad} index={i} />
+              ))}
+            </ul>
           )}
-        </div>
-
-        <Separator className="my-8" />
-
-        <div className="mb-4 flex items-baseline justify-between">
-          <h2 className="text-sm font-medium">Squads forming</h2>
-          <span className="font-mono text-xs text-muted-foreground tabular-nums">
-            {squads.length}
-          </span>
-        </div>
-
-        {squads.length === 0 ? (
-          <p className="rounded-xl border border-border bg-card p-5 text-sm text-muted-foreground">
-            No squads yet. Start the first one.
-          </p>
-        ) : (
-          <ul className="flex flex-col gap-3">
-            {squads.map((squad, i) => (
-              <SquadCard key={squad.id} squad={squad} index={i} />
-            ))}
-          </ul>
-        )}
-      </main>
-    </>
+        </section>
+      </Page>
+    </AppShell>
   );
 }
 
@@ -151,34 +158,59 @@ function SquadCard({ squad, index }: { squad: ProjectDetail; index: number }) {
     const entry = ts.coverage.find((c) => c.requirementId === r.id);
     return (entry?.coverage ?? 0) < UNMET_THRESHOLD;
   });
+  const shown = squad.members.slice(0, 5);
+  const overflow = squad.members.length - shown.length;
 
   return (
     <li
       style={{ "--rise-delay": `${Math.min(index * 40, 320)}ms` } as React.CSSProperties}
-      className="rise-in relative rounded-xl border border-border bg-card p-5 transition-colors hover:border-hairline-strong hover:bg-surface-2"
+      className="rise-in"
     >
-      <div className="flex items-start justify-between gap-4">
-        <Link
-          href={`/projects/${squad.id}`}
-          className="text-base font-medium tracking-tight after:absolute after:inset-0"
-        >
-          {squad.title}
-        </Link>
-        <span className="shrink-0 font-mono text-xs text-muted-foreground tabular-nums">
-          {squad.members.length} {squad.members.length === 1 ? "member" : "members"}
-        </span>
-      </div>
-      {openSlots.length > 0 ? (
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {openSlots.map((r) => (
-            <Badge key={r.id} variant="outline" className="border-primary/40 text-primary">
-              open · {r.role_label ?? r.skill}
-            </Badge>
-          ))}
+      <article className="g-card-interactive relative flex h-full flex-col p-5">
+        <h3 className="text-[17px] leading-snug font-semibold tracking-[-0.01em]">
+          <Link href={`/projects/${squad.id}`} className="after:absolute after:inset-0">
+            {squad.title}
+          </Link>
+        </h3>
+
+        <div className="mt-3 mb-4 flex items-center gap-3">
+          {shown.length > 0 && (
+            <div className="flex -space-x-2">
+              {shown.map((m) => (
+                <Avatar
+                  key={m.id}
+                  name={m.name}
+                  className="size-8 text-[11px] ring-2 ring-card"
+                />
+              ))}
+              {overflow > 0 && (
+                <span className="g-figure flex size-8 items-center justify-center rounded-full bg-surface-3 text-[11px] font-semibold text-ink-muted ring-2 ring-card">
+                  +{overflow}
+                </span>
+              )}
+            </div>
+          )}
+          <span className="flex items-center gap-1.5 text-xs text-ink-muted">
+            <Users className="size-4 shrink-0" strokeWidth={2} />
+            <span className="g-figure">{squad.members.length}</span>{" "}
+            {squad.members.length === 1 ? "member" : "members"}
+          </span>
         </div>
-      ) : (
-        <p className="mt-3 text-xs text-muted-foreground">Every slot covered.</p>
-      )}
+
+        <div className="mt-auto border-t border-border pt-3.5">
+          {openSlots.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5">
+              {openSlots.map((r) => (
+                <span key={r.id} className="g-chip-accent">
+                  open · {r.role_label ?? r.skill}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-xs text-success">Every slot covered.</p>
+          )}
+        </div>
+      </article>
     </li>
   );
 }

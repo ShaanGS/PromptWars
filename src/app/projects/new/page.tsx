@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Nav } from "@/components/nav";
+import { ArrowLeft } from "lucide-react";
+import { AppShell, Page, PageHead } from "@/components/app-shell";
 import { NewSquadForm } from "@/components/projects/new-squad-form";
 import { listEvents } from "@/repo/queries";
 
@@ -30,24 +31,23 @@ export default async function NewSquadPage({
   const initialEventId = options.some((o) => o.id === requested) ? requested : undefined;
 
   return (
-    <>
-      <Nav />
-      <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
-        <div className="mb-10">
+    <AppShell>
+      <Page>
+        <div className="mx-auto w-full max-w-2xl">
           <Link
             href="/projects"
-            className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-muted transition-colors hover:text-foreground"
           >
-            ← Squads
+            <ArrowLeft className="size-4" strokeWidth={2.4} />
+            Squads
           </Link>
-          <h1 className="mt-3 text-2xl font-semibold tracking-tight">New squad</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Name what you need. The requirements below become the open slots people
-            rank against.
-          </p>
+          <PageHead
+            title="New squad"
+            sub="Name what you need. The requirements below become the open slots people rank against."
+          />
+          <NewSquadForm events={options} initialEventId={initialEventId} />
         </div>
-        <NewSquadForm events={options} initialEventId={initialEventId} />
-      </main>
-    </>
+      </Page>
+    </AppShell>
   );
 }

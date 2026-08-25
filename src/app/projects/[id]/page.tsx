@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft, CalendarDays } from "lucide-react";
 import { getPool, getProjectDetail } from "@/repo/queries";
 import { toMember, toRequirement } from "@/lib/mappers";
-import { Nav } from "@/components/nav";
+import { AppShell, Page } from "@/components/app-shell";
 import { Sandbox } from "@/components/sandbox/sandbox";
-import { Badge } from "@/components/ui/badge";
 
 export default async function ProjectPage({
   params,
@@ -15,45 +15,56 @@ export default async function ProjectPage({
   const [project, pool] = await Promise.all([getProjectDetail(id), getPool()]);
   if (!project) notFound();
 
-  const members = pool.map(toMember);
-  const requirements = project.requirements.map(toRequirement);
-  const initialTeamIds = project.members.map((m) => m.id);
-
   return (
-    <>
-      <Nav />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
-        <div className="mb-6">
+    <AppShell>
+      <Page>
+        <div className="mb-5 lg:mb-7">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-muted transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="size-3.5" strokeWidth={2.4} />
+            Squads
+          </Link>
+
           {project.event && (
             <Link
               href={`/events/${project.event.id}`}
-              className="mb-2 inline-flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              className="mt-3 flex flex-wrap items-center gap-2"
             >
-              <Badge variant="secondary">{project.event.title}</Badge>
+              <span className="g-chip-accent">{project.event.title}</span>
               {project.event.deadline_at && (
-                <span>
-                  closes {new Date(project.event.deadline_at).toLocaleDateString("en-IN", {
-                    day: "numeric",
-                    month: "short",
-                  })}
+                <span className="g-chip">
+                  <CalendarDays className="size-3.5" strokeWidth={2.2} />
+                  closes{" "}
+                  <span className="g-figure">
+                    {new Date(project.event.deadline_at).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </span>
                 </span>
               )}
             </Link>
           )}
-          <h1 className="text-2xl font-semibold tracking-tight">{project.title}</h1>
+
+          <h1 className="mt-3 text-[26px] leading-tight font-extrabold tracking-[-0.03em] text-balance sm:text-[32px]">
+            {project.title}
+          </h1>
           {project.description && (
-            <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-ink-muted">
               {project.description}
             </p>
           )}
         </div>
+
         <Sandbox
-          pool={members}
-          requirements={requirements}
-          initialTeamIds={initialTeamIds}
+          pool={pool.map(toMember)}
+          requirements={project.requirements.map(toRequirement)}
+          initialTeamIds={project.members.map((m) => m.id)}
           ownerId={project.owner_profile_id}
         />
-      </main>
-    </>
+      </Page>
+    </AppShell>
   );
 }
