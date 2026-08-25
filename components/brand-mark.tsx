@@ -77,7 +77,7 @@ export function Wordmark({
   size?: 'sm' | 'md' | 'lg' | 'xl'
   className?: string
 }) {
-  const height = { sm: 34, md: 44, lg: 60, xl: 76 }[size]
+  const height = { sm: 44, md: 64, lg: 112, xl: 150 }[size]
   return (
     <div
       className={cn(
