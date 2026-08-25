@@ -21,11 +21,12 @@ export function Sidebar({ email, admin }: { email: string; admin: boolean }) {
           item). No tagline here: chrome states the name once; the tagline
           lives on login and the link preview, where it is met, not re-read
           on every visit. */}
-      {/* The logo is a stacked lockup -- mark over word -- so it needs real
-          height to read at all. Centred, because a tall square mark hung off
-          the left gutter looks dropped rather than placed. */}
-      <div className="px-4 pt-6 pb-5">
-        <Link href="/" className="flex justify-center">
+      {/* px-6 puts the logo on the same left edge as the nav labels below
+          (px-3 group + px-3 item), so the whole rail reads off one gutter.
+          The logo is a stacked lockup -- mark over word -- so it carries real
+          height rather than being scaled to a text-sized wordmark. */}
+      <div className="px-6 pt-7 pb-6">
+        <Link href="/" className="inline-flex">
           <Wordmark size="lg" />
         </Link>
       </div>

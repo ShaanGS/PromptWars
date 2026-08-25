@@ -43,7 +43,11 @@ export async function getDashboardData(
   // needs.
   // Enabled sources minus this user's mutes. A list of [] would make `.in()`
   // match nothing, which is correct, but Supabase needs a non-empty array.
-  const { ids: enabledIds, muted } = await visibleSourceIds(userId)
+  // 'all', not the default 'events': in Guild the deadline sources
+  // (Devfolio, Devpost, Unstop) ARE the point -- a hackathon you can still
+  // enter is exactly what a squad forms around, so the feed carries them
+  // alongside dated meetups instead of routing them only to /hackathons.
+  const { ids: enabledIds, muted } = await visibleSourceIds(userId, 'all')
 
   // Opt-in sources (see config/sources.ts) stay out of every feed query --
   // list, counts, closing soon -- unless their chip is the active filter, so
