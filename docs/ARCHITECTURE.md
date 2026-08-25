@@ -3,7 +3,7 @@
 This repo is two products in one tree, sharing one database.
 
 - **Guild** — the team-formation product, and what the submission is about. A
-  pure scoring model plus four read-only screens.
+  pure scoring model, four read screens, and one form that writes.
 - **Olvable** — Shaan's Chennai event aggregator, which Guild is built inside.
   A batch pipeline that writes events and a request-time app that reads them.
 
@@ -54,7 +54,15 @@ lib/demo.ts — who "you" are. There is no session (see SECURITY.md), so
 | `/people` | The pool ranked by `guildScore` |
 | `/p/[handle]` | Profile: score breakdown, complementarity, gap feed |
 
-Guild is **read-only**: no server actions, no mutations, no forms.
+Guild reads, with one exception: `/teams/new` posts a request. That is the
+only write — `app/(app)/teams/new/actions.ts` inserts a project, its
+requirements and the owner's membership, and undoes the project if the
+requirements or the membership fail. Everything else recomputes from rows it
+did not write.
+
+The rules the form enforces live in `lib/team/new-squad.ts`, pure and tested,
+because a requirement is what the engine scores: a weight of zero or a skill
+spelled unlike the pool's produces a role nobody can fill, silently.
 
 ---
 

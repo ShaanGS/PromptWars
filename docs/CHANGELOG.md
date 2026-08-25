@@ -9,6 +9,47 @@ verify steps) live in git history — `git log docs/ROADMAP.md` before
 
 ## 2026-08-25
 
+- **`/teams/new` is a real form.** The Team Board's primary button led to a
+  page explaining that posting was unbuilt; it now posts. Pick an event from
+  the corpus or none, write the ask, add up to six weighted requirements —
+  skill, what to call the role, how much it matters (1–5), and a minimum
+  level. Submitting writes a project, its requirements and the owner's
+  membership, and the squad is on the board and in the sandbox immediately.
+  - **Every row says who could fill it, live.** As the floor moves, the row
+    reports how many people in the pool clear it — computed in the browser by
+    the engine's own `effectiveProficiency`, damp included, so the number is
+    the ranking's answer rather than an approximation. A skill nobody claims
+    is not rejected (posting for something rare is legitimate) but is said out
+    loud before posting rather than discovered on an empty board after.
+  - The rules are pure and tested in `lib/team/new-squad.ts` (19 tests). They
+    exist because a requirement is not metadata: a weight of zero, a floor
+    above 1, or `Machine Learning` where the pool says `machine-learning`
+    produces a role nobody on earth can fill, and nothing downstream would
+    say so.
+  - Guild's first write. The insert is undone if the requirements or the
+    membership fail — a project with no requirements renders as "Ready 100%".
+  - The owner is still `lib/demo.ts`'s seeded identity; there is no session to
+    read one from. That is the only line that changes when auth returns.
+
+- **Hackathon cards show the real event artwork.** All 25 rows had
+  `image_url` null, so every card rendered a flat pastel tile: the seed-time
+  fetcher never read the artwork the three APIs publish (Devfolio
+  `cover_img`, Devpost `thumbnail_url`, Unstop `logoUrl2`) and the seeder
+  never carried the column. Backfilled by matching each existing record's
+  `external_url` against the live APIs, so the corpus and its order do not
+  move — `seed-demo.mjs` links squads to events by array index, and a
+  re-fetch would silently re-point every squad at a different hackathon.
+  20 of 25 carry one.
+  - Devpost serves one shared grey `.gif` from `/assets/defaults/` for
+    listings whose organiser uploaded nothing — 8 of 51 on the day. Skipped:
+    the app's own placeholder at least varies its hue and carries the date.
+  - Two bugs the images made reachable, both in `EventImage`. A cached image
+    is already `complete` before React attaches its handlers, so `onLoad`
+    never fired on a revisit and every square logo rendered blown up and
+    cropped; the measurement now also runs from a ref callback. And a URL
+    that 404s returned `null`, collapsing the card's media box and dropping
+    the date and band chips onto the title; it keeps its frame.
+
 - **Guild merged into Olvable.** The product is now **Guild**, a
   team-formation platform answering hackathon Problem Statement 2
   (ProjectMatch), built inside this repo. Olvable's shell, design system,

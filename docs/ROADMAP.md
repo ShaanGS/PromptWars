@@ -18,12 +18,12 @@ the aggregator's, and is parked while Guild is the product.
    rather than a chat, with the contact detail revealed only when the recipient
    accepts. Needs a `nudges` table (none exists yet, despite an earlier note
    claiming otherwise), a send action, an inbox, and accept/decline.
-2. **`/teams/new` is a placeholder, not a form.** It now renders an honest page
-   saying the flow is unbuilt, so nothing 404s — but the demand side of the
-   problem statement still has no real entry point. Building it means: pick an
-   event from the corpus (or none), write the prose ask, then add weighted
-   requirements with a skill, a floor and a weight. Those requirements are what
-   the engine scores, so this is the one form that must not be sloppy.
+2. ~~**`/teams/new` is a placeholder, not a form.**~~ **Shipped 2026-08-25.**
+   Pick an event from the corpus (or none), write the prose ask, add up to six
+   weighted requirements. Each row reports live how many people in the pool
+   clear its floor — the browser runs the engine's own `effectiveProficiency`,
+   so the number on screen is the ranking's answer, not an estimate. What is
+   still missing: you can post a squad and not edit or delete it.
 3. **Wire up or delete `explainScore`.** `lib/engine/explain.ts` is tested but
    has **zero callers** — nothing in `app/` or `components/` imports it. It is
    exactly the "explain the score" affordance the sandbox should have;
@@ -136,7 +136,8 @@ own deploy; Guild is at `tryguild.vercel.app`.
 **Guild:** the engine imports nothing and must stay that way ·
 `WEIGHTS` / `UNVERIFIED_DAMP` / `UNMET_THRESHOLD` are product decisions, not
 tunables · there is no auth, but the stand-in user is a `member` — do not
-"simplify" `isAdmin()` · Guild is read-only · no new npm dependencies.
+"simplify" `isAdmin()` · `/teams/new` is Guild's only write · no new npm
+dependencies.
 
 **Olvable:**
 Free tier everywhere (decisions 002, 005) · no email exists (001) ·
