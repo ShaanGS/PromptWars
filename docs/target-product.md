@@ -6,7 +6,7 @@
 >
 > It is kept for one reason: it is a genuine, screen-by-screen feature backlog,
 > and section 2 (Nudges) names the one capability this build really is missing.
-> Read it as *ideas that were considered*, never as a description of what
+> Read it as _ideas that were considered_, never as a description of what
 > exists here or a source of paths, colours or fonts.
 >
 > **Everything in the "Design system" section below is wrong for this repo** —
@@ -46,11 +46,11 @@ Progress bar across the top, `Step N of 6`, dot indicators, Back / Next.
    not a dropdown) · Registration number (optional, "Adds trust to your profile")
 2. **Skills** — the skill claims step.
 3. **What are you into?** — "Pick your interest areas and what you're looking for."
-   - *Interest domains*, multi-select mono chips, amber when selected:
+   - _Interest domains_, multi-select mono chips, amber when selected:
      VLSI · IoT · Robotics · Web Development · App Development · AI/ML ·
      Open Source · Cybersecurity · Sustainability Tech · FinTech · HealthTech ·
      Aerospace · Game Dev · Research · Competitive Programming · Design
-   - *What are you looking for right now?* — six icon cards, single select:
+   - _What are you looking for right now?_ — six icon cards, single select:
      Hackathon Team ("I want to compete") · Research Project ("I want to publish
      or explore") · Startup / Idea ("I'm building something") · Side Project
      ("I want to make something cool") · Collab & Learn ("I want to grow with
@@ -59,7 +59,7 @@ Progress bar across the top, `Step N of 6`, dot indicators, Back / Next.
    Three icon rows, single select: Casual ("Exploring and learning. Low
    pressure.") · Serious ("Hackathon-ready. Can commit on weekends.") ·
    Startup-focused ("All-in. Building something real.")
-   Then *Availability* chips: Weekday evenings · Weekends · Full week ·
+   Then _Availability_ chips: Weekday evenings · Weekends · Full week ·
    Flexible · Currently busy
 5. **Link your profiles** — "All optional. Helps teammates know you're real."
    GitHub URL · LinkedIn URL · Devfolio URL · Portfolio/Website · WhatsApp
@@ -90,6 +90,7 @@ status: pending|accepted|declined, created_at)`.
 ## 3. Home
 
 Three-column: sidebar · feed · right rail.
+
 - **People with skills you need** — horizontal carousel of person cards
   (avatar, name, dept · year, mono skill chips, a "looking for" chip) each with
   a **Send Nudge** button. "See all →".
@@ -97,10 +98,10 @@ Three-column: sidebar · feed · right rail.
   border, owner line, "Needs: X" chips, effort chip (`10-15 hrs/week`),
   "NaNd left" (a deadline countdown — buggy in the Lovable build), and an
   **I'm Interested** button.
-- **Right rail** — *Profile Strength* as a ring percentage with a nudge to
-  improve it ("Write a short bio to stand out", "Edit Profile →"); *Quick
-  Actions* (Post a Team Request · Browse Hackathon Teams · Go to Discover);
-  *Upcoming* (hackathon listings — this is where the repo's real ingested
+- **Right rail** — _Profile Strength_ as a ring percentage with a nudge to
+  improve it ("Write a short bio to stand out", "Edit Profile →"); _Quick
+  Actions_ (Post a Team Request · Browse Hackathon Teams · Go to Discover);
+  _Upcoming_ (hackathon listings — this is where the repo's real ingested
   events belong).
 
 ## 4. Team Board
@@ -111,7 +112,7 @@ title, owner (avatar · name · dept), a paragraph of free text describing the
 need, `Needs: <role>` chips in amber, a type chip and an effort chip, a
 `Closes in N days` line, and **I'm Interested**.
 
-Note this is a *request board written in prose*, distinct from the repo's
+Note this is a _request board written in prose_, distinct from the repo's
 structured requirement builder. Both should exist: the prose post is how people
 actually write, the structured requirements are what the engine scores.
 
@@ -150,16 +151,16 @@ emerald), `Interests` (mono chips, amber), `Portfolio links` as icon tiles
 None of the following was ported. It is recorded only so nobody mistakes a
 screenshot of the prototype for a bug in this app.
 
-| | Lovable prototype | **This repo** |
-| --- | --- | --- |
-| Stylesheet | `src/app/globals.css` | `app/globals.css` — **there is no `src/` directory here** |
-| Canvas | `#0b0e11` (dark) | `#f5f6fa` (light) — `--canvas` |
-| Cards | `#131820` | `#ffffff` — `--surface` |
-| Accent | emerald `#10e098` | indigo `#5b5bd6` — `--accent`, the only accent |
-| Secondary colour | amber = interests, violet = effort | none; nothing else is coloured |
-| Chips | `.g-chip`, `.g-chip-accent`, … | `components/ui/pill.tsx`; no `.g-chip` class exists |
-| Display type | Space Grotesk | Inter (400/500/600), with JetBrains Mono for figures |
-| Logo | `public/brand/guild-logo.png`, `mix-blend-screen` on dark | `public/guild-logo.png`, via `components/brand-mark.tsx` |
+|                  | Lovable prototype                                         | **This repo**                                             |
+| ---------------- | --------------------------------------------------------- | --------------------------------------------------------- |
+| Stylesheet       | `src/app/globals.css`                                     | `app/globals.css` — **there is no `src/` directory here** |
+| Canvas           | `#0b0e11` (dark)                                          | `#f5f6fa` (light) — `--canvas`                            |
+| Cards            | `#131820`                                                 | `#ffffff` — `--surface`                                   |
+| Accent           | emerald `#10e098`                                         | indigo `#5b5bd6` — `--accent`, the only accent            |
+| Secondary colour | amber = interests, violet = effort                        | none; nothing else is coloured                            |
+| Chips            | `.g-chip`, `.g-chip-accent`, …                            | `components/ui/pill.tsx`; no `.g-chip` class exists       |
+| Display type     | Space Grotesk                                             | Inter (400/500/600), with JetBrains Mono for figures      |
+| Logo             | `public/brand/guild-logo.png`, `mix-blend-screen` on dark | `public/guild-logo.png`, via `components/brand-mark.tsx`  |
 
 The one rule that did carry over: the logo is ONE image — the mark and the
 wordmark are the same artwork and must never be separated or retyped.
@@ -170,7 +171,7 @@ An ordering, not a commitment. Nothing here is scheduled; `ROADMAP.md` is what
 is actually next.
 
 1. **Nudges** (table, send, inbox, accept → reveal contact). This is the only
-   item that changes what the product can do: today Guild can *identify* the
+   item that changes what the product can do: today Guild can _identify_ the
    right teammate and cannot let you contact them. Everything else on this list
    is surface area.
 2. Extend the profile schema + a multi-step onboarding wizard.

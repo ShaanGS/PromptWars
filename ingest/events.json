@@ -62,10 +62,7 @@
     "ends_at": "2026-08-31T18:29:00.000Z",
     "deadline_at": "2026-08-25T18:29:00.000Z",
     "image_url": "https://assets.devfolio.co/hackathons/69bc320cd0ff44f4bf84e9facd534485/assets/cover/540.png",
-    "tags": [
-      "Design",
-      "Future Mobility"
-    ]
+    "tags": ["Design", "Future Mobility"]
   },
   {
     "source": "devfolio",
@@ -117,9 +114,7 @@
     "ends_at": "2026-09-13T07:30:00.000Z",
     "deadline_at": "2026-08-27T18:30:00.000Z",
     "image_url": "https://assets.devfolio.co/hackathons/b126e3166e144db7b493d3b69351b2a8/assets/cover/903.png",
-    "tags": [
-      "Blockchain"
-    ]
+    "tags": ["Blockchain"]
   },
   {
     "source": "devfolio",
@@ -145,11 +140,7 @@
     "ends_at": "2026-08-25T23:59:59.000Z",
     "deadline_at": "2026-08-25T23:59:59.000Z",
     "image_url": null,
-    "tags": [
-      "Beginner Friendly",
-      "Education",
-      "Web"
-    ]
+    "tags": ["Beginner Friendly", "Education", "Web"]
   },
   {
     "source": "devpost",
@@ -162,10 +153,7 @@
     "ends_at": "2026-09-03T23:59:59.000Z",
     "deadline_at": "2026-09-03T23:59:59.000Z",
     "image_url": "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_thumbnails/004/910/851/datas/medium_square.png",
-    "tags": [
-      "Machine Learning/AI",
-      "Open Ended"
-    ]
+    "tags": ["Machine Learning/AI", "Open Ended"]
   },
   {
     "source": "devpost",
@@ -178,11 +166,7 @@
     "ends_at": "2026-09-05T23:59:59.000Z",
     "deadline_at": "2026-09-05T23:59:59.000Z",
     "image_url": "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_thumbnails/005/072/780/datas/medium_square.png",
-    "tags": [
-      "Blockchain",
-      "Cybersecurity",
-      "Low/No Code"
-    ]
+    "tags": ["Blockchain", "Cybersecurity", "Low/No Code"]
   },
   {
     "source": "devpost",
@@ -195,11 +179,7 @@
     "ends_at": "2026-08-25T23:59:59.000Z",
     "deadline_at": "2026-08-25T23:59:59.000Z",
     "image_url": "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_thumbnails/005/017/793/datas/medium_square.png",
-    "tags": [
-      "Enterprise",
-      "Machine Learning/AI",
-      "Open Ended"
-    ]
+    "tags": ["Enterprise", "Machine Learning/AI", "Open Ended"]
   },
   {
     "source": "devpost",
@@ -212,11 +192,7 @@
     "ends_at": "2026-08-25T23:59:59.000Z",
     "deadline_at": "2026-08-25T23:59:59.000Z",
     "image_url": null,
-    "tags": [
-      "Education",
-      "Machine Learning/AI",
-      "Social Good"
-    ]
+    "tags": ["Education", "Machine Learning/AI", "Social Good"]
   },
   {
     "source": "devpost",
@@ -229,9 +205,7 @@
     "ends_at": "2026-09-10T23:59:59.000Z",
     "deadline_at": "2026-09-10T23:59:59.000Z",
     "image_url": null,
-    "tags": [
-      "Machine Learning/AI"
-    ]
+    "tags": ["Machine Learning/AI"]
   },
   {
     "source": "devpost",
@@ -244,9 +218,7 @@
     "ends_at": "2026-09-01T23:59:59.000Z",
     "deadline_at": "2026-09-01T23:59:59.000Z",
     "image_url": "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_thumbnails/005/078/382/datas/medium_square.png",
-    "tags": [
-      "Education"
-    ]
+    "tags": ["Education"]
   },
   {
     "source": "devpost",
@@ -259,11 +231,7 @@
     "ends_at": "2026-09-13T23:59:59.000Z",
     "deadline_at": "2026-09-13T23:59:59.000Z",
     "image_url": "https://d112y698adiu2z.cloudfront.net/photos/production/challenge_thumbnails/005/019/095/datas/medium_square.png",
-    "tags": [
-      "IoT",
-      "Machine Learning/AI",
-      "Web"
-    ]
+    "tags": ["IoT", "Machine Learning/AI", "Web"]
   },
   {
     "source": "devpost",
@@ -276,10 +244,7 @@
     "ends_at": "2026-09-09T23:59:59.000Z",
     "deadline_at": "2026-09-09T23:59:59.000Z",
     "image_url": null,
-    "tags": [
-      "Enterprise",
-      "Machine Learning/AI"
-    ]
+    "tags": ["Enterprise", "Machine Learning/AI"]
   },
   {
     "source": "devpost",
@@ -292,10 +257,7 @@
     "ends_at": "2026-10-09T23:59:59.000Z",
     "deadline_at": "2026-10-09T23:59:59.000Z",
     "image_url": null,
-    "tags": [
-      "DevOps",
-      "Education"
-    ]
+    "tags": ["DevOps", "Education"]
   },
   {
     "source": "unstop",
@@ -308,9 +270,7 @@
     "ends_at": null,
     "deadline_at": "2026-09-13T06:29:00.000Z",
     "image_url": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-6a882954059be_just_logo_anakin.png",
-    "tags": [
-      "All"
-    ]
+    "tags": ["All"]
   },
   {
     "source": "unstop",
@@ -342,9 +302,7 @@
     "ends_at": null,
     "deadline_at": "2026-09-29T18:30:00.000Z",
     "image_url": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-6a8c6409a26f3_kns_logo.png",
-    "tags": [
-      "All"
-    ]
+    "tags": ["All"]
   },
   {
     "source": "unstop",

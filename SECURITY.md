@@ -18,7 +18,7 @@ revert, not a rewrite.
 **Consequence, stated plainly: every route in this deployment is publicly
 reachable by URL.** There is nothing to log into and nothing to log out of.
 
-## Authorization is *not* disabled
+## Authorization is _not_ disabled
 
 Removing a login wall and handing every anonymous visitor the corpus-editing
 and access-control screens are two different decisions. Only the first was
@@ -31,13 +31,13 @@ even with no login.
 
 What actually enforces that today:
 
-| Surface | Check | Enforced? |
-| --- | --- | --- |
-| `/admin/add` | `roleOf(user) !== 'admin'` → `redirect('/')` | Yes |
-| `/admin/discovery` | `roleOf(user) !== 'admin'` → `redirect('/')` | Yes |
-| `/admin` | `requireAdmin()` → asserts `isAdmin`, else `redirect('/')` | Yes |
-| `/design` | `requireAdmin()` | Yes |
-| `app/(app)/admin/**/actions.ts` (7 server actions) | `requireAdmin()` | Yes |
+| Surface                                            | Check                                                      | Enforced? |
+| -------------------------------------------------- | ---------------------------------------------------------- | --------- |
+| `/admin/add`                                       | `roleOf(user) !== 'admin'` → `redirect('/')`               | Yes       |
+| `/admin/discovery`                                 | `roleOf(user) !== 'admin'` → `redirect('/')`               | Yes       |
+| `/admin`                                           | `requireAdmin()` → asserts `isAdmin`, else `redirect('/')` | Yes       |
+| `/design`                                          | `requireAdmin()`                                           | Yes       |
+| `app/(app)/admin/**/actions.ts` (7 server actions) | `requireAdmin()`                                           | Yes       |
 
 `requireAdmin()` asserts rather than assumes:
 

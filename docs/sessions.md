@@ -11,13 +11,14 @@ event feed, and the README described an event aggregator, so the grader
 concluded the project did not answer PS-2.
 
 Fixed, and attempt 2 scored **95.3**:
+
 - `/` now redirects to `/teams`. The feed moved to `/feed` and still works.
   Nav leads with Team Board and People.
 - README rewritten around PS-2 (thesis, formula, statement->model table,
   a walkthrough whose numbers come from the engine). GitHub description and
   homepage set to match.
 - Tests 185 -> 241.
-- `requireAdmin()` now asserts the role — this landed *after* submission, so it
+- `requireAdmin()` now asserts the role — this landed _after_ submission, so it
   counts for future runs, not that score. `/admin`, `/design` and the seven
   admin server actions are genuinely closed now, and `SECURITY.md` matches.
 - `/teams/new` was a 404 from the Team Board's primary button; it now renders an
@@ -70,6 +71,7 @@ team-formation grafted in. Olvable's shell, design system, components, event
 corpus and ingestion are untouched and are the app.
 
 ### What was added
+
 - `lib/engine/` — Guild's pure-TS scoring engine, moved over intact. Zero
   imports, 17 unit tests. Not wired to any framework.
 - `/teams` — Team Board. Squads ranked by `gapFeed`, i.e. by what the viewer
@@ -84,6 +86,7 @@ corpus and ingestion are untouched and are the app.
   tab, Calendar moves to sidebar-only.
 
 ### Auth
+
 Removed, because judges must not hit a login. `middleware.ts` is a
 pass-through and `lib/auth/server.ts` returns one stand-in user so the twenty
 call sites keep working.
@@ -99,6 +102,7 @@ intent is not actually enforced on `/admin`, `/design` or the admin server
 actions. See `SECURITY.md`.)
 
 ### Database
+
 Supabase project `guild` (`fjxgqiveolnnrslihodl`, ap-south-1) was reset with
 Shaan's approval and now carries Olvable's schema plus Guild's tables:
 `profiles, skills, projects, requirements, memberships`.
@@ -117,12 +121,14 @@ this build at Olvable's production database — it has 1,328 real events and
 real user rows, and the open policies would apply there too.
 
 ### Not done
+
 Nudges, Idea Board, Communities and Notifications are unbuilt — Guild can
 identify the right teammate but cannot let you contact them, which is the
 largest genuine gap. `/teams/new` is linked twice from the Team Board and does
 not exist. `explainScore` is exported with no callers.
 
 ## Related, but not this build's plan: `docs/target-product.md`
+
 An earlier Guild prototype Shaan made in **Lovable** — a different app and a
 different design system — transcribed screen by screen. It is a useful feature
 backlog (Nudges especially) and nothing more; its paths, colours and fonts do

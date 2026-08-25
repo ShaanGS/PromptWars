@@ -1,2071 +1,2016 @@
 {
- "flagshipProjectId": "d0000000-0000-4000-8000-000000000001",
- "community": {
-  "id": "c0000000-0000-4000-8000-000000000001",
-  "slug": "srm",
-  "name": "SRM Institute of Science and Technology"
- },
- "profiles": [
-  {
-   "id": "a0000000-0000-4000-8000-000000000001",
-   "handle": "aarav",
-   "name": "Aarav Menon",
-   "dept": "CSE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 4,
-   "commitment_level": 5,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "machine-learning",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/aarav"
-    },
-    {
-     "skill": "backend",
-     "proficiency": 0.4,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000002",
-   "handle": "diya",
-   "name": "Diya Sharma",
-   "dept": "CSE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 5,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "backend",
-     "proficiency": 0.75,
-     "proof_url": "https://github.com/diya"
-    },
-    {
-     "skill": "devops",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000003",
-   "handle": "rohan",
-   "name": "Rohan Iyer",
-   "dept": "CSE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.85,
-     "proof_url": "https://github.com/rohan"
-    },
-    {
-     "skill": "ui-ux",
-     "proficiency": 0.4,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000004",
-   "handle": "meera",
-   "name": "Meera Pillai",
-   "dept": "Design",
-   "year": 3,
-   "bio": null,
-   "experience_level": 4,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "figma",
-     "proficiency": 0.85,
-     "proof_url": "https://github.com/meera"
-    },
-    {
-     "skill": "ui-ux",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/meera"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000005",
-   "handle": "kabir",
-   "name": "Kabir Bedi",
-   "dept": "MBA",
-   "year": 2,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "pitching",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/kabir"
-    },
-    {
-     "skill": "content-writing",
-     "proficiency": 0.6,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000006",
-   "handle": "ananya",
-   "name": "Ananya Rao",
-   "dept": "AIML",
-   "year": 4,
-   "bio": null,
-   "experience_level": 5,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 6,
-     "start": "09:00",
-     "end": "13:00"
-    },
-    {
-     "day": 0,
-     "start": "09:00",
-     "end": "13:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "machine-learning",
-     "proficiency": 0.9,
-     "proof_url": "https://github.com/ananya"
-    },
-    {
-     "skill": "data-engineering",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/ananya"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000007",
-   "handle": "vikram",
-   "name": "Vikram Nair",
-   "dept": "CSE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/vikram"
-    },
-    {
-     "skill": "backend",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000008",
-   "handle": "ishita",
-   "name": "Ishita Das",
-   "dept": "IT",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 5,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.7,
-     "proof_url": null
-    },
-    {
-     "skill": "flutter",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000009",
-   "handle": "aditya",
-   "name": "Aditya Kumar",
-   "dept": "CSE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.75,
-     "proof_url": "https://github.com/aditya"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000010",
-   "handle": "sneha",
-   "name": "Sneha Reddy",
-   "dept": "IT",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/sneha"
-    },
-    {
-     "skill": "ui-ux",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000011",
-   "handle": "arjun",
-   "name": "Arjun Verma",
-   "dept": "CSE",
-   "year": 1,
-   "bio": null,
-   "experience_level": 1,
-   "commitment_level": 5,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 3,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 4,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 5,
-     "start": "21:30",
-     "end": "23:30"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.55,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000012",
-   "handle": "nisha",
-   "name": "Nisha Patel",
-   "dept": "IT",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.65,
-     "proof_url": null
-    },
-    {
-     "skill": "content-writing",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000013",
-   "handle": "dev",
-   "name": "Dev Malhotra",
-   "dept": "CSE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 2,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 3,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 4,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 5,
-     "start": "21:30",
-     "end": "23:30"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/dev"
-    },
-    {
-     "skill": "blockchain",
-     "proficiency": 0.6,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000014",
-   "handle": "tara",
-   "name": "Tara Krishnan",
-   "dept": "CSE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.6,
-     "proof_url": null
-    },
-    {
-     "skill": "figma",
-     "proficiency": 0.45,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000015",
-   "handle": "yash",
-   "name": "Yash Gupta",
-   "dept": "IT",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.7,
-     "proof_url": null
-    },
-    {
-     "skill": "devops",
-     "proficiency": 0.45,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000016",
-   "handle": "zoya",
-   "name": "Zoya Khan",
-   "dept": "CSE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.75,
-     "proof_url": "https://github.com/zoya"
-    },
-    {
-     "skill": "backend",
-     "proficiency": 0.45,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000017",
-   "handle": "farhan",
-   "name": "Farhan Ali",
-   "dept": "ECE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "embedded",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/farhan"
-    },
-    {
-     "skill": "backend",
-     "proficiency": 0.4,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000018",
-   "handle": "priya",
-   "name": "Priya Menon",
-   "dept": "ECE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 6,
-     "start": "09:00",
-     "end": "13:00"
-    },
-    {
-     "day": 0,
-     "start": "09:00",
-     "end": "13:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "embedded",
-     "proficiency": 0.6,
-     "proof_url": null
-    },
-    {
-     "skill": "machine-learning",
-     "proficiency": 0.4,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000019",
-   "handle": "sanjay",
-   "name": "Sanjay Rathi",
-   "dept": "CSE",
-   "year": 4,
-   "bio": null,
-   "experience_level": 4,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "backend",
-     "proficiency": 0.85,
-     "proof_url": "https://github.com/sanjay"
-    },
-    {
-     "skill": "devops",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/sanjay"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000020",
-   "handle": "kavya",
-   "name": "Kavya Nambiar",
-   "dept": "IT",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "backend",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/kavya"
-    },
-    {
-     "skill": "data-engineering",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000021",
-   "handle": "rahul",
-   "name": "Rahul Joshi",
-   "dept": "CSE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "backend",
-     "proficiency": 0.6,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000022",
-   "handle": "anika",
-   "name": "Anika Singh",
-   "dept": "AIML",
-   "year": 3,
-   "bio": null,
-   "experience_level": 4,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "machine-learning",
-     "proficiency": 0.75,
-     "proof_url": "https://github.com/anika"
-    },
-    {
-     "skill": "data-engineering",
-     "proficiency": 0.6,
-     "proof_url": "https://github.com/anika"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000023",
-   "handle": "manav",
-   "name": "Manav Shah",
-   "dept": "AIML",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 3,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 4,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 5,
-     "start": "21:30",
-     "end": "23:30"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "machine-learning",
-     "proficiency": 0.55,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000024",
-   "handle": "leela",
-   "name": "Leela Chandran",
-   "dept": "Design",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "figma",
-     "proficiency": 0.65,
-     "proof_url": null
-    },
-    {
-     "skill": "video-editing",
-     "proficiency": 0.6,
-     "proof_url": "https://github.com/leela"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000025",
-   "handle": "omar",
-   "name": "Omar Sheikh",
-   "dept": "Mech",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 6,
-     "start": "09:00",
-     "end": "13:00"
-    },
-    {
-     "day": 0,
-     "start": "09:00",
-     "end": "13:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "unity",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/omar"
-    },
-    {
-     "skill": "video-editing",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000026",
-   "handle": "ritika",
-   "name": "Ritika Bose",
-   "dept": "Biotech",
-   "year": 4,
-   "bio": null,
-   "experience_level": 4,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "data-engineering",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/ritika"
-    },
-    {
-     "skill": "content-writing",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/ritika"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000027",
-   "handle": "arnav",
-   "name": "Arnav Kapoor",
-   "dept": "CSE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "cybersecurity",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/arnav"
-    },
-    {
-     "skill": "backend",
-     "proficiency": 0.55,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000028",
-   "handle": "sara",
-   "name": "Sara Thomas",
-   "dept": "IT",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 5,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "cybersecurity",
-     "proficiency": 0.55,
-     "proof_url": null
-    },
-    {
-     "skill": "content-writing",
-     "proficiency": 0.4,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000029",
-   "handle": "nikhil",
-   "name": "Nikhil Menon",
-   "dept": "CSE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "flutter",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/nikhil"
-    },
-    {
-     "skill": "ui-ux",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000030",
-   "handle": "pooja",
-   "name": "Pooja Hegde",
-   "dept": "IT",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "flutter",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/pooja"
-    },
-    {
-     "skill": "backend",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000031",
-   "handle": "varun",
-   "name": "Varun Pillai",
-   "dept": "CSE",
-   "year": 1,
-   "bio": null,
-   "experience_level": 1,
-   "commitment_level": 5,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 3,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 4,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 5,
-     "start": "21:30",
-     "end": "23:30"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "flutter",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000032",
-   "handle": "aisha",
-   "name": "Aisha Rahman",
-   "dept": "EEE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "embedded",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/aisha"
-    },
-    {
-     "skill": "devops",
-     "proficiency": 0.4,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000033",
-   "handle": "karthik",
-   "name": "Karthik Subramanian",
-   "dept": "CSE",
-   "year": 4,
-   "bio": null,
-   "experience_level": 5,
-   "commitment_level": 2,
-   "availability_windows": [
-    {
-     "day": 6,
-     "start": "09:00",
-     "end": "13:00"
-    },
-    {
-     "day": 0,
-     "start": "09:00",
-     "end": "13:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "backend",
-     "proficiency": 0.9,
-     "proof_url": "https://github.com/karthik"
-    },
-    {
-     "skill": "devops",
-     "proficiency": 0.8,
-     "proof_url": "https://github.com/karthik"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000034",
-   "handle": "divya",
-   "name": "Divya Anand",
-   "dept": "AIML",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "data-engineering",
-     "proficiency": 0.75,
-     "proof_url": "https://github.com/divya"
-    },
-    {
-     "skill": "machine-learning",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000035",
-   "handle": "harsh",
-   "name": "Harsh Vardhan",
-   "dept": "Civil",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 6,
-     "start": "09:00",
-     "end": "13:00"
-    },
-    {
-     "day": 0,
-     "start": "09:00",
-     "end": "13:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "content-writing",
-     "proficiency": 0.6,
-     "proof_url": null
-    },
-    {
-     "skill": "pitching",
-     "proficiency": 0.45,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000036",
-   "handle": "ila",
-   "name": "Ila Ghosh",
-   "dept": "Design",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 6,
-     "start": "09:00",
-     "end": "13:00"
-    },
-    {
-     "day": 0,
-     "start": "09:00",
-     "end": "13:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "ui-ux",
-     "proficiency": 0.75,
-     "proof_url": "https://github.com/ila"
-    },
-    {
-     "skill": "video-editing",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/ila"
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000037",
-   "handle": "jay",
-   "name": "Jay Prakash",
-   "dept": "Mech",
-   "year": 3,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "unity",
-     "proficiency": 0.6,
-     "proof_url": null
-    },
-    {
-     "skill": "blockchain",
-     "proficiency": 0.45,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000038",
-   "handle": "mira",
-   "name": "Mira Sethu",
-   "dept": "Biotech",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 4,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "content-writing",
-     "proficiency": 0.65,
-     "proof_url": "https://github.com/mira"
-    },
-    {
-     "skill": "figma",
-     "proficiency": 0.4,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000039",
-   "handle": "tanvi",
-   "name": "Tanvi Desai",
-   "dept": "CSE",
-   "year": 3,
-   "bio": null,
-   "experience_level": 3,
-   "commitment_level": 4,
-   "availability_windows": [
-    {
-     "day": 1,
-     "start": "18:00",
-     "end": "21:00"
-    },
-    {
-     "day": 3,
-     "start": "18:00",
-     "end": "21:00"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "blockchain",
-     "proficiency": 0.7,
-     "proof_url": "https://github.com/tanvi"
-    },
-    {
-     "skill": "backend",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  },
-  {
-   "id": "a0000000-0000-4000-8000-000000000040",
-   "handle": "rey",
-   "name": "Reyansh Gill",
-   "dept": "CSE",
-   "year": 2,
-   "bio": null,
-   "experience_level": 2,
-   "commitment_level": 3,
-   "availability_windows": [
-    {
-     "day": 2,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 3,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 4,
-     "start": "21:30",
-     "end": "23:30"
-    },
-    {
-     "day": 5,
-     "start": "21:30",
-     "end": "23:30"
-    }
-   ],
-   "is_seed": true,
-   "user_id": null,
-   "skills": [
-    {
-     "skill": "react",
-     "proficiency": 0.65,
-     "proof_url": null
-    },
-    {
-     "skill": "unity",
-     "proficiency": 0.5,
-     "proof_url": null
-    }
-   ]
-  }
- ],
- "events": [
-  {
-   "id": "e0000000-0000-4000-8000-000000000001",
-   "source": "organiser",
-   "external_url": "https://sih.gov.in",
-   "title": "Smart India Hackathon 2026",
-   "host": "MoE Innovation Cell",
-   "mode": "hybrid",
-   "location": "Nationwide",
-   "starts_at": "2026-09-18T04:30:00Z",
-   "ends_at": "2026-09-19T14:30:00Z",
-   "deadline_at": "2026-09-10T18:29:00Z",
-   "tags": [
-    "hackathon",
-    "national"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000002",
-   "source": "devfolio",
-   "external_url": "https://the-great-agent-hackathon.devfolio.co/",
-   "title": "The Great Agent Hackathon",
-   "host": null,
-   "mode": "online",
-   "location": null,
-   "starts_at": "2026-09-25T04:30:00.000Z",
-   "ends_at": "2026-09-26T06:30:00.000Z",
-   "deadline_at": "2026-08-25T18:15:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000003",
-   "source": "devfolio",
-   "external_url": "https://hacknex-season-2.devfolio.co/",
-   "title": "HackNex Season 2",
-   "host": null,
-   "mode": "in_person",
-   "location": "JIS College of Engineering, Barrackpore - Kalyani Expressway, Block A5, Block A, Kalyani, West Bengal, India",
-   "starts_at": "2026-09-25T05:30:00.000Z",
-   "ends_at": "2026-09-26T05:30:00.000Z",
-   "deadline_at": "2026-08-25T18:29:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000004",
-   "source": "devfolio",
-   "external_url": "https://ethkochi.devfolio.co/",
-   "title": "ETHKochi",
-   "host": null,
-   "mode": "in_person",
-   "location": "Kerala Startup Mission, Kinfra Hi-Tech Park Main Road, HMT Colony, P.O, Kalamassery, Kochi, Kerala, India",
-   "starts_at": "2026-09-05T00:30:00.000Z",
-   "ends_at": "2026-09-06T06:30:00.000Z",
-   "deadline_at": "2026-08-25T18:29:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000005",
-   "source": "devfolio",
-   "external_url": "https://fusionix-1.devfolio.co/",
-   "title": "FusioniX2026",
-   "host": null,
-   "mode": "in_person",
-   "location": null,
-   "starts_at": "2026-09-10T22:30:00.000Z",
-   "ends_at": "2026-09-11T22:30:00.000Z",
-   "deadline_at": "2026-08-25T18:29:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000006",
-   "source": "devfolio",
-   "external_url": "https://codestorm-futureforge.devfolio.co/",
-   "title": "CodeStorm 2026: FutureForge",
-   "host": null,
-   "mode": "online",
-   "location": null,
-   "starts_at": "2026-07-31T18:30:00.000Z",
-   "ends_at": "2026-08-31T18:29:00.000Z",
-   "deadline_at": "2026-08-25T18:29:00.000Z",
-   "tags": [
-    "Design",
-    "Future Mobility"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000007",
-   "source": "devfolio",
-   "external_url": "https://muba-hackathon.devfolio.co/",
-   "title": "MUBA Blockchain Hackathon",
-   "host": null,
-   "mode": "online",
-   "location": null,
-   "starts_at": "2026-08-26T12:00:00.000Z",
-   "ends_at": "2026-09-05T16:00:00.000Z",
-   "deadline_at": "2026-08-26T12:00:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000008",
-   "source": "devfolio",
-   "external_url": "https://recursion-edition.devfolio.co/",
-   "title": "Recursion Edition II",
-   "host": null,
-   "mode": "in_person",
-   "location": "VIT Chennai, Kelambakkam - Vandalur Road, Melakottaiyur, Chennai, Tamil Nadu, India",
-   "starts_at": "2026-09-03T02:30:00.000Z",
-   "ends_at": "2026-09-04T07:00:00.000Z",
-   "deadline_at": "2026-08-27T08:30:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000009",
-   "source": "devfolio",
-   "external_url": "https://venture-26.devfolio.co/",
-   "title": "VENTURE'26",
-   "host": null,
-   "mode": "in_person",
-   "location": "Mar Athanasius College of Engineering Kothamangalam, Road, Kothamangalam, Kerala, India",
-   "starts_at": "2026-09-10T11:30:00.000Z",
-   "ends_at": "2026-09-11T04:00:00.000Z",
-   "deadline_at": "2026-08-27T18:29:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000010",
-   "source": "devfolio",
-   "external_url": "https://metamorph-2.devfolio.co/",
-   "title": "Metamorph 2.0",
-   "host": null,
-   "mode": "in_person",
-   "location": "Guru Nanak Institute of Technology, Nilgunj Road, Sahid Colony, Panihati, West Bengal, India",
-   "starts_at": "2026-09-12T04:30:00.000Z",
-   "ends_at": "2026-09-13T07:30:00.000Z",
-   "deadline_at": "2026-08-27T18:30:00.000Z",
-   "tags": [
-    "Blockchain"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000011",
-   "source": "devfolio",
-   "external_url": "https://hackverse-into-the-web.devfolio.co/",
-   "title": "HackVerse: Into the Web",
-   "host": null,
-   "mode": "in_person",
-   "location": "Chennai, Tamil Nadu, India",
-   "starts_at": "2026-09-01T03:30:00.000Z",
-   "ends_at": "2026-09-02T06:30:00.000Z",
-   "deadline_at": "2026-08-30T18:29:00.000Z",
-   "tags": [],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000012",
-   "source": "devpost",
-   "external_url": "https://create-with-gemini.devpost.com/",
-   "title": "Create with Gemini",
-   "host": "MLH",
-   "mode": "in_person",
-   "location": "Applyhub ",
-   "starts_at": "2026-08-12T23:59:59.000Z",
-   "ends_at": "2026-08-25T23:59:59.000Z",
-   "deadline_at": "2026-08-25T23:59:59.000Z",
-   "tags": [
-    "Beginner Friendly",
-    "Education",
-    "Web"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000013",
-   "source": "devpost",
-   "external_url": "https://creation-code-30750.devpost.com/",
-   "title": "Build With Gemini - Creation Code",
-   "host": "Trainzex AI",
-   "mode": "in_person",
-   "location": "Jaipur, India",
-   "starts_at": "2026-07-17T23:59:59.000Z",
-   "ends_at": "2026-09-03T23:59:59.000Z",
-   "deadline_at": "2026-09-03T23:59:59.000Z",
-   "tags": [
-    "Machine Learning/AI",
-    "Open Ended"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000014",
-   "source": "devpost",
-   "external_url": "https://gemini-event-hackmatrix.devpost.com/",
-   "title": "Gemini Event - HackMatrix",
-   "host": "Trainzex AI",
-   "mode": "in_person",
-   "location": "Jaipur",
-   "starts_at": "2026-08-09T23:59:59.000Z",
-   "ends_at": "2026-09-05T23:59:59.000Z",
-   "deadline_at": "2026-09-05T23:59:59.000Z",
-   "tags": [
-    "Blockchain",
-    "Cybersecurity",
-    "Low/No Code"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000015",
-   "source": "devpost",
-   "external_url": "https://the-great-agent-hackathon.devpost.com/",
-   "title": "The Great Agent Hackathon",
-   "host": "Women In Product India",
-   "mode": "in_person",
-   "location": "Freshworks",
-   "starts_at": "2026-07-23T23:59:59.000Z",
-   "ends_at": "2026-08-25T23:59:59.000Z",
-   "deadline_at": "2026-08-25T23:59:59.000Z",
-   "tags": [
-    "Enterprise",
-    "Machine Learning/AI",
-    "Open Ended"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000016",
-   "source": "devpost",
-   "external_url": "https://innovik6-indore.devpost.com/",
-   "title": "INNOVIK 6.0 – International Hackathon 2026 | Indore Edition",
-   "host": "VITM",
-   "mode": "in_person",
-   "location": "VITM Indore",
-   "starts_at": "2026-08-10T23:59:59.000Z",
-   "ends_at": "2026-08-25T23:59:59.000Z",
-   "deadline_at": "2026-08-25T23:59:59.000Z",
-   "tags": [
-    "Education",
-    "Machine Learning/AI",
-    "Social Good"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000017",
-   "source": "devpost",
-   "external_url": "https://gen-recruiter-google-gemini.devpost.com/",
-   "title": "Build with Gemini - Gen Recruiter",
-   "host": "Trainzex AI",
-   "mode": "in_person",
-   "location": "Jaipur, India",
-   "starts_at": "2026-09-10T23:59:59.000Z",
-   "ends_at": "2026-09-10T23:59:59.000Z",
-   "deadline_at": "2026-09-10T23:59:59.000Z",
-   "tags": [
-    "Machine Learning/AI"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000018",
-   "source": "devpost",
-   "external_url": "https://code-vidya-hack-days.devpost.com/",
-   "title": "Code Vidya Hack Days",
-   "host": "MLH",
-   "mode": "in_person",
-   "location": "Kanpur Nagar UP",
-   "starts_at": "2026-09-01T23:59:59.000Z",
-   "ends_at": "2026-09-01T23:59:59.000Z",
-   "deadline_at": "2026-09-01T23:59:59.000Z",
-   "tags": [
-    "Education"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000019",
-   "source": "devpost",
-   "external_url": "https://hack-knowvy-1.devpost.com/",
-   "title": "Hack Knowvy - 1",
-   "host": "Knowvy Technologies",
-   "mode": "in_person",
-   "location": "Indrapuri, Bhopal",
-   "starts_at": "2026-09-13T23:59:59.000Z",
-   "ends_at": "2026-09-13T23:59:59.000Z",
-   "deadline_at": "2026-09-13T23:59:59.000Z",
-   "tags": [
-    "IoT",
-    "Machine Learning/AI",
-    "Web"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000020",
-   "source": "devpost",
-   "external_url": "https://zoftware-hireathon.devpost.com/",
-   "title": "Zoftware Hireathon",
-   "host": "Enterprise Software Solutions",
-   "mode": "in_person",
-   "location": "Delhi",
-   "starts_at": "2026-09-09T23:59:59.000Z",
-   "ends_at": "2026-09-09T23:59:59.000Z",
-   "deadline_at": "2026-09-09T23:59:59.000Z",
-   "tags": [
-    "Enterprise",
-    "Machine Learning/AI"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000021",
-   "source": "devpost",
-   "external_url": "https://prompt2product.devpost.com/",
-   "title": "Prompt2Product: MLH Hack Day @ AITR",
-   "host": "Acropolis Institute of Technology and RC",
-   "mode": "in_person",
-   "location": "AITR Indore",
-   "starts_at": "2026-10-08T23:59:59.000Z",
-   "ends_at": "2026-10-09T23:59:59.000Z",
-   "deadline_at": "2026-10-09T23:59:59.000Z",
-   "tags": [
-    "DevOps",
-    "Education"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000022",
-   "source": "unstop",
-   "external_url": "https://unstop.com/hackathons/anakin-forge-hackathon-anakin-skywalker-pvt-ltd-1742485",
-   "title": "Anakin Forge Hackathon",
-   "host": "Anakin Skywalker Pvt. Ltd.",
-   "mode": "online",
-   "location": null,
-   "starts_at": null,
-   "ends_at": null,
-   "deadline_at": "2026-09-13T06:29:00.000Z",
-   "tags": [
-    "All"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000023",
-   "source": "unstop",
-   "external_url": "https://unstop.com/hackathons/geeks2code-geeksforgeeks-campus-body-miet-1740788",
-   "title": "Geeks2Code",
-   "host": "GeeksForGeeks Campus Body MIET",
-   "mode": "online",
-   "location": null,
-   "starts_at": null,
-   "ends_at": null,
-   "deadline_at": "2026-09-21T18:29:00.000Z",
-   "tags": [
-    "Undergraduate",
-    "Postgraduate",
-    "Engineering Students",
-    "Management",
-    "Arts, Commerce, Sciences & Others"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000024",
-   "source": "unstop",
-   "external_url": "https://unstop.com/hackathons/knsit-tech-community-kns-institute-of-technology-karnataka-1743721",
-   "title": "KNSIT Tech Community",
-   "host": "KNS Institute of Technology, Karnataka",
-   "mode": "online",
-   "location": null,
-   "starts_at": null,
-   "ends_at": null,
-   "deadline_at": "2026-09-29T18:30:00.000Z",
-   "tags": [
-    "All"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000025",
-   "source": "unstop",
-   "external_url": "https://unstop.com/hackathons/iridescence-10-srm-insitute-of-science-and-technology-1739836",
-   "title": "Iridescence 1.0",
-   "host": "SRM Insitute of Science and Technology",
-   "mode": "in_person",
-   "location": null,
-   "starts_at": null,
-   "ends_at": null,
-   "deadline_at": "2026-08-30T18:31:00.000Z",
-   "tags": [
-    "Undergraduate",
-    "Postgraduate",
-    "Engineering Students",
-    "Management",
-    "Arts, Commerce, Sciences & Others"
-   ],
-   "posted_by_profile_id": null
-  },
-  {
-   "id": "e0000000-0000-4000-8000-000000000026",
-   "source": "unstop",
-   "external_url": "https://unstop.com/hackathons/agentic-ai-hackathon-sarcathon-2026-iit-bombay-1743750",
-   "title": "Agentic AI Hackathon",
-   "host": "Indian Institute of Technology (IIT), Bombay",
-   "mode": "online",
-   "location": null,
-   "starts_at": null,
-   "ends_at": null,
-   "deadline_at": "2026-10-31T16:39:00.000Z",
-   "tags": [
-    "Undergraduate",
-    "Postgraduate",
-    "Engineering Students",
-    "Management",
-    "Arts, Commerce, Sciences & Others"
-   ],
-   "posted_by_profile_id": null
-  }
- ],
- "projects": [
-  {
-   "id": "d0000000-0000-4000-8000-000000000001",
-   "owner_profile_id": "a0000000-0000-4000-8000-000000000001",
-   "community_id": "c0000000-0000-4000-8000-000000000001",
-   "event_id": "e0000000-0000-4000-8000-000000000001",
-   "title": "CropGuard — AgriTech squad for SIH",
-   "description": "On-device crop disease detection for smallholder farms. Model is half-trained; needs a face, an API, and a story.",
-   "deadline": "2026-09-10",
-   "is_seed": true,
-   "requirements": [
-    {
-     "id": "b0000000-0000-4000-8000-000000000001",
-     "skill": "machine-learning",
-     "role_label": "ML Engineer",
-     "weight": 3,
-     "min_proficiency": 0.5
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000002",
-     "skill": "react",
-     "role_label": "Frontend",
-     "weight": 2,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000003",
-     "skill": "figma",
-     "role_label": "Designer",
-     "weight": 2,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000004",
-     "skill": "backend",
-     "role_label": "Backend",
-     "weight": 2,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000005",
-     "skill": "pitching",
-     "role_label": "Pitch & Demo",
-     "weight": 1,
-     "min_proficiency": 0.3
-    }
-   ],
-   "member_ids": [
-    "a0000000-0000-4000-8000-000000000001",
-    "a0000000-0000-4000-8000-000000000002"
-   ]
-  },
-  {
-   "id": "d0000000-0000-4000-8000-000000000002",
-   "owner_profile_id": "a0000000-0000-4000-8000-000000000019",
-   "community_id": "c0000000-0000-4000-8000-000000000001",
-   "event_id": "e0000000-0000-4000-8000-000000000002",
-   "title": "Fraud-lens — payments anomaly detection",
-   "description": "Real-time UPI fraud flagging. Streaming pipeline exists on paper only.",
-   "deadline": "2026-09-20",
-   "is_seed": true,
-   "requirements": [
-    {
-     "id": "b0000000-0000-4000-8000-000000000006",
-     "skill": "machine-learning",
-     "role_label": "ML Engineer",
-     "weight": 3,
-     "min_proficiency": 0.5
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000007",
-     "skill": "data-engineering",
-     "role_label": "Data Pipeline",
-     "weight": 2,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000008",
-     "skill": "react",
-     "role_label": "Dashboard",
-     "weight": 1,
-     "min_proficiency": 0.4
-    }
-   ],
-   "member_ids": [
-    "a0000000-0000-4000-8000-000000000019"
-   ]
-  },
-  {
-   "id": "d0000000-0000-4000-8000-000000000003",
-   "owner_profile_id": "a0000000-0000-4000-8000-000000000026",
-   "community_id": "c0000000-0000-4000-8000-000000000001",
-   "event_id": null,
-   "title": "Campus mental-health companion (research)",
-   "description": "Semester-long study with the psychology dept — needs an app people actually open.",
-   "deadline": "2026-11-30",
-   "is_seed": true,
-   "requirements": [
-    {
-     "id": "b0000000-0000-4000-8000-000000000009",
-     "skill": "flutter",
-     "role_label": "Mobile",
-     "weight": 3,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000010",
-     "skill": "ui-ux",
-     "role_label": "UX Research",
-     "weight": 2,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000011",
-     "skill": "content-writing",
-     "role_label": "Content",
-     "weight": 1,
-     "min_proficiency": 0.3
-    }
-   ],
-   "member_ids": [
-    "a0000000-0000-4000-8000-000000000026"
-   ]
-  },
-  {
-   "id": "d0000000-0000-4000-8000-000000000004",
-   "owner_profile_id": "a0000000-0000-4000-8000-000000000017",
-   "community_id": "c0000000-0000-4000-8000-000000000001",
-   "event_id": "e0000000-0000-4000-8000-000000000003",
-   "title": "Hostel energy monitor — IoT squad",
-   "description": "Per-room power telemetry for the hostels. Hardware half-done.",
-   "deadline": "2026-10-05",
-   "is_seed": true,
-   "requirements": [
-    {
-     "id": "b0000000-0000-4000-8000-000000000012",
-     "skill": "embedded",
-     "role_label": "Firmware",
-     "weight": 3,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000013",
-     "skill": "backend",
-     "role_label": "API",
-     "weight": 2,
-     "min_proficiency": 0.4
-    },
-    {
-     "id": "b0000000-0000-4000-8000-000000000014",
-     "skill": "figma",
-     "role_label": "Design",
-     "weight": 1,
-     "min_proficiency": 0.3
-    }
-   ],
-   "member_ids": [
-    "a0000000-0000-4000-8000-000000000017",
-    "a0000000-0000-4000-8000-000000000032"
-   ]
-  }
- ]
+  "flagshipProjectId": "d0000000-0000-4000-8000-000000000001",
+  "community": {
+    "id": "c0000000-0000-4000-8000-000000000001",
+    "slug": "srm",
+    "name": "SRM Institute of Science and Technology"
+  },
+  "profiles": [
+    {
+      "id": "a0000000-0000-4000-8000-000000000001",
+      "handle": "aarav",
+      "name": "Aarav Menon",
+      "dept": "CSE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 4,
+      "commitment_level": 5,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "machine-learning",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/aarav"
+        },
+        {
+          "skill": "backend",
+          "proficiency": 0.4,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000002",
+      "handle": "diya",
+      "name": "Diya Sharma",
+      "dept": "CSE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 5,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "backend",
+          "proficiency": 0.75,
+          "proof_url": "https://github.com/diya"
+        },
+        {
+          "skill": "devops",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000003",
+      "handle": "rohan",
+      "name": "Rohan Iyer",
+      "dept": "CSE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.85,
+          "proof_url": "https://github.com/rohan"
+        },
+        {
+          "skill": "ui-ux",
+          "proficiency": 0.4,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000004",
+      "handle": "meera",
+      "name": "Meera Pillai",
+      "dept": "Design",
+      "year": 3,
+      "bio": null,
+      "experience_level": 4,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "figma",
+          "proficiency": 0.85,
+          "proof_url": "https://github.com/meera"
+        },
+        {
+          "skill": "ui-ux",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/meera"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000005",
+      "handle": "kabir",
+      "name": "Kabir Bedi",
+      "dept": "MBA",
+      "year": 2,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "pitching",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/kabir"
+        },
+        {
+          "skill": "content-writing",
+          "proficiency": 0.6,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000006",
+      "handle": "ananya",
+      "name": "Ananya Rao",
+      "dept": "AIML",
+      "year": 4,
+      "bio": null,
+      "experience_level": 5,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 6,
+          "start": "09:00",
+          "end": "13:00"
+        },
+        {
+          "day": 0,
+          "start": "09:00",
+          "end": "13:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "machine-learning",
+          "proficiency": 0.9,
+          "proof_url": "https://github.com/ananya"
+        },
+        {
+          "skill": "data-engineering",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/ananya"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000007",
+      "handle": "vikram",
+      "name": "Vikram Nair",
+      "dept": "CSE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/vikram"
+        },
+        {
+          "skill": "backend",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000008",
+      "handle": "ishita",
+      "name": "Ishita Das",
+      "dept": "IT",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 5,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.7,
+          "proof_url": null
+        },
+        {
+          "skill": "flutter",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000009",
+      "handle": "aditya",
+      "name": "Aditya Kumar",
+      "dept": "CSE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.75,
+          "proof_url": "https://github.com/aditya"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000010",
+      "handle": "sneha",
+      "name": "Sneha Reddy",
+      "dept": "IT",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/sneha"
+        },
+        {
+          "skill": "ui-ux",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000011",
+      "handle": "arjun",
+      "name": "Arjun Verma",
+      "dept": "CSE",
+      "year": 1,
+      "bio": null,
+      "experience_level": 1,
+      "commitment_level": 5,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 3,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 4,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 5,
+          "start": "21:30",
+          "end": "23:30"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.55,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000012",
+      "handle": "nisha",
+      "name": "Nisha Patel",
+      "dept": "IT",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.65,
+          "proof_url": null
+        },
+        {
+          "skill": "content-writing",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000013",
+      "handle": "dev",
+      "name": "Dev Malhotra",
+      "dept": "CSE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 2,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 3,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 4,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 5,
+          "start": "21:30",
+          "end": "23:30"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/dev"
+        },
+        {
+          "skill": "blockchain",
+          "proficiency": 0.6,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000014",
+      "handle": "tara",
+      "name": "Tara Krishnan",
+      "dept": "CSE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.6,
+          "proof_url": null
+        },
+        {
+          "skill": "figma",
+          "proficiency": 0.45,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000015",
+      "handle": "yash",
+      "name": "Yash Gupta",
+      "dept": "IT",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.7,
+          "proof_url": null
+        },
+        {
+          "skill": "devops",
+          "proficiency": 0.45,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000016",
+      "handle": "zoya",
+      "name": "Zoya Khan",
+      "dept": "CSE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.75,
+          "proof_url": "https://github.com/zoya"
+        },
+        {
+          "skill": "backend",
+          "proficiency": 0.45,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000017",
+      "handle": "farhan",
+      "name": "Farhan Ali",
+      "dept": "ECE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "embedded",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/farhan"
+        },
+        {
+          "skill": "backend",
+          "proficiency": 0.4,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000018",
+      "handle": "priya",
+      "name": "Priya Menon",
+      "dept": "ECE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 6,
+          "start": "09:00",
+          "end": "13:00"
+        },
+        {
+          "day": 0,
+          "start": "09:00",
+          "end": "13:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "embedded",
+          "proficiency": 0.6,
+          "proof_url": null
+        },
+        {
+          "skill": "machine-learning",
+          "proficiency": 0.4,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000019",
+      "handle": "sanjay",
+      "name": "Sanjay Rathi",
+      "dept": "CSE",
+      "year": 4,
+      "bio": null,
+      "experience_level": 4,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "backend",
+          "proficiency": 0.85,
+          "proof_url": "https://github.com/sanjay"
+        },
+        {
+          "skill": "devops",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/sanjay"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000020",
+      "handle": "kavya",
+      "name": "Kavya Nambiar",
+      "dept": "IT",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "backend",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/kavya"
+        },
+        {
+          "skill": "data-engineering",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000021",
+      "handle": "rahul",
+      "name": "Rahul Joshi",
+      "dept": "CSE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "backend",
+          "proficiency": 0.6,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000022",
+      "handle": "anika",
+      "name": "Anika Singh",
+      "dept": "AIML",
+      "year": 3,
+      "bio": null,
+      "experience_level": 4,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "machine-learning",
+          "proficiency": 0.75,
+          "proof_url": "https://github.com/anika"
+        },
+        {
+          "skill": "data-engineering",
+          "proficiency": 0.6,
+          "proof_url": "https://github.com/anika"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000023",
+      "handle": "manav",
+      "name": "Manav Shah",
+      "dept": "AIML",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 3,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 4,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 5,
+          "start": "21:30",
+          "end": "23:30"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "machine-learning",
+          "proficiency": 0.55,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000024",
+      "handle": "leela",
+      "name": "Leela Chandran",
+      "dept": "Design",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "figma",
+          "proficiency": 0.65,
+          "proof_url": null
+        },
+        {
+          "skill": "video-editing",
+          "proficiency": 0.6,
+          "proof_url": "https://github.com/leela"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000025",
+      "handle": "omar",
+      "name": "Omar Sheikh",
+      "dept": "Mech",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 6,
+          "start": "09:00",
+          "end": "13:00"
+        },
+        {
+          "day": 0,
+          "start": "09:00",
+          "end": "13:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "unity",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/omar"
+        },
+        {
+          "skill": "video-editing",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000026",
+      "handle": "ritika",
+      "name": "Ritika Bose",
+      "dept": "Biotech",
+      "year": 4,
+      "bio": null,
+      "experience_level": 4,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "data-engineering",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/ritika"
+        },
+        {
+          "skill": "content-writing",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/ritika"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000027",
+      "handle": "arnav",
+      "name": "Arnav Kapoor",
+      "dept": "CSE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "cybersecurity",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/arnav"
+        },
+        {
+          "skill": "backend",
+          "proficiency": 0.55,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000028",
+      "handle": "sara",
+      "name": "Sara Thomas",
+      "dept": "IT",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 5,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "cybersecurity",
+          "proficiency": 0.55,
+          "proof_url": null
+        },
+        {
+          "skill": "content-writing",
+          "proficiency": 0.4,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000029",
+      "handle": "nikhil",
+      "name": "Nikhil Menon",
+      "dept": "CSE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "flutter",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/nikhil"
+        },
+        {
+          "skill": "ui-ux",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000030",
+      "handle": "pooja",
+      "name": "Pooja Hegde",
+      "dept": "IT",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "flutter",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/pooja"
+        },
+        {
+          "skill": "backend",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000031",
+      "handle": "varun",
+      "name": "Varun Pillai",
+      "dept": "CSE",
+      "year": 1,
+      "bio": null,
+      "experience_level": 1,
+      "commitment_level": 5,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 3,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 4,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 5,
+          "start": "21:30",
+          "end": "23:30"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "flutter",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000032",
+      "handle": "aisha",
+      "name": "Aisha Rahman",
+      "dept": "EEE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "embedded",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/aisha"
+        },
+        {
+          "skill": "devops",
+          "proficiency": 0.4,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000033",
+      "handle": "karthik",
+      "name": "Karthik Subramanian",
+      "dept": "CSE",
+      "year": 4,
+      "bio": null,
+      "experience_level": 5,
+      "commitment_level": 2,
+      "availability_windows": [
+        {
+          "day": 6,
+          "start": "09:00",
+          "end": "13:00"
+        },
+        {
+          "day": 0,
+          "start": "09:00",
+          "end": "13:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "backend",
+          "proficiency": 0.9,
+          "proof_url": "https://github.com/karthik"
+        },
+        {
+          "skill": "devops",
+          "proficiency": 0.8,
+          "proof_url": "https://github.com/karthik"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000034",
+      "handle": "divya",
+      "name": "Divya Anand",
+      "dept": "AIML",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "data-engineering",
+          "proficiency": 0.75,
+          "proof_url": "https://github.com/divya"
+        },
+        {
+          "skill": "machine-learning",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000035",
+      "handle": "harsh",
+      "name": "Harsh Vardhan",
+      "dept": "Civil",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 6,
+          "start": "09:00",
+          "end": "13:00"
+        },
+        {
+          "day": 0,
+          "start": "09:00",
+          "end": "13:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "content-writing",
+          "proficiency": 0.6,
+          "proof_url": null
+        },
+        {
+          "skill": "pitching",
+          "proficiency": 0.45,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000036",
+      "handle": "ila",
+      "name": "Ila Ghosh",
+      "dept": "Design",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 6,
+          "start": "09:00",
+          "end": "13:00"
+        },
+        {
+          "day": 0,
+          "start": "09:00",
+          "end": "13:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "ui-ux",
+          "proficiency": 0.75,
+          "proof_url": "https://github.com/ila"
+        },
+        {
+          "skill": "video-editing",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/ila"
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000037",
+      "handle": "jay",
+      "name": "Jay Prakash",
+      "dept": "Mech",
+      "year": 3,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "unity",
+          "proficiency": 0.6,
+          "proof_url": null
+        },
+        {
+          "skill": "blockchain",
+          "proficiency": 0.45,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000038",
+      "handle": "mira",
+      "name": "Mira Sethu",
+      "dept": "Biotech",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 4,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "content-writing",
+          "proficiency": 0.65,
+          "proof_url": "https://github.com/mira"
+        },
+        {
+          "skill": "figma",
+          "proficiency": 0.4,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000039",
+      "handle": "tanvi",
+      "name": "Tanvi Desai",
+      "dept": "CSE",
+      "year": 3,
+      "bio": null,
+      "experience_level": 3,
+      "commitment_level": 4,
+      "availability_windows": [
+        {
+          "day": 1,
+          "start": "18:00",
+          "end": "21:00"
+        },
+        {
+          "day": 3,
+          "start": "18:00",
+          "end": "21:00"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "blockchain",
+          "proficiency": 0.7,
+          "proof_url": "https://github.com/tanvi"
+        },
+        {
+          "skill": "backend",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    },
+    {
+      "id": "a0000000-0000-4000-8000-000000000040",
+      "handle": "rey",
+      "name": "Reyansh Gill",
+      "dept": "CSE",
+      "year": 2,
+      "bio": null,
+      "experience_level": 2,
+      "commitment_level": 3,
+      "availability_windows": [
+        {
+          "day": 2,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 3,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 4,
+          "start": "21:30",
+          "end": "23:30"
+        },
+        {
+          "day": 5,
+          "start": "21:30",
+          "end": "23:30"
+        }
+      ],
+      "is_seed": true,
+      "user_id": null,
+      "skills": [
+        {
+          "skill": "react",
+          "proficiency": 0.65,
+          "proof_url": null
+        },
+        {
+          "skill": "unity",
+          "proficiency": 0.5,
+          "proof_url": null
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "e0000000-0000-4000-8000-000000000001",
+      "source": "organiser",
+      "external_url": "https://sih.gov.in",
+      "title": "Smart India Hackathon 2026",
+      "host": "MoE Innovation Cell",
+      "mode": "hybrid",
+      "location": "Nationwide",
+      "starts_at": "2026-09-18T04:30:00Z",
+      "ends_at": "2026-09-19T14:30:00Z",
+      "deadline_at": "2026-09-10T18:29:00Z",
+      "tags": ["hackathon", "national"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000002",
+      "source": "devfolio",
+      "external_url": "https://the-great-agent-hackathon.devfolio.co/",
+      "title": "The Great Agent Hackathon",
+      "host": null,
+      "mode": "online",
+      "location": null,
+      "starts_at": "2026-09-25T04:30:00.000Z",
+      "ends_at": "2026-09-26T06:30:00.000Z",
+      "deadline_at": "2026-08-25T18:15:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000003",
+      "source": "devfolio",
+      "external_url": "https://hacknex-season-2.devfolio.co/",
+      "title": "HackNex Season 2",
+      "host": null,
+      "mode": "in_person",
+      "location": "JIS College of Engineering, Barrackpore - Kalyani Expressway, Block A5, Block A, Kalyani, West Bengal, India",
+      "starts_at": "2026-09-25T05:30:00.000Z",
+      "ends_at": "2026-09-26T05:30:00.000Z",
+      "deadline_at": "2026-08-25T18:29:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000004",
+      "source": "devfolio",
+      "external_url": "https://ethkochi.devfolio.co/",
+      "title": "ETHKochi",
+      "host": null,
+      "mode": "in_person",
+      "location": "Kerala Startup Mission, Kinfra Hi-Tech Park Main Road, HMT Colony, P.O, Kalamassery, Kochi, Kerala, India",
+      "starts_at": "2026-09-05T00:30:00.000Z",
+      "ends_at": "2026-09-06T06:30:00.000Z",
+      "deadline_at": "2026-08-25T18:29:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000005",
+      "source": "devfolio",
+      "external_url": "https://fusionix-1.devfolio.co/",
+      "title": "FusioniX2026",
+      "host": null,
+      "mode": "in_person",
+      "location": null,
+      "starts_at": "2026-09-10T22:30:00.000Z",
+      "ends_at": "2026-09-11T22:30:00.000Z",
+      "deadline_at": "2026-08-25T18:29:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000006",
+      "source": "devfolio",
+      "external_url": "https://codestorm-futureforge.devfolio.co/",
+      "title": "CodeStorm 2026: FutureForge",
+      "host": null,
+      "mode": "online",
+      "location": null,
+      "starts_at": "2026-07-31T18:30:00.000Z",
+      "ends_at": "2026-08-31T18:29:00.000Z",
+      "deadline_at": "2026-08-25T18:29:00.000Z",
+      "tags": ["Design", "Future Mobility"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000007",
+      "source": "devfolio",
+      "external_url": "https://muba-hackathon.devfolio.co/",
+      "title": "MUBA Blockchain Hackathon",
+      "host": null,
+      "mode": "online",
+      "location": null,
+      "starts_at": "2026-08-26T12:00:00.000Z",
+      "ends_at": "2026-09-05T16:00:00.000Z",
+      "deadline_at": "2026-08-26T12:00:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000008",
+      "source": "devfolio",
+      "external_url": "https://recursion-edition.devfolio.co/",
+      "title": "Recursion Edition II",
+      "host": null,
+      "mode": "in_person",
+      "location": "VIT Chennai, Kelambakkam - Vandalur Road, Melakottaiyur, Chennai, Tamil Nadu, India",
+      "starts_at": "2026-09-03T02:30:00.000Z",
+      "ends_at": "2026-09-04T07:00:00.000Z",
+      "deadline_at": "2026-08-27T08:30:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000009",
+      "source": "devfolio",
+      "external_url": "https://venture-26.devfolio.co/",
+      "title": "VENTURE'26",
+      "host": null,
+      "mode": "in_person",
+      "location": "Mar Athanasius College of Engineering Kothamangalam, Road, Kothamangalam, Kerala, India",
+      "starts_at": "2026-09-10T11:30:00.000Z",
+      "ends_at": "2026-09-11T04:00:00.000Z",
+      "deadline_at": "2026-08-27T18:29:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000010",
+      "source": "devfolio",
+      "external_url": "https://metamorph-2.devfolio.co/",
+      "title": "Metamorph 2.0",
+      "host": null,
+      "mode": "in_person",
+      "location": "Guru Nanak Institute of Technology, Nilgunj Road, Sahid Colony, Panihati, West Bengal, India",
+      "starts_at": "2026-09-12T04:30:00.000Z",
+      "ends_at": "2026-09-13T07:30:00.000Z",
+      "deadline_at": "2026-08-27T18:30:00.000Z",
+      "tags": ["Blockchain"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000011",
+      "source": "devfolio",
+      "external_url": "https://hackverse-into-the-web.devfolio.co/",
+      "title": "HackVerse: Into the Web",
+      "host": null,
+      "mode": "in_person",
+      "location": "Chennai, Tamil Nadu, India",
+      "starts_at": "2026-09-01T03:30:00.000Z",
+      "ends_at": "2026-09-02T06:30:00.000Z",
+      "deadline_at": "2026-08-30T18:29:00.000Z",
+      "tags": [],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000012",
+      "source": "devpost",
+      "external_url": "https://create-with-gemini.devpost.com/",
+      "title": "Create with Gemini",
+      "host": "MLH",
+      "mode": "in_person",
+      "location": "Applyhub ",
+      "starts_at": "2026-08-12T23:59:59.000Z",
+      "ends_at": "2026-08-25T23:59:59.000Z",
+      "deadline_at": "2026-08-25T23:59:59.000Z",
+      "tags": ["Beginner Friendly", "Education", "Web"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000013",
+      "source": "devpost",
+      "external_url": "https://creation-code-30750.devpost.com/",
+      "title": "Build With Gemini - Creation Code",
+      "host": "Trainzex AI",
+      "mode": "in_person",
+      "location": "Jaipur, India",
+      "starts_at": "2026-07-17T23:59:59.000Z",
+      "ends_at": "2026-09-03T23:59:59.000Z",
+      "deadline_at": "2026-09-03T23:59:59.000Z",
+      "tags": ["Machine Learning/AI", "Open Ended"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000014",
+      "source": "devpost",
+      "external_url": "https://gemini-event-hackmatrix.devpost.com/",
+      "title": "Gemini Event - HackMatrix",
+      "host": "Trainzex AI",
+      "mode": "in_person",
+      "location": "Jaipur",
+      "starts_at": "2026-08-09T23:59:59.000Z",
+      "ends_at": "2026-09-05T23:59:59.000Z",
+      "deadline_at": "2026-09-05T23:59:59.000Z",
+      "tags": ["Blockchain", "Cybersecurity", "Low/No Code"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000015",
+      "source": "devpost",
+      "external_url": "https://the-great-agent-hackathon.devpost.com/",
+      "title": "The Great Agent Hackathon",
+      "host": "Women In Product India",
+      "mode": "in_person",
+      "location": "Freshworks",
+      "starts_at": "2026-07-23T23:59:59.000Z",
+      "ends_at": "2026-08-25T23:59:59.000Z",
+      "deadline_at": "2026-08-25T23:59:59.000Z",
+      "tags": ["Enterprise", "Machine Learning/AI", "Open Ended"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000016",
+      "source": "devpost",
+      "external_url": "https://innovik6-indore.devpost.com/",
+      "title": "INNOVIK 6.0 – International Hackathon 2026 | Indore Edition",
+      "host": "VITM",
+      "mode": "in_person",
+      "location": "VITM Indore",
+      "starts_at": "2026-08-10T23:59:59.000Z",
+      "ends_at": "2026-08-25T23:59:59.000Z",
+      "deadline_at": "2026-08-25T23:59:59.000Z",
+      "tags": ["Education", "Machine Learning/AI", "Social Good"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000017",
+      "source": "devpost",
+      "external_url": "https://gen-recruiter-google-gemini.devpost.com/",
+      "title": "Build with Gemini - Gen Recruiter",
+      "host": "Trainzex AI",
+      "mode": "in_person",
+      "location": "Jaipur, India",
+      "starts_at": "2026-09-10T23:59:59.000Z",
+      "ends_at": "2026-09-10T23:59:59.000Z",
+      "deadline_at": "2026-09-10T23:59:59.000Z",
+      "tags": ["Machine Learning/AI"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000018",
+      "source": "devpost",
+      "external_url": "https://code-vidya-hack-days.devpost.com/",
+      "title": "Code Vidya Hack Days",
+      "host": "MLH",
+      "mode": "in_person",
+      "location": "Kanpur Nagar UP",
+      "starts_at": "2026-09-01T23:59:59.000Z",
+      "ends_at": "2026-09-01T23:59:59.000Z",
+      "deadline_at": "2026-09-01T23:59:59.000Z",
+      "tags": ["Education"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000019",
+      "source": "devpost",
+      "external_url": "https://hack-knowvy-1.devpost.com/",
+      "title": "Hack Knowvy - 1",
+      "host": "Knowvy Technologies",
+      "mode": "in_person",
+      "location": "Indrapuri, Bhopal",
+      "starts_at": "2026-09-13T23:59:59.000Z",
+      "ends_at": "2026-09-13T23:59:59.000Z",
+      "deadline_at": "2026-09-13T23:59:59.000Z",
+      "tags": ["IoT", "Machine Learning/AI", "Web"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000020",
+      "source": "devpost",
+      "external_url": "https://zoftware-hireathon.devpost.com/",
+      "title": "Zoftware Hireathon",
+      "host": "Enterprise Software Solutions",
+      "mode": "in_person",
+      "location": "Delhi",
+      "starts_at": "2026-09-09T23:59:59.000Z",
+      "ends_at": "2026-09-09T23:59:59.000Z",
+      "deadline_at": "2026-09-09T23:59:59.000Z",
+      "tags": ["Enterprise", "Machine Learning/AI"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000021",
+      "source": "devpost",
+      "external_url": "https://prompt2product.devpost.com/",
+      "title": "Prompt2Product: MLH Hack Day @ AITR",
+      "host": "Acropolis Institute of Technology and RC",
+      "mode": "in_person",
+      "location": "AITR Indore",
+      "starts_at": "2026-10-08T23:59:59.000Z",
+      "ends_at": "2026-10-09T23:59:59.000Z",
+      "deadline_at": "2026-10-09T23:59:59.000Z",
+      "tags": ["DevOps", "Education"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000022",
+      "source": "unstop",
+      "external_url": "https://unstop.com/hackathons/anakin-forge-hackathon-anakin-skywalker-pvt-ltd-1742485",
+      "title": "Anakin Forge Hackathon",
+      "host": "Anakin Skywalker Pvt. Ltd.",
+      "mode": "online",
+      "location": null,
+      "starts_at": null,
+      "ends_at": null,
+      "deadline_at": "2026-09-13T06:29:00.000Z",
+      "tags": ["All"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000023",
+      "source": "unstop",
+      "external_url": "https://unstop.com/hackathons/geeks2code-geeksforgeeks-campus-body-miet-1740788",
+      "title": "Geeks2Code",
+      "host": "GeeksForGeeks Campus Body MIET",
+      "mode": "online",
+      "location": null,
+      "starts_at": null,
+      "ends_at": null,
+      "deadline_at": "2026-09-21T18:29:00.000Z",
+      "tags": [
+        "Undergraduate",
+        "Postgraduate",
+        "Engineering Students",
+        "Management",
+        "Arts, Commerce, Sciences & Others"
+      ],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000024",
+      "source": "unstop",
+      "external_url": "https://unstop.com/hackathons/knsit-tech-community-kns-institute-of-technology-karnataka-1743721",
+      "title": "KNSIT Tech Community",
+      "host": "KNS Institute of Technology, Karnataka",
+      "mode": "online",
+      "location": null,
+      "starts_at": null,
+      "ends_at": null,
+      "deadline_at": "2026-09-29T18:30:00.000Z",
+      "tags": ["All"],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000025",
+      "source": "unstop",
+      "external_url": "https://unstop.com/hackathons/iridescence-10-srm-insitute-of-science-and-technology-1739836",
+      "title": "Iridescence 1.0",
+      "host": "SRM Insitute of Science and Technology",
+      "mode": "in_person",
+      "location": null,
+      "starts_at": null,
+      "ends_at": null,
+      "deadline_at": "2026-08-30T18:31:00.000Z",
+      "tags": [
+        "Undergraduate",
+        "Postgraduate",
+        "Engineering Students",
+        "Management",
+        "Arts, Commerce, Sciences & Others"
+      ],
+      "posted_by_profile_id": null
+    },
+    {
+      "id": "e0000000-0000-4000-8000-000000000026",
+      "source": "unstop",
+      "external_url": "https://unstop.com/hackathons/agentic-ai-hackathon-sarcathon-2026-iit-bombay-1743750",
+      "title": "Agentic AI Hackathon",
+      "host": "Indian Institute of Technology (IIT), Bombay",
+      "mode": "online",
+      "location": null,
+      "starts_at": null,
+      "ends_at": null,
+      "deadline_at": "2026-10-31T16:39:00.000Z",
+      "tags": [
+        "Undergraduate",
+        "Postgraduate",
+        "Engineering Students",
+        "Management",
+        "Arts, Commerce, Sciences & Others"
+      ],
+      "posted_by_profile_id": null
+    }
+  ],
+  "projects": [
+    {
+      "id": "d0000000-0000-4000-8000-000000000001",
+      "owner_profile_id": "a0000000-0000-4000-8000-000000000001",
+      "community_id": "c0000000-0000-4000-8000-000000000001",
+      "event_id": "e0000000-0000-4000-8000-000000000001",
+      "title": "CropGuard — AgriTech squad for SIH",
+      "description": "On-device crop disease detection for smallholder farms. Model is half-trained; needs a face, an API, and a story.",
+      "deadline": "2026-09-10",
+      "is_seed": true,
+      "requirements": [
+        {
+          "id": "b0000000-0000-4000-8000-000000000001",
+          "skill": "machine-learning",
+          "role_label": "ML Engineer",
+          "weight": 3,
+          "min_proficiency": 0.5
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000002",
+          "skill": "react",
+          "role_label": "Frontend",
+          "weight": 2,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000003",
+          "skill": "figma",
+          "role_label": "Designer",
+          "weight": 2,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000004",
+          "skill": "backend",
+          "role_label": "Backend",
+          "weight": 2,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000005",
+          "skill": "pitching",
+          "role_label": "Pitch & Demo",
+          "weight": 1,
+          "min_proficiency": 0.3
+        }
+      ],
+      "member_ids": ["a0000000-0000-4000-8000-000000000001", "a0000000-0000-4000-8000-000000000002"]
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000002",
+      "owner_profile_id": "a0000000-0000-4000-8000-000000000019",
+      "community_id": "c0000000-0000-4000-8000-000000000001",
+      "event_id": "e0000000-0000-4000-8000-000000000002",
+      "title": "Fraud-lens — payments anomaly detection",
+      "description": "Real-time UPI fraud flagging. Streaming pipeline exists on paper only.",
+      "deadline": "2026-09-20",
+      "is_seed": true,
+      "requirements": [
+        {
+          "id": "b0000000-0000-4000-8000-000000000006",
+          "skill": "machine-learning",
+          "role_label": "ML Engineer",
+          "weight": 3,
+          "min_proficiency": 0.5
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000007",
+          "skill": "data-engineering",
+          "role_label": "Data Pipeline",
+          "weight": 2,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000008",
+          "skill": "react",
+          "role_label": "Dashboard",
+          "weight": 1,
+          "min_proficiency": 0.4
+        }
+      ],
+      "member_ids": ["a0000000-0000-4000-8000-000000000019"]
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000003",
+      "owner_profile_id": "a0000000-0000-4000-8000-000000000026",
+      "community_id": "c0000000-0000-4000-8000-000000000001",
+      "event_id": null,
+      "title": "Campus mental-health companion (research)",
+      "description": "Semester-long study with the psychology dept — needs an app people actually open.",
+      "deadline": "2026-11-30",
+      "is_seed": true,
+      "requirements": [
+        {
+          "id": "b0000000-0000-4000-8000-000000000009",
+          "skill": "flutter",
+          "role_label": "Mobile",
+          "weight": 3,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000010",
+          "skill": "ui-ux",
+          "role_label": "UX Research",
+          "weight": 2,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000011",
+          "skill": "content-writing",
+          "role_label": "Content",
+          "weight": 1,
+          "min_proficiency": 0.3
+        }
+      ],
+      "member_ids": ["a0000000-0000-4000-8000-000000000026"]
+    },
+    {
+      "id": "d0000000-0000-4000-8000-000000000004",
+      "owner_profile_id": "a0000000-0000-4000-8000-000000000017",
+      "community_id": "c0000000-0000-4000-8000-000000000001",
+      "event_id": "e0000000-0000-4000-8000-000000000003",
+      "title": "Hostel energy monitor — IoT squad",
+      "description": "Per-room power telemetry for the hostels. Hardware half-done.",
+      "deadline": "2026-10-05",
+      "is_seed": true,
+      "requirements": [
+        {
+          "id": "b0000000-0000-4000-8000-000000000012",
+          "skill": "embedded",
+          "role_label": "Firmware",
+          "weight": 3,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000013",
+          "skill": "backend",
+          "role_label": "API",
+          "weight": 2,
+          "min_proficiency": 0.4
+        },
+        {
+          "id": "b0000000-0000-4000-8000-000000000014",
+          "skill": "figma",
+          "role_label": "Design",
+          "weight": 1,
+          "min_proficiency": 0.3
+        }
+      ],
+      "member_ids": ["a0000000-0000-4000-8000-000000000017", "a0000000-0000-4000-8000-000000000032"]
+    }
+  ]
 }

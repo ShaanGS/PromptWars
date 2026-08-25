@@ -17,7 +17,7 @@ lets five React developers "cover" a requirement 400%, which is how skill-filter
 tools end up recommending a team with no designer. A max ignores redundancy
 entirely, so it cannot tell a one-person dependency from a safe one. The product
 gives both properties for free: it saturates, and the marginal value of the
-*n*-th contributor falls automatically. **Diminishing returns is therefore not a
+_n_-th contributor falls automatically. **Diminishing returns is therefore not a
 rule we implemented and could get wrong — it is arithmetic.** This is the single
 decision the submission rests on.
 
@@ -49,7 +49,7 @@ which is exactly the false confidence a team-formation tool must not produce.
 
 **A requirement is one skill plus a display label**, not a role→skills bundle.
 "Designer" as a bundle of six skills makes the arithmetic opaque; the whole
-value of the model is that a person can be shown *why* they rank where they do.
+value of the model is that a person can be shown _why_ they rank where they do.
 
 ## The engine's shape
 
@@ -100,7 +100,7 @@ exists with a real deadline, which is both more honest than placeholder data and
 the reason the "interests" half of the problem statement has anywhere to live.
 
 **Seed data is shaped to make the maths visible.** React is over-supplied across
-12 of 40 profiles; `figma` and `pitching` are scarce. A demo that *asserts*
+12 of 40 profiles; `figma` and `pitching` are scarce. A demo that _asserts_
 diminishing returns is a claim; one where the candidate list visibly re-ranks
 when you add the first React developer is a demonstration.
 

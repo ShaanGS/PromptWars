@@ -1,7 +1,7 @@
 # 001 — Email + password, no sign-up, no email sending
 
 > **SUPERSEDED 2026-08-25 by the Guild demo build.** Everything below describes
-> the auth system this repo *had* and is the specification for restoring it —
+> the auth system this repo _had_ and is the specification for restoring it —
 > none of it is true of the current build. There is no session, no login page
 > that works, no `getUser()` in `middleware.ts` (it is a pass-through), and no
 > service-role key for `admin:grant` or `user:create` to use. See

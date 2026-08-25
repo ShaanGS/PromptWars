@@ -54,7 +54,7 @@ corpus. Olvable owns `lib/connectors/`, `lib/pipeline/`, `lib/queries/`,
 `/interests`, `/settings`, `/admin/*`, `/design`.
 
 **How they join.** `projects.event_id` is a real foreign key from a Guild squad
-into Olvable's `events` table. A squad forms *around* a real, currently-open
+into Olvable's `events` table. A squad forms _around_ a real, currently-open
 hackathon that Olvable ingested from Devfolio, Devpost or Unstop — so a judge
 can click through from a team to a live listing they can verify. That is the
 only structural coupling; everything else is shared infrastructure.
@@ -81,8 +81,8 @@ Recorded in `docs/sessions.md:5-27`:
 
 Only one axis name is recorded in the repo ("Problem Statement Alignment"); the
 other five are not named anywhere in the codebase. The lesson written into the
-session log is worth keeping: *the grader reads what is on `main` at evaluation
-time, and it reads the front door first.*
+session log is worth keeping: _the grader reads what is on `main` at evaluation
+time, and it reads the front door first._
 
 ---
 
@@ -120,7 +120,7 @@ more of the same person. Source: `lib/engine/coverage.ts:17-29`.
 
 Skill tags are the least reliable thing on any profile, so a claim backed by a
 repo or a past project counts in full and an unbacked one counts at `0.6×`.
-Because the damp is applied *before* the requirement's floor is checked, an
+Because the damp is applied _before_ the requirement's floor is checked, an
 unverified claim needs `proficiency > minProficiency / 0.6` to count at all.
 Credibility is modelled, not assumed.
 
@@ -141,15 +141,15 @@ loses the exemptions at the same moment coverage rises.
 
 ### How the statement maps to the model
 
-| The statement asks for | Where it lives |
-| --- | --- |
-| Skills | `p_eff` per claim — proficiency, damped `0.6×` without a proof link |
-| Project requirements | Weighted slots, each with a minimum-proficiency floor |
-| Availability | `overlap` — weekly minutes **all** members share |
-| Experience | `balance` — `1 − variance` of experience levels |
-| Commitment | `commitment` — spread between keenest and least keen |
-| Interests | The ingested event corpus a squad forms around; `scarcity` in the Guild Score |
-| "who is available or interested" | The gap feed — open squads ranked by *your* marginal gain |
+| The statement asks for           | Where it lives                                                                |
+| -------------------------------- | ----------------------------------------------------------------------------- |
+| Skills                           | `p_eff` per claim — proficiency, damped `0.6×` without a proof link           |
+| Project requirements             | Weighted slots, each with a minimum-proficiency floor                         |
+| Availability                     | `overlap` — weekly minutes **all** members share                              |
+| Experience                       | `balance` — `1 − variance` of experience levels                               |
+| Commitment                       | `commitment` — spread between keenest and least keen                          |
+| Interests                        | The ingested event corpus a squad forms around; `scarcity` in the Guild Score |
+| "who is available or interested" | The gap feed — open squads ranked by _your_ marginal gain                     |
 
 ### The individual score
 
@@ -166,7 +166,7 @@ scarcity    = Σ over claims of [demand == 0 ? 0 : demand / (demand + supply)] /
 
 `demand` counts open requirements naming that exact skill; `supply` counts pool
 members holding it at `p_eff ≥ 0.4`. Note two real behaviours: listing skills
-nobody asks for actively *dilutes* scarcity (the divisor is all claims), and
+nobody asks for actively _dilutes_ scarcity (the divisor is all claims), and
 duplicate skill rows inflate credibility's denominator without moving
 versatility.
 
@@ -174,21 +174,21 @@ versatility.
 
 All in `lib/engine/types.ts:71-76` except the Guild Score weights.
 
-| Constant | Value | Controls | Effect of moving it |
-| --- | --- | --- | --- |
-| `WEIGHTS.base` | **0.60** | coverage share of the score | The core claim. Raise it and Guild becomes a pure skill-matcher; lower it and a well-synced team of the wrong people out-ranks the right one. |
-| `WEIGHTS.overlap` | **0.15** | shared availability | Raise it and calendars dominate; the anti-headcount result (negative marginal gain) strengthens, because adding anyone shrinks the intersection. |
-| `WEIGHTS.balance` | **0.15** | experience variance | Raise it and senior+junior pairings go from a mild cost to a veto. |
-| `WEIGHTS.commitment` | **0.10** | commitment spread | Smallest lever; raising it lets the flaky-teammate signal outweigh coverage. |
-| `UNVERIFIED_DAMP` | **0.6** | multiplier on unproved claims | The credibility model. At 1.0 skill tags become gameable self-report; at 0.3 nearly every unverified claim falls under a floor and unproved people vanish. Surfaced as user-facing copy at `app/(app)/p/[handle]/page.tsx:290`. |
-| `OVERLAP_TARGET_MINUTES` | **600** | overlap saturation (10 h/week) | Lower it and almost every team maxes overlap, killing the term's discrimination. |
-| `UNMET_THRESHOLD` | **0.5** | "open gap" cutoff | Purely a *labelling* threshold — it never enters `score`. Controls `fills` vs `duplicates`, `unmet_requirement` risks, "still thin", and the gap pills. |
-| `DEAD_ZONE_MINUTES` | **120** | availability dead-zone risk | Only affects one risk chip. |
-| `PROFICIENCY_FLOOR` | **0.4** | "has the skill" cutoff | Used by scarcity supply-counting and by complementarity. **Not** used by `requirementCoverage`, which uses each requirement's own `minProficiency`. |
-| `0.40 / 0.25 / 0.35` | Guild Score weights | credibility / versatility / scarcity | **Inline literals** at `guildScore.ts:33`, not hoisted. The test hardcodes them too. |
-| `8` | versatility cap | `guildScore.ts:13` | Inline literal. |
-| `autoDraft` `maxSize` | **6** default | max roster | `sandbox.tsx:130` overrides with `max(reqs+1, team+1)`. |
-| `autoDraft` `minGain` | **0.005** | stop-drafting floor | At ≤ 0 the greedy loop seats people of zero or negative value until `maxSize`. |
+| Constant                 | Value               | Controls                             | Effect of moving it                                                                                                                                                                                                             |
+| ------------------------ | ------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `WEIGHTS.base`           | **0.60**            | coverage share of the score          | The core claim. Raise it and Guild becomes a pure skill-matcher; lower it and a well-synced team of the wrong people out-ranks the right one.                                                                                   |
+| `WEIGHTS.overlap`        | **0.15**            | shared availability                  | Raise it and calendars dominate; the anti-headcount result (negative marginal gain) strengthens, because adding anyone shrinks the intersection.                                                                                |
+| `WEIGHTS.balance`        | **0.15**            | experience variance                  | Raise it and senior+junior pairings go from a mild cost to a veto.                                                                                                                                                              |
+| `WEIGHTS.commitment`     | **0.10**            | commitment spread                    | Smallest lever; raising it lets the flaky-teammate signal outweigh coverage.                                                                                                                                                    |
+| `UNVERIFIED_DAMP`        | **0.6**             | multiplier on unproved claims        | The credibility model. At 1.0 skill tags become gameable self-report; at 0.3 nearly every unverified claim falls under a floor and unproved people vanish. Surfaced as user-facing copy at `app/(app)/p/[handle]/page.tsx:290`. |
+| `OVERLAP_TARGET_MINUTES` | **600**             | overlap saturation (10 h/week)       | Lower it and almost every team maxes overlap, killing the term's discrimination.                                                                                                                                                |
+| `UNMET_THRESHOLD`        | **0.5**             | "open gap" cutoff                    | Purely a _labelling_ threshold — it never enters `score`. Controls `fills` vs `duplicates`, `unmet_requirement` risks, "still thin", and the gap pills.                                                                         |
+| `DEAD_ZONE_MINUTES`      | **120**             | availability dead-zone risk          | Only affects one risk chip.                                                                                                                                                                                                     |
+| `PROFICIENCY_FLOOR`      | **0.4**             | "has the skill" cutoff               | Used by scarcity supply-counting and by complementarity. **Not** used by `requirementCoverage`, which uses each requirement's own `minProficiency`.                                                                             |
+| `0.40 / 0.25 / 0.35`     | Guild Score weights | credibility / versatility / scarcity | **Inline literals** at `guildScore.ts:33`, not hoisted. The test hardcodes them too.                                                                                                                                            |
+| `8`                      | versatility cap     | `guildScore.ts:13`                   | Inline literal.                                                                                                                                                                                                                 |
+| `autoDraft` `maxSize`    | **6** default       | max roster                           | `sandbox.tsx:130` overrides with `max(reqs+1, team+1)`.                                                                                                                                                                         |
+| `autoDraft` `minGain`    | **0.005**           | stop-drafting floor                  | At ≤ 0 the greedy loop seats people of zero or negative value until `maxSize`.                                                                                                                                                  |
 
 `AGENTS.md` is right that these are product decisions, not tuning knobs: changing
 one changes what the demo demonstrates.
@@ -202,33 +202,33 @@ renders but its writes or data are dead · **Placeholder** = deliberately
 unbuilt · **Broken** = renders something false · **Admin-gated** = redirects to
 `/` for everyone in this build.
 
-| Route | File | What it does | Status |
-| --- | --- | --- | --- |
-| `/` | `app/(app)/page.tsx` | 12 lines, `redirect('/teams')` | Working |
-| `/teams` | `app/(app)/teams/page.tsx` | Team Board: "Squads looking for you" (gap feed, cap 4) + "All squads" | Working |
-| `/teams/new` | `app/(app)/teams/new/page.tsx` | Honest static page saying the post-a-squad flow is unbuilt | **Placeholder** |
-| `/squad/[id]` | `app/(app)/squad/[id]/page.tsx` + `components/team/sandbox.tsx` | The sandbox: score card, per-requirement slots, ranked candidates, auto-draft, Team X-ray | Working (client-only state) |
-| `/people` | `app/(app)/people/page.tsx` | Directory of 40 profiles ranked by Guild Score | Working |
-| `/p/[handle]` | `app/(app)/p/[handle]/page.tsx` | One person: Guild Score breakdown, skills with proofs, People you should meet, Squads that need you | Working |
-| `/feed` | `app/(app)/feed/page.tsx` | Ranked event feed, tiered by relevance, stat tiles, filters | Working (degraded — see below) |
-| `/events` | `app/(app)/events/page.tsx` | Flat paginated event list, sort by date or rank | **Broken — 0 results live** |
-| `/hackathons` | `app/(app)/hackathons/page.tsx` | Deadline-keyed hackathon list, 25 live entries | Working (best surface) |
-| `/calendar` | `app/(app)/calendar/page.tsx` | Day/week/month, scope mine/all | Demo-only (both scopes empty) |
-| `/saved` | `app/(app)/saved/page.tsx` | Going / Saved / Past | Demo-only (permanently empty) |
-| `/interests` | `app/(app)/interests/page.tsx` | Tag + preference picker | Demo-only (save always errors) |
-| `/sources` | `app/(app)/sources/page.tsx` | Connector health dashboard | **Broken — "0 live" with 4 enabled sources** |
-| `/settings` | `app/(app)/settings/page.tsx` | Account card, sign out, change password | Demo-only (both actions dead) |
-| `/event/[id]` | `app/(app)/event/[id]/page.tsx` | Full event detail, ICS + Google Calendar, share | Working |
-| `/event/[id]/ics` | `app/(app)/event/[id]/ics/route.ts` | Private ICS download | Working |
-| `/e/[id]` | `app/e/[id]/page.tsx` | Public share page, indexable, redacted columns | Working — but its signed-out branch is unreachable |
-| `/e/[id]/ics` | `app/e/[id]/ics/route.ts` | Public ICS, `max-age=300` | Working (verified live) |
-| `/login` | `app/login/page.tsx` | Email + password form | Demo-only — 200, always `?error=badcreds` |
-| `/auth/signout` | `app/auth/signout/route.ts` | POST → 303 to `/login` | Vestigial |
-| `/welcome` | `app/(app)/welcome/actions.ts` | **404** — the directory has `actions.ts` and no `page.tsx` | Broken |
-| `/admin` | `app/(app)/admin/page.tsx` | Account list, create account, audit log | **Admin-gated** |
-| `/admin/add` | `app/(app)/admin/add/page.tsx` | Paste-to-event via LLM extraction | **Admin-gated** |
-| `/admin/discovery` | `app/(app)/admin/discovery/page.tsx` | Google CSE leads triage | **Admin-gated** |
-| `/design` | `app/(app)/design/page.tsx` | 349-line living style guide | **Admin-gated** (and nothing links to it) |
+| Route              | File                                                            | What it does                                                                                        | Status                                             |
+| ------------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `/`                | `app/(app)/page.tsx`                                            | 12 lines, `redirect('/teams')`                                                                      | Working                                            |
+| `/teams`           | `app/(app)/teams/page.tsx`                                      | Team Board: "Squads looking for you" (gap feed, cap 4) + "All squads"                               | Working                                            |
+| `/teams/new`       | `app/(app)/teams/new/page.tsx`                                  | Honest static page saying the post-a-squad flow is unbuilt                                          | **Placeholder**                                    |
+| `/squad/[id]`      | `app/(app)/squad/[id]/page.tsx` + `components/team/sandbox.tsx` | The sandbox: score card, per-requirement slots, ranked candidates, auto-draft, Team X-ray           | Working (client-only state)                        |
+| `/people`          | `app/(app)/people/page.tsx`                                     | Directory of 40 profiles ranked by Guild Score                                                      | Working                                            |
+| `/p/[handle]`      | `app/(app)/p/[handle]/page.tsx`                                 | One person: Guild Score breakdown, skills with proofs, People you should meet, Squads that need you | Working                                            |
+| `/feed`            | `app/(app)/feed/page.tsx`                                       | Ranked event feed, tiered by relevance, stat tiles, filters                                         | Working (degraded — see below)                     |
+| `/events`          | `app/(app)/events/page.tsx`                                     | Flat paginated event list, sort by date or rank                                                     | **Broken — 0 results live**                        |
+| `/hackathons`      | `app/(app)/hackathons/page.tsx`                                 | Deadline-keyed hackathon list, 25 live entries                                                      | Working (best surface)                             |
+| `/calendar`        | `app/(app)/calendar/page.tsx`                                   | Day/week/month, scope mine/all                                                                      | Demo-only (both scopes empty)                      |
+| `/saved`           | `app/(app)/saved/page.tsx`                                      | Going / Saved / Past                                                                                | Demo-only (permanently empty)                      |
+| `/interests`       | `app/(app)/interests/page.tsx`                                  | Tag + preference picker                                                                             | Demo-only (save always errors)                     |
+| `/sources`         | `app/(app)/sources/page.tsx`                                    | Connector health dashboard                                                                          | **Broken — "0 live" with 4 enabled sources**       |
+| `/settings`        | `app/(app)/settings/page.tsx`                                   | Account card, sign out, change password                                                             | Demo-only (both actions dead)                      |
+| `/event/[id]`      | `app/(app)/event/[id]/page.tsx`                                 | Full event detail, ICS + Google Calendar, share                                                     | Working                                            |
+| `/event/[id]/ics`  | `app/(app)/event/[id]/ics/route.ts`                             | Private ICS download                                                                                | Working                                            |
+| `/e/[id]`          | `app/e/[id]/page.tsx`                                           | Public share page, indexable, redacted columns                                                      | Working — but its signed-out branch is unreachable |
+| `/e/[id]/ics`      | `app/e/[id]/ics/route.ts`                                       | Public ICS, `max-age=300`                                                                           | Working (verified live)                            |
+| `/login`           | `app/login/page.tsx`                                            | Email + password form                                                                               | Demo-only — 200, always `?error=badcreds`          |
+| `/auth/signout`    | `app/auth/signout/route.ts`                                     | POST → 303 to `/login`                                                                              | Vestigial                                          |
+| `/welcome`         | `app/(app)/welcome/actions.ts`                                  | **404** — the directory has `actions.ts` and no `page.tsx`                                          | Broken                                             |
+| `/admin`           | `app/(app)/admin/page.tsx`                                      | Account list, create account, audit log                                                             | **Admin-gated**                                    |
+| `/admin/add`       | `app/(app)/admin/add/page.tsx`                                  | Paste-to-event via LLM extraction                                                                   | **Admin-gated**                                    |
+| `/admin/discovery` | `app/(app)/admin/discovery/page.tsx`                            | Google CSE leads triage                                                                             | **Admin-gated**                                    |
+| `/design`          | `app/(app)/design/page.tsx`                                     | 349-line living style guide                                                                         | **Admin-gated** (and nothing links to it)          |
 
 Supporting files: `app/layout.tsx` (the only layout — there is no
 `app/(app)/layout.tsx`), `app/(app)/loading.tsx` (one route-group skeleton,
@@ -259,19 +259,19 @@ re-score on every click with no round trip.
 `lib/engine/index.ts` is the public surface: `export * from './types'` plus 13
 named exports.
 
-| File | Exports | What it does |
-| --- | --- | --- |
-| `types.ts` | `AvailabilityWindow`, `SkillClaim`, `Member`, `Requirement`, `CoverageEntry`, `TeamScore`, `MarginalGain`, `Risk`, `GuildScore`, and all 6 tunable constants | Types plus the constants table in §2 |
-| `coverage.ts` | `effectiveProficiency`, `requirementCoverage` | The damp and the probabilistic-OR. **Skill matching is exact string equality** — `'React' ≠ 'react'`, and no normalisation layer exists anywhere in the codebase |
-| `availability.ts` | `sharedMinutesPerWeek` | Per day 0–6, merge each member's windows into minute intervals, fold a pairwise intersection across all members, sum. Malformed `"HH:MM"` yields `NaN`, which the `end > start` filter drops — one bad window, not a poisoned week |
-| `score.ts` | `scoreTeam` | The headline equation; `base = 0` when total weight is 0; solo exemptions |
-| `marginal.ts` | `marginalGain`, `rankCandidates` | Two full `scoreTeam` calls per candidate. Labels `fills` vs `duplicates` against the *before* coverage, independently of the sign of `delta`. **`delta` can be negative** — an extra body who fills nothing drops the team out of the solo exemptions |
-| `autodraft.ts` | `autoDraft`, `type DraftPick` | Greedy over `rankCandidates`; breaks when no candidate or `delta < minGain`. `maxSize` counts pre-seated members |
-| `risk.ts` | `teamRisks` | The Team X-ray: `unmet_requirement` (high iff `weight ≥ 2`), `bus_factor` (always high), `availability_dead_zone` (< 120 min, team ≥ 2), `commitment_gap` (spread ≥ 3) |
-| `guildScore.ts` | `guildScore` | The individual score in §2 |
-| `recommend.ts` | `complementarity`, `peopleYouShouldMeet`, `gapFeed`, `type Complementarity` | The social layer. Two clones score complementarity exactly 0; two disjoint stacks exactly 1. `gapFeed` is the feed flipped — projects ranked by *your* marginal gain, filtered to `delta > 0`, excluding projects you are on |
-| `explain.ts` | `explainScore` | Human-readable lines: `'react: 90% via Aarav'`, `'Designer: open gap'`, `' — still thin'`. **Zero callers.** |
-| `__tests__/engine.test.ts` | — | 41 tests, 11 groups |
+| File                       | Exports                                                                                                                                                      | What it does                                                                                                                                                                                                                                          |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `types.ts`                 | `AvailabilityWindow`, `SkillClaim`, `Member`, `Requirement`, `CoverageEntry`, `TeamScore`, `MarginalGain`, `Risk`, `GuildScore`, and all 6 tunable constants | Types plus the constants table in §2                                                                                                                                                                                                                  |
+| `coverage.ts`              | `effectiveProficiency`, `requirementCoverage`                                                                                                                | The damp and the probabilistic-OR. **Skill matching is exact string equality** — `'React' ≠ 'react'`, and no normalisation layer exists anywhere in the codebase                                                                                      |
+| `availability.ts`          | `sharedMinutesPerWeek`                                                                                                                                       | Per day 0–6, merge each member's windows into minute intervals, fold a pairwise intersection across all members, sum. Malformed `"HH:MM"` yields `NaN`, which the `end > start` filter drops — one bad window, not a poisoned week                    |
+| `score.ts`                 | `scoreTeam`                                                                                                                                                  | The headline equation; `base = 0` when total weight is 0; solo exemptions                                                                                                                                                                             |
+| `marginal.ts`              | `marginalGain`, `rankCandidates`                                                                                                                             | Two full `scoreTeam` calls per candidate. Labels `fills` vs `duplicates` against the _before_ coverage, independently of the sign of `delta`. **`delta` can be negative** — an extra body who fills nothing drops the team out of the solo exemptions |
+| `autodraft.ts`             | `autoDraft`, `type DraftPick`                                                                                                                                | Greedy over `rankCandidates`; breaks when no candidate or `delta < minGain`. `maxSize` counts pre-seated members                                                                                                                                      |
+| `risk.ts`                  | `teamRisks`                                                                                                                                                  | The Team X-ray: `unmet_requirement` (high iff `weight ≥ 2`), `bus_factor` (always high), `availability_dead_zone` (< 120 min, team ≥ 2), `commitment_gap` (spread ≥ 3)                                                                                |
+| `guildScore.ts`            | `guildScore`                                                                                                                                                 | The individual score in §2                                                                                                                                                                                                                            |
+| `recommend.ts`             | `complementarity`, `peopleYouShouldMeet`, `gapFeed`, `type Complementarity`                                                                                  | The social layer. Two clones score complementarity exactly 0; two disjoint stacks exactly 1. `gapFeed` is the feed flipped — projects ranked by _your_ marginal gain, filtered to `delta > 0`, excluding projects you are on                          |
+| `explain.ts`               | `explainScore`                                                                                                                                               | Human-readable lines: `'react: 90% via Aarav'`, `'Designer: open gap'`, `' — still thin'`. **Zero callers.**                                                                                                                                          |
+| `__tests__/engine.test.ts` | —                                                                                                                                                            | 41 tests, 11 groups                                                                                                                                                                                                                                   |
 
 Two non-null assertions to know about: `risk.ts:11` and `explain.ts:18` both do
 `ts.coverage.find(...)!` and will throw if a caller passes a different `reqs`
@@ -293,14 +293,14 @@ constants used to build the actual `.select()` strings (`PROFILE_COLUMNS`,
 
 Every defensive coercion, and why:
 
-| Coercion | Behaviour | Why |
-| --- | --- | --- |
-| `num(value, fallback = 0)` | string → Number, then `Number.isFinite` or fallback | PostgREST returns `numeric` as `number` from some drivers and `string` from others |
-| `level(value)` | `Math.round(num(value, 3))` clamped to 1–5 | A bad row must not crash a page; missing defaults to the middle |
-| `toWindows(raw)` | jsonb is untrusted: non-array → `[]`; per item drop unless `day` rounds into 0–6 and both `start`/`end` are strings | Sunday (day 0) survives; the `"HH:MM"` format is *not* validated here — malformed strings are dropped later by `availability.ts` |
-| `toSkillClaim(row)` | `verified = proof_url !== null && proof_url !== ''` | An empty proof URL is not proof — explicitly tested |
-| `toRequirement(row)` | **`weight: Math.max(0.0001, num(row.weight, 1))`** | `scoreTeam` divides by total weight; a zero would poison every score on the page |
-| `groupSkills(rows)` | one pass bucketing by `profile_id` | So callers do not rescan per member |
+| Coercion                   | Behaviour                                                                                                           | Why                                                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `num(value, fallback = 0)` | string → Number, then `Number.isFinite` or fallback                                                                 | PostgREST returns `numeric` as `number` from some drivers and `string` from others                                               |
+| `level(value)`             | `Math.round(num(value, 3))` clamped to 1–5                                                                          | A bad row must not crash a page; missing defaults to the middle                                                                  |
+| `toWindows(raw)`           | jsonb is untrusted: non-array → `[]`; per item drop unless `day` rounds into 0–6 and both `start`/`end` are strings | Sunday (day 0) survives; the `"HH:MM"` format is _not_ validated here — malformed strings are dropped later by `availability.ts` |
+| `toSkillClaim(row)`        | `verified = proof_url !== null && proof_url !== ''`                                                                 | An empty proof URL is not proof — explicitly tested                                                                              |
+| `toRequirement(row)`       | **`weight: Math.max(0.0001, num(row.weight, 1))`**                                                                  | `scoreTeam` divides by total weight; a zero would poison every score on the page                                                 |
+| `groupSkills(rows)`        | one pass bucketing by `profile_id`                                                                                  | So callers do not rescan per member                                                                                              |
 
 **The single biggest divergence in the codebase: there are three copies of this
 mapper, and only one is tested.**
@@ -374,14 +374,14 @@ Every render, unmemoized, it calls `scoreTeam`, `rankCandidates(...).slice(0, 10
 and `teamRisks`. During auto-draft that re-runs over the whole 40-person pool
 every 420 ms.
 
-| Control | Handler | Effect |
-| --- | --- | --- |
-| Candidate row | `add(id)` | Appends to `teamIds`. Does **not** stop an in-flight draft |
-| `X` on a contributor chip | `remove(id)` | No-ops for the owner; stops any draft; filters the id out |
-| Auto-draft | `runDraft()` | Disabled while drafting; label flips to "Drafting" |
-| Reset | `reset()` | Stops the draft and restores `initialTeamIds`. **The only way to abort a draft** |
+| Control                   | Handler      | Effect                                                                           |
+| ------------------------- | ------------ | -------------------------------------------------------------------------------- |
+| Candidate row             | `add(id)`    | Appends to `teamIds`. Does **not** stop an in-flight draft                       |
+| `X` on a contributor chip | `remove(id)` | No-ops for the owner; stops any draft; filters the id out                        |
+| Auto-draft                | `runDraft()` | Disabled while drafting; label flips to "Drafting"                               |
+| Reset                     | `reset()`    | Stops the draft and restores `initialTeamIds`. **The only way to abort a draft** |
 
-Auto-draft mechanics, precisely: it computes the *whole* greedy run up front via
+Auto-draft mechanics, precisely: it computes the _whole_ greedy run up front via
 `autoDraft(pool, requirements, { start: team, maxSize: max(reqs+1, team+1) })`,
 with `minGain` left at the engine default of 0.005. If `picks.length === 0` it
 returns silently with **no feedback at all**. Under `prefers-reduced-motion:
@@ -425,16 +425,16 @@ interface Connector {
 }
 ```
 
-| id | Source and method | Kind | Enabled | Notes |
-| --- | --- | --- | --- | --- |
-| `devfolio` | `POST api.devfolio.co/api/search/hackathons`, JSON | deadlines | yes | The only source with both a real start and a deadline; structured country makes it the strongest geo signal |
-| `devpost` | `GET devpost.com/api/hackathons`, JSON, paged | deadlines | yes | **No timestamps at all** — `submission_period_dates` is a display string parsed by `parseRangeBorrowingContext` |
-| `unstop` | `GET unstop.com/api/public/opportunity/search-result` × 3 types | deadlines | yes | `end_date` is registration close, not a start. Drops `quizzes` in `toEvent` |
-| `allevents` | `allevents.in/chennai/<category>` × 7, HTML → JSON-LD | events | yes, `feedOptIn` | Never touches the DOM, only schema.org |
-| `luma` | `lu.ma/<slug>` → `api.lu.ma/ics/get`, iCal via `node-ical` | events | yes | The awkward one — see below |
-| `knowafest` | `knowafest.com/explore/state/Tamil-Nadu`, cheerio table | events | yes, `feedOptIn` | Rows are `<tr onclick="window.open(...)">` |
-| `gdg` / `figma` / `mulesoft` | Bevy chapters via `__NEXT_DATA__` | events | yes, `sparse` | One implementation: `makeBevyConnector()` in `lib/connectors/bevy.ts` |
-| `eventbrite` | 3 pages of `eventbrite.com/d/india--chennai/all-events/`, JSON-LD | events | **no** | Complete and tested; switched off in config and omitted from the workflow loop |
+| id                           | Source and method                                                 | Kind      | Enabled          | Notes                                                                                                           |
+| ---------------------------- | ----------------------------------------------------------------- | --------- | ---------------- | --------------------------------------------------------------------------------------------------------------- |
+| `devfolio`                   | `POST api.devfolio.co/api/search/hackathons`, JSON                | deadlines | yes              | The only source with both a real start and a deadline; structured country makes it the strongest geo signal     |
+| `devpost`                    | `GET devpost.com/api/hackathons`, JSON, paged                     | deadlines | yes              | **No timestamps at all** — `submission_period_dates` is a display string parsed by `parseRangeBorrowingContext` |
+| `unstop`                     | `GET unstop.com/api/public/opportunity/search-result` × 3 types   | deadlines | yes              | `end_date` is registration close, not a start. Drops `quizzes` in `toEvent`                                     |
+| `allevents`                  | `allevents.in/chennai/<category>` × 7, HTML → JSON-LD             | events    | yes, `feedOptIn` | Never touches the DOM, only schema.org                                                                          |
+| `luma`                       | `lu.ma/<slug>` → `api.lu.ma/ics/get`, iCal via `node-ical`        | events    | yes              | The awkward one — see below                                                                                     |
+| `knowafest`                  | `knowafest.com/explore/state/Tamil-Nadu`, cheerio table           | events    | yes, `feedOptIn` | Rows are `<tr onclick="window.open(...)">`                                                                      |
+| `gdg` / `figma` / `mulesoft` | Bevy chapters via `__NEXT_DATA__`                                 | events    | yes, `sparse`    | One implementation: `makeBevyConnector()` in `lib/connectors/bevy.ts`                                           |
+| `eventbrite`                 | 3 pages of `eventbrite.com/d/india--chennai/all-events/`, JSON-LD | events    | **no**           | Complete and tested; switched off in config and omitted from the workflow loop                                  |
 
 **No connector needs an LLM** — every one sets `needsLLM: false` and supplies
 `toEvent`, so the `!connector.toEvent` LLM-normalisation branch in
@@ -451,7 +451,7 @@ so `eventUrlOf()` digs the vanity link out of `DESCRIPTION`, then `LOCATION`,
 then falls back to a synthesised URL; recurring series expand via
 `rrule.between()` over a 120-day horizon with `sourceUid = uid::YYYY-MM-DD`
 (without which six occurrences collapse to one row); and a `seen` set lives
-*outside* the calendar loop because aggregators cross-post and a duplicate inside
+_outside_ the calendar loop because aggregators cross-post and a duplicate inside
 one batch makes Postgres reject the whole upsert. `config/luma-calendars.ts`
 holds **50 hand-curated calendars** in four tiers, curated by hand because Luma
 has no Chennai discover page and its API is Plus-gated.
@@ -477,7 +477,7 @@ has no Chennai discover page and its API is Plus-gated.
    `(source_id, source_uid, content_hash)` with `ignoreDuplicates`. This is what
    makes a later extraction fix replayable without re-scraping.
 6. Normalise via `connector.toEvent`; `null` counts as dropped.
-7. Quality gates (§5d). On failure the *event upsert is skipped* and raw payloads
+7. Quality gates (§5d). On failure the _event upsert is skipped_ and raw payloads
    are kept.
 8. Upsert `events` on `(source_id, source_uid)`, deliberately omitting
    `first_seen_at` and `seen_at` so an update never resets them.
@@ -546,13 +546,13 @@ Scoring runs cheapest-first:
    are skipped, scores clamped 0–100, reasons truncated to 12 words in code as
    well as in the prompt, because a long reason breaks the phone card layout.
 3. `applyModeAdjustment(score, isOnline)` subtracts `ONLINE_PENALTY = 25`
-   *after* scoring, outside the prompt, so it is consistent and auditable.
+   _after_ scoring, outside the prompt, so it is consistent and auditable.
 
 Rescore triggers, from `scripts/score.ts`: null score, changed `PROFILE_HASH`,
 changed `SCORING_VERSION`, changed `SCORING_MODEL`, or
 `scored_content_hash !== content_hash`. Budget guards `BATCH_SIZE = 12`,
 `MAX_LLM_CALLS = 40`. `manual` events are excluded — `buildManualRow` hard-sets
-score 85 / reason "Hand-picked", because the human deciding an event matters *is*
+score 85 / reason "Hand-picked", because the human deciding an event matters _is_
 the relevance judgment.
 
 One caveat: staleness compares `scoring_model` against the **constant**
@@ -604,18 +604,18 @@ forty rows with empty titles, which passes a count check. `--force` waives
 All in `scripts/`, all run through `tsx` (so **no top-level await** — every one
 wraps in `main()`), all `import './load-env'` first.
 
-| Script | Command | Writes? | Status here |
-| --- | --- | --- | --- |
-| `ingest.ts` | `npm run ingest -- <src>` | yes, guarded | Wired to CI; **never run against this DB** |
-| `score.ts` | `npm run score` | yes, guarded | Wired; **dormant** (no LLM keys) |
-| `seed.ts` | `npm run seed` | yes, guarded | Pushes `config/sources.ts` → DB. **Never run here** |
-| `reclassify.ts` | `npm run reclassify -- --all [--dry]` | yes, guarded | Operator tool; re-applies the current geo rule to stored rows |
-| `connector-test.ts` | `npm run connector:test -- <src>` | **no** | **Runnable right now** — no DB, no keys. The best way to prove the connectors are real |
-| `luma-check.ts` | `npm run luma:check` | no | **Runnable right now** |
-| `healthcheck.ts` | `npm run healthcheck` | no | Would exit 1 here — all sources report "last ok: never" |
-| `discover.ts` | `npm run discover` | yes, guarded | **Clean no-op** with no CSE keys, deliberately |
-| `guard.ts` | (imported) | — | `prodWritesAllowed(env)`, 5 tests |
-| `create-user.ts`, `grant-admin.ts` | — | — | **Unrunnable** — need a service-role key that does not exist here |
+| Script                             | Command                               | Writes?      | Status here                                                                            |
+| ---------------------------------- | ------------------------------------- | ------------ | -------------------------------------------------------------------------------------- |
+| `ingest.ts`                        | `npm run ingest -- <src>`             | yes, guarded | Wired to CI; **never run against this DB**                                             |
+| `score.ts`                         | `npm run score`                       | yes, guarded | Wired; **dormant** (no LLM keys)                                                       |
+| `seed.ts`                          | `npm run seed`                        | yes, guarded | Pushes `config/sources.ts` → DB. **Never run here**                                    |
+| `reclassify.ts`                    | `npm run reclassify -- --all [--dry]` | yes, guarded | Operator tool; re-applies the current geo rule to stored rows                          |
+| `connector-test.ts`                | `npm run connector:test -- <src>`     | **no**       | **Runnable right now** — no DB, no keys. The best way to prove the connectors are real |
+| `luma-check.ts`                    | `npm run luma:check`                  | no           | **Runnable right now**                                                                 |
+| `healthcheck.ts`                   | `npm run healthcheck`                 | no           | Would exit 1 here — all sources report "last ok: never"                                |
+| `discover.ts`                      | `npm run discover`                    | yes, guarded | **Clean no-op** with no CSE keys, deliberately                                         |
+| `guard.ts`                         | (imported)                            | —            | `prodWritesAllowed(env)`, 5 tests                                                      |
+| `create-user.ts`, `grant-admin.ts` | —                                     | —            | **Unrunnable** — need a service-role key that does not exist here                      |
 
 `connector-test.ts`'s header claims "A weekly CI job runs it for every source."
 **No such workflow exists** in `.github/workflows/`.
@@ -638,7 +638,7 @@ Two things about it deserve a decision, not silence:
 1. **It sends a fake Chrome user agent** (`BROWSER_UA = 'Mozilla/5.0 … Chrome/126.0.0.0 …'`),
    directly contradicting the honest-UA policy stated in `config/sources.ts` and
    `lib/http/fetcher.ts` — which records that a browser-impersonating path was
-   *removed* in a previous session.
+   _removed_ in a previous session.
 2. **It performs no geo classification at all.** `seed-demo.mjs` defaults `city`
    to `'Chennai'` for anything in-person, so the corpus is labelled Chennai
    regardless of where it is. `HackNex Season 2` in `ingest/events.json` is at
@@ -656,36 +656,36 @@ schema has demonstrably diverged (see 6c and 6e).
 
 ### 6a. Olvable's tables — `supabase/migrations/0001–0013`
 
-| Table | Purpose | Live rows | Status |
-| --- | --- | --- | --- |
-| `sources` | `id` (PK text), `display_name`, `enabled`, `crawl_delay_ms`, `user_agent`, `cursor` jsonb, `default_audience` text[], `created_at`. Runtime copy of `config/sources.ts` | **4** — devfolio, devpost, unstop, manual, all enabled | Wired |
-| `scrape_runs` | `id` bigserial, `source_id`, `started_at`, `finished_at`, `status`, `listings_found`, `llm_calls`, `quality_gate` jsonb, `http_status`, `error`. Partial unique index on `(source_id) where status='running'` | **0** | Wired, empty. `llm_calls` is never incremented |
-| `raw_listings` | `id`, `source_id`, `source_uid`, `run_id`, `payload` jsonb, `content_hash`, `fetched_at`, `normalizer_version`, `normalized_at`, `normalize_error` | **0** | Orphaned in this build |
-| `events` | The corpus. 44 columns: `id, source_id, source_uid, raw_listing_id, title, title_norm, description, url, canonical_url, organizer, organizer_norm, starts_at_local, ends_at_local, tz, starts_at, ends_at, registration_deadline, date_precision, date_kind, is_online, city, area, venue, event_type, tags, audience, goal_fit, price_type, price_amount, price_currency, content_hash, relevance_score, relevance_reason, relevance_scored_at, profile_hash, scoring_version, scoring_model, scored_content_hash, image_url, status, seen_at, missing_run_count, first_seen_at, last_seen_at`. Unique `(source_id, source_uid)` | **25**, all `active` (devpost 10, devfolio 10, unstop 5) | Wired — read by every Olvable query and by `projects.event_id` |
-| `event_duplicate_links` | `(a_id, b_id)` PK, `check (a_id < b_id)`, `score`, `method`, `computed_at` | **0** | **Orphaned** — nothing writes or reads it |
-| `event_actions` | Pre-multi-user single-user state | **0** | Orphaned by design (superseded in 0005) |
-| `mute_rules` | Global deterministic mutes | **0** | Orphaned — nothing reads it |
-| `app_state` | Singleton: `profile_hash`, `scoring_version`, `normalizer_version`, `first_backfill_done` | 1 row, `profile_hash = ''` | Read only by scripts, never by the app |
-| `user_event_actions` | PK `(user_id, event_id)`, `state ∈ interested/registered/going/skipped/attended`, `note`. FK → `auth.users(id)` | **0** | Wired for reads; **writes cannot succeed** |
-| `user_event_seen` | PK `(user_id, event_id)`, `seen_at`. FK → `auth.users` | **0** | Same |
-| `user_interests` | PK `user_id`, `tags` text[], `prefs` jsonb, `seed_event_ids` uuid[], `completed_at` | **0** | Same |
-| `user_source_mutes` | PK `(user_id, source_id)` | **0** | Same |
-| `access_audit` | Append-only admin trail | **0** | Reachable only from `/admin` |
-| `discovery_leads` | Weekly CSE sweep output, unique on `url` | **0** | Reachable only from `/admin/discovery` |
-| `invited_emails` | **Dropped by migration 0012 — still exists on the live DB** | 0 | Orphaned, and hard proof of schema drift |
+| Table                   | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Live rows                                                | Status                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | -------------------------------------------------------------- |
+| `sources`               | `id` (PK text), `display_name`, `enabled`, `crawl_delay_ms`, `user_agent`, `cursor` jsonb, `default_audience` text[], `created_at`. Runtime copy of `config/sources.ts`                                                                                                                                                                                                                                                                                                                                                                                                                                                           | **4** — devfolio, devpost, unstop, manual, all enabled   | Wired                                                          |
+| `scrape_runs`           | `id` bigserial, `source_id`, `started_at`, `finished_at`, `status`, `listings_found`, `llm_calls`, `quality_gate` jsonb, `http_status`, `error`. Partial unique index on `(source_id) where status='running'`                                                                                                                                                                                                                                                                                                                                                                                                                     | **0**                                                    | Wired, empty. `llm_calls` is never incremented                 |
+| `raw_listings`          | `id`, `source_id`, `source_uid`, `run_id`, `payload` jsonb, `content_hash`, `fetched_at`, `normalizer_version`, `normalized_at`, `normalize_error`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | **0**                                                    | Orphaned in this build                                         |
+| `events`                | The corpus. 44 columns: `id, source_id, source_uid, raw_listing_id, title, title_norm, description, url, canonical_url, organizer, organizer_norm, starts_at_local, ends_at_local, tz, starts_at, ends_at, registration_deadline, date_precision, date_kind, is_online, city, area, venue, event_type, tags, audience, goal_fit, price_type, price_amount, price_currency, content_hash, relevance_score, relevance_reason, relevance_scored_at, profile_hash, scoring_version, scoring_model, scored_content_hash, image_url, status, seen_at, missing_run_count, first_seen_at, last_seen_at`. Unique `(source_id, source_uid)` | **25**, all `active` (devpost 10, devfolio 10, unstop 5) | Wired — read by every Olvable query and by `projects.event_id` |
+| `event_duplicate_links` | `(a_id, b_id)` PK, `check (a_id < b_id)`, `score`, `method`, `computed_at`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | **0**                                                    | **Orphaned** — nothing writes or reads it                      |
+| `event_actions`         | Pre-multi-user single-user state                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | **0**                                                    | Orphaned by design (superseded in 0005)                        |
+| `mute_rules`            | Global deterministic mutes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | **0**                                                    | Orphaned — nothing reads it                                    |
+| `app_state`             | Singleton: `profile_hash`, `scoring_version`, `normalizer_version`, `first_backfill_done`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | 1 row, `profile_hash = ''`                               | Read only by scripts, never by the app                         |
+| `user_event_actions`    | PK `(user_id, event_id)`, `state ∈ interested/registered/going/skipped/attended`, `note`. FK → `auth.users(id)`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | **0**                                                    | Wired for reads; **writes cannot succeed**                     |
+| `user_event_seen`       | PK `(user_id, event_id)`, `seen_at`. FK → `auth.users`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | **0**                                                    | Same                                                           |
+| `user_interests`        | PK `user_id`, `tags` text[], `prefs` jsonb, `seed_event_ids` uuid[], `completed_at`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | **0**                                                    | Same                                                           |
+| `user_source_mutes`     | PK `(user_id, source_id)`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | **0**                                                    | Same                                                           |
+| `access_audit`          | Append-only admin trail                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | **0**                                                    | Reachable only from `/admin`                                   |
+| `discovery_leads`       | Weekly CSE sweep output, unique on `url`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | **0**                                                    | Reachable only from `/admin/discovery`                         |
+| `invited_emails`        | **Dropped by migration 0012 — still exists on the live DB**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | 0                                                        | Orphaned, and hard proof of schema drift                       |
 
 Roles are not a table: migration 0008 records that they live in
 `auth.users.raw_app_meta_data->>'role'`.
 
 ### 6b. Guild's tables — deployed reality
 
-| Table | Live columns | Live rows |
-| --- | --- | --- |
-| `profiles` | `id, user_id, handle, name, dept, year, bio, experience_level, commitment_level, availability_windows, looking_for, is_seed, created_at` | **40** |
-| `skills` | `id, profile_id, skill, proficiency, proof_url`. Unique `(profile_id, skill)` | **75** |
-| `projects` | `id, owner_profile_id, event_id, title, description, kind, effort, deadline, is_seed, created_at` | **5** |
-| `requirements` | `id, project_id, skill, role_label, weight, min_proficiency` | **17** |
-| `memberships` | `id, project_id, profile_id, status ∈ invited/accepted`. Unique `(project_id, profile_id)` | **7** |
+| Table          | Live columns                                                                                                                             | Live rows |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `profiles`     | `id, user_id, handle, name, dept, year, bio, experience_level, commitment_level, availability_windows, looking_for, is_seed, created_at` | **40**    |
+| `skills`       | `id, profile_id, skill, proficiency, proof_url`. Unique `(profile_id, skill)`                                                            | **75**    |
+| `projects`     | `id, owner_profile_id, event_id, title, description, kind, effort, deadline, is_seed, created_at`                                        | **5**     |
+| `requirements` | `id, project_id, skill, role_label, weight, min_proficiency`                                                                             | **17**    |
+| `memberships`  | `id, project_id, profile_id, status ∈ invited/accepted`. Unique `(project_id, profile_id)`                                               | **7**     |
 
 ### 6c. `supabase/guild/*.sql` is fiction relative to what runs
 
@@ -803,14 +803,14 @@ export async function requireAdmin(): Promise<User> {
 
 ### What is open and what is closed
 
-| Surface | Guard | Verified live |
-| --- | --- | --- |
-| Every non-admin route (26 of them, including `/login`) | none | **200, open to anyone with the URL** |
-| `/admin` | `requireAdmin()` | **Closed** — serves the Team Board |
-| `/admin/add` | page-level role check + `requireAdmin()` in its actions | **Closed** |
-| `/admin/discovery` | same | **Closed** |
-| `/design` | `requireAdmin()` | **Closed** |
-| 7 admin server actions in `app/(app)/admin/**/actions.ts` | `requireAdmin()` on each | **Closed** |
+| Surface                                                   | Guard                                                   | Verified live                        |
+| --------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------ |
+| Every non-admin route (26 of them, including `/login`)    | none                                                    | **200, open to anyone with the URL** |
+| `/admin`                                                  | `requireAdmin()`                                        | **Closed** — serves the Team Board   |
+| `/admin/add`                                              | page-level role check + `requireAdmin()` in its actions | **Closed**                           |
+| `/admin/discovery`                                        | same                                                    | **Closed**                           |
+| `/design`                                                 | `requireAdmin()`                                        | **Closed**                           |
+| 7 admin server actions in `app/(app)/admin/**/actions.ts` | `requireAdmin()` on each                                | **Closed**                           |
 
 Server actions are their own HTTP entry points, so the check living inside
 `requireAdmin()` closes all seven at once rather than depending on a page guard.
@@ -864,8 +864,8 @@ From `SECURITY.md`, and accurate:
 ### One stale, self-contradicting bullet in `SECURITY.md`
 
 Its table correctly says every admin surface is enforced. Its "Not protected"
-section then says *"The admin surfaces listed in the table above are reachable
-until `requireAdmin()` is fixed."* **That sentence is false** — `/admin`,
+section then says _"The admin surfaces listed in the table above are reachable
+until `requireAdmin()` is fixed."_ **That sentence is false** — `/admin`,
 `/admin/add`, `/admin/discovery` and `/design` all serve the home page on the
 live deploy. It will make a reviewer distrust the rest of a file that is
 otherwise unusually honest. Delete it.
@@ -884,15 +884,15 @@ than none. `@custom-variant dark (&:is(.dark *))` is kept so legacy `dark:`
 classes compile, but nothing ever adds `.dark`, so **every `dark:` class in the
 repo is dead** (`app/(app)/loading.tsx` is full of them).
 
-| Group | Tokens |
-| --- | --- |
-| Surfaces | `--canvas #f5f6fa` · `--surface #ffffff` · `--surface-2 #eef0f5` · `--line #e2e4ec` · `--line-strong #cdd0dc` |
-| Ink | `--ink #12131a` · `--ink-2 #6b7080` · `--ink-3 #9a9fb2` |
-| Accent | `--accent #5b5bd6` · `--accent-hover #4a4ac4` · `--accent-soft #eeeefb` · `--accent-ink #3b3ba6` |
-| Status | danger `#d8385e`/`#fde8ee`/`#9b1f3f` · success `#1f8a5b`/`#ddf5e8`/`#146c43` · warning `#fff1c2`/`#7a5a00` (no solid warning) |
+| Group                | Tokens                                                                                                                                                            |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Surfaces             | `--canvas #f5f6fa` · `--surface #ffffff` · `--surface-2 #eef0f5` · `--line #e2e4ec` · `--line-strong #cdd0dc`                                                     |
+| Ink                  | `--ink #12131a` · `--ink-2 #6b7080` · `--ink-3 #9a9fb2`                                                                                                           |
+| Accent               | `--accent #5b5bd6` · `--accent-hover #4a4ac4` · `--accent-soft #eeeefb` · `--accent-ink #3b3ba6`                                                                  |
+| Status               | danger `#d8385e`/`#fde8ee`/`#9b1f3f` · success `#1f8a5b`/`#ddf5e8`/`#146c43` · warning `#fff1c2`/`#7a5a00` (no solid warning)                                     |
 | Pastels (fill + ink) | sky `#dcebff`/`#1d4f91` · mint `#d9f3e6`/`#146c43` · lemon `#fff1c2`/`#7a5a00` · rose `#ffdde8`/`#9b2c52` · lilac `#e8e1ff`/`#4b3a9e` · peach `#ffe4d1`/`#8a4a16` |
-| Shape | `--radius-ctl 12px` · `--radius-card 16px` · `--radius-panel 20px` · pills `rounded-full` |
-| Shadow | `--shadow-card: 0 1px 2px rgba(18,19,26,0.04)` · `--shadow-float: 0 8px 24px …` |
+| Shape                | `--radius-ctl 12px` · `--radius-card 16px` · `--radius-panel 20px` · pills `rounded-full`                                                                         |
+| Shadow               | `--shadow-card: 0 1px 2px rgba(18,19,26,0.04)` · `--shadow-float: 0 8px 24px …`                                                                                   |
 
 Type: **Inter** 400/500/600 and **JetBrains Mono** 400/500 via `next/font/google`
 (no component uses `font-mono`). Sizes are **hard-coded per component in px with
@@ -920,18 +920,18 @@ orphaned and never got migrated to the token system.
 
 ### Primitives — `components/ui/`
 
-| File | Exports | Status |
-| --- | --- | --- |
-| `button.tsx` | `Button`, `buttonVariants`. 6 variants (`accent`, `primary`, `secondary` default, `ghost`, `danger`, `danger-solid`), 5 sizes (`sm` h-9, `md` h-11, `lg` h-12, `icon-sm`, `icon`), `pill` boolean | Wired, 25+ sites; `buttonVariants` used on `<Link>` in 13 pages |
-| `pill.tsx` | `Pill`, `pillVariants`, `PillTone`, `CATEGORY_TONES`, `toneFor` | Wired (15 sites). **`toneFor` is orphaned** |
-| `card.tsx` | `Card` (`padded`, `interactive`), `CardTitle`, `CardMeta`, `SectionHeading` | Wired, 18 sites |
-| `chip.tsx` | `ChipRow`, `chipClass`, `Chip` | `ChipRow`/`chipClass` wired; **`Chip` only on `/design`** |
-| `field.tsx` | `Label`, `inputClass`, `Input`, `IconInput`, `Field`, `FormNote` | Wired |
-| `segmented.tsx` | `Segmented<T>`, `SegmentOption<T>` | Wired. One component, two flavours — `href` renders a `<Link role="tab">`, otherwise a `<button role="tab">` |
-| `sheet.tsx` | `Sheet`, `SheetTrigger`, `SheetClose`, `SheetContent` | Wired — bottom sheet on phone, centred dialog from `sm`. Only real consumer is `components/calendar/event-block.tsx` |
-| `bits.tsx` | `toneClass`, `Avatar`, `StatTile`, `DataRow`, `EmptyState`, `Skeleton`, `Divider` | `EmptyState` is the most-used bit (13 files). **`Skeleton` and `Divider` only on `/design`** |
-| `tooltip.tsx` | `Tooltip*` | **Orphaned — zero imports anywhere** |
-| `nav-tabs.tsx` | `NavTabs` | **Orphaned — zero imports.** Its docstring's use cases both shipped as `Segmented` |
+| File            | Exports                                                                                                                                                                                           | Status                                                                                                               |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `button.tsx`    | `Button`, `buttonVariants`. 6 variants (`accent`, `primary`, `secondary` default, `ghost`, `danger`, `danger-solid`), 5 sizes (`sm` h-9, `md` h-11, `lg` h-12, `icon-sm`, `icon`), `pill` boolean | Wired, 25+ sites; `buttonVariants` used on `<Link>` in 13 pages                                                      |
+| `pill.tsx`      | `Pill`, `pillVariants`, `PillTone`, `CATEGORY_TONES`, `toneFor`                                                                                                                                   | Wired (15 sites). **`toneFor` is orphaned**                                                                          |
+| `card.tsx`      | `Card` (`padded`, `interactive`), `CardTitle`, `CardMeta`, `SectionHeading`                                                                                                                       | Wired, 18 sites                                                                                                      |
+| `chip.tsx`      | `ChipRow`, `chipClass`, `Chip`                                                                                                                                                                    | `ChipRow`/`chipClass` wired; **`Chip` only on `/design`**                                                            |
+| `field.tsx`     | `Label`, `inputClass`, `Input`, `IconInput`, `Field`, `FormNote`                                                                                                                                  | Wired                                                                                                                |
+| `segmented.tsx` | `Segmented<T>`, `SegmentOption<T>`                                                                                                                                                                | Wired. One component, two flavours — `href` renders a `<Link role="tab">`, otherwise a `<button role="tab">`         |
+| `sheet.tsx`     | `Sheet`, `SheetTrigger`, `SheetClose`, `SheetContent`                                                                                                                                             | Wired — bottom sheet on phone, centred dialog from `sm`. Only real consumer is `components/calendar/event-block.tsx` |
+| `bits.tsx`      | `toneClass`, `Avatar`, `StatTile`, `DataRow`, `EmptyState`, `Skeleton`, `Divider`                                                                                                                 | `EmptyState` is the most-used bit (13 files). **`Skeleton` and `Divider` only on `/design`**                         |
+| `tooltip.tsx`   | `Tooltip*`                                                                                                                                                                                        | **Orphaned — zero imports anywhere**                                                                                 |
+| `nav-tabs.tsx`  | `NavTabs`                                                                                                                                                                                         | **Orphaned — zero imports.** Its docstring's use cases both shipped as `Segmented`                                   |
 
 ### The shell
 
@@ -943,15 +943,15 @@ shell.
 `components/shell/nav.ts` is the single nav definition. `NAV_PRIMARY` order —
 the two supply-side surfaces first, the event corpus as supporting material:
 
-| # | href | label | icon | tab? |
-| --- | --- | --- | --- | --- |
-| 1 | `/teams` | Team Board | `Handshake` | yes (`exact`) |
-| 2 | `/people` | People | `UsersThree` | yes |
-| 3 | `/hackathons` | Hackathons | `Trophy` | yes |
-| 4 | `/events` | All events | `ListBullets` | |
-| 5 | `/feed` | Feed | `House` | |
-| 6 | `/calendar` | Calendar | `CalendarBlank` | |
-| 7 | `/saved` | Saved | `BookmarkSimple` | |
+| #   | href          | label      | icon             | tab?          |
+| --- | ------------- | ---------- | ---------------- | ------------- |
+| 1   | `/teams`      | Team Board | `Handshake`      | yes (`exact`) |
+| 2   | `/people`     | People     | `UsersThree`     | yes           |
+| 3   | `/hackathons` | Hackathons | `Trophy`         | yes           |
+| 4   | `/events`     | All events | `ListBullets`    |               |
+| 5   | `/feed`       | Feed       | `House`          |               |
+| 6   | `/calendar`   | Calendar   | `CalendarBlank`  |               |
+| 7   | `/saved`      | Saved      | `BookmarkSimple` |               |
 
 Plus `NAV_SETUP` (`/sources`, `/interests`, `/settings`), `NAV_ADMIN`
 (`/admin/add`, `/admin/discovery`, `/admin` — never rendered, since `isAdmin()`
@@ -990,9 +990,9 @@ plus a 7-value `COLOUR` mirror (its comment says "nine numbers").
 `public/icon-*.png` files are all still the Olvable "va" mark.
 
 **`app/opengraph-image.tsx` is the worst stale asset.** It renders the traced
-Olvable wordmark and hard-codes the tagline *"Touch grass, professionally."* —
+Olvable wordmark and hard-codes the tagline _"Touch grass, professionally."_ —
 which is neither the current `BRAND.tagline` nor the one it replaced — while its
-`alt` export *does* read `BRAND.tagline`. Every shared Guild link previews as
+`alt` export _does_ read `BRAND.tagline`. Every shared Guild link previews as
 that image.
 
 Two different "stable tone from a string" algorithms coexist and disagree for the
@@ -1031,29 +1031,29 @@ dependency, which `AGENTS.md` forbids without an explicit decision.
 
 **Verified: 21 files, 241 tests, all passing, 1.97 s.**
 
-| File | Tests | Covers |
-| --- | ---: | --- |
-| `lib/engine/__tests__/engine.test.ts` | **41** | The whole thesis — see below |
-| `lib/pipeline/geo.test.ts` | 34 | `classifyGeo` both regimes, city tables, the "Freshworks" no-signal keep, structured country codes, "Online" in a title ≠ online |
-| `lib/dates/parse.test.ts` | 31 | Ordinals, dash normalisation, precision from format, **the DD/MM trap**, forward-only year inference, naive JSON-LD as IST, Devpost ranges borrowing across Dec→Jan, iCal exclusive all-day `DTEND` |
-| `lib/team/mappers.test.ts` | 23 | Proof-link semantics (empty string is not a link), the damp reaching engine coverage, PostgREST string→number with NaN fallback, `level()` clamping, untrusted jsonb windows, zero-weight clamping |
-| `lib/sources.test.ts` | 13 | Deadline vs dated kinds, `selectSourceIds` with mutes, `feedSourceIds` opt-in pool |
-| `lib/calendar.test.ts` | 13 | State parsing, `rangeFor` (Monday weeks, months padded to whole weeks), placement, `isTimed` midnight-is-all-day |
-| `lib/text.test.ts` | 11 | `snippet` boundaries, `displayTitle` dropping mode/date segments but never the first |
-| `lib/hash.test.ts` | 9 | Volatile-field exclusion incl. nested, key-order independence, `scoringHash` ignoring venue/URL/tag order |
-| `lib/demo.test.ts` | 9 | Degrades to null on error, no row, rejection, un-constructible client |
-| `lib/ranking.test.ts` | 7 | `isPremiumVenue`, the prestige floor into Top picks |
-| `lib/ics.test.ts` | 6 | TZID + 2h default end, all-day exclusive `DTEND`, folding, filename slug, venue/city dedupe |
-| `lib/connectors/knowafest.test.ts` | 6 | Row extraction, day-first dates, multi-type tags |
-| `scripts/guard.test.ts` | 5 | Refuses bare local, refuses `"false"`, always allows GitHub Actions |
-| `lib/pipeline/manual.test.ts` | 5 | `buildManualRow` shape, IST→UTC, day precision, TBA, loud rejection |
-| `lib/filters.test.ts` | 5 | `toggleHref`, `pageHref`, `parsePage`, sort parsing |
-| `lib/connectors/bevy.test.ts` | 5 | Venue outranks `is_virtual_event`, offset-carrying instants, garbage tolerance |
-| `lib/events.test.ts` | 4 | Deadline listings use the cutoff, not the window opening |
-| `lib/discovery.test.ts` | 4 | `toLeads` shaping, dropping covered domains, keeping LinkedIn hits |
-| `lib/connectors/eventbrite.test.ts` | 4 | JSON-LD → day precision, city-is-not-a-venue, online |
-| `lib/pipeline/quality.test.ts` | 3 | Had-rows-now-none is an error; sparse sources are not |
-| `lib/dates/format.test.ts` | 3 | Real time for timed, never a time at day precision |
+| File                                  |  Tests | Covers                                                                                                                                                                                              |
+| ------------------------------------- | -----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lib/engine/__tests__/engine.test.ts` | **41** | The whole thesis — see below                                                                                                                                                                        |
+| `lib/pipeline/geo.test.ts`            |     34 | `classifyGeo` both regimes, city tables, the "Freshworks" no-signal keep, structured country codes, "Online" in a title ≠ online                                                                    |
+| `lib/dates/parse.test.ts`             |     31 | Ordinals, dash normalisation, precision from format, **the DD/MM trap**, forward-only year inference, naive JSON-LD as IST, Devpost ranges borrowing across Dec→Jan, iCal exclusive all-day `DTEND` |
+| `lib/team/mappers.test.ts`            |     23 | Proof-link semantics (empty string is not a link), the damp reaching engine coverage, PostgREST string→number with NaN fallback, `level()` clamping, untrusted jsonb windows, zero-weight clamping  |
+| `lib/sources.test.ts`                 |     13 | Deadline vs dated kinds, `selectSourceIds` with mutes, `feedSourceIds` opt-in pool                                                                                                                  |
+| `lib/calendar.test.ts`                |     13 | State parsing, `rangeFor` (Monday weeks, months padded to whole weeks), placement, `isTimed` midnight-is-all-day                                                                                    |
+| `lib/text.test.ts`                    |     11 | `snippet` boundaries, `displayTitle` dropping mode/date segments but never the first                                                                                                                |
+| `lib/hash.test.ts`                    |      9 | Volatile-field exclusion incl. nested, key-order independence, `scoringHash` ignoring venue/URL/tag order                                                                                           |
+| `lib/demo.test.ts`                    |      9 | Degrades to null on error, no row, rejection, un-constructible client                                                                                                                               |
+| `lib/ranking.test.ts`                 |      7 | `isPremiumVenue`, the prestige floor into Top picks                                                                                                                                                 |
+| `lib/ics.test.ts`                     |      6 | TZID + 2h default end, all-day exclusive `DTEND`, folding, filename slug, venue/city dedupe                                                                                                         |
+| `lib/connectors/knowafest.test.ts`    |      6 | Row extraction, day-first dates, multi-type tags                                                                                                                                                    |
+| `scripts/guard.test.ts`               |      5 | Refuses bare local, refuses `"false"`, always allows GitHub Actions                                                                                                                                 |
+| `lib/pipeline/manual.test.ts`         |      5 | `buildManualRow` shape, IST→UTC, day precision, TBA, loud rejection                                                                                                                                 |
+| `lib/filters.test.ts`                 |      5 | `toggleHref`, `pageHref`, `parsePage`, sort parsing                                                                                                                                                 |
+| `lib/connectors/bevy.test.ts`         |      5 | Venue outranks `is_virtual_event`, offset-carrying instants, garbage tolerance                                                                                                                      |
+| `lib/events.test.ts`                  |      4 | Deadline listings use the cutoff, not the window opening                                                                                                                                            |
+| `lib/discovery.test.ts`               |      4 | `toLeads` shaping, dropping covered domains, keeping LinkedIn hits                                                                                                                                  |
+| `lib/connectors/eventbrite.test.ts`   |      4 | JSON-LD → day precision, city-is-not-a-venue, online                                                                                                                                                |
+| `lib/pipeline/quality.test.ts`        |      3 | Had-rows-now-none is an error; sparse sources are not                                                                                                                                               |
+| `lib/dates/format.test.ts`            |      3 | Real time for timed, never a time at day precision                                                                                                                                                  |
 
 ### What the engine's 41 tests pin
 
@@ -1062,7 +1062,7 @@ if one fails, the thesis changed:
 
 - **Coverage / diminishing returns (4)** — 0.8 + 0.5 → 0.90 not 1.3; a duplicate
   0.8 moves 0.80 → 0.96; an unverified 0.8 is 0.48; a claim damped below the
-  floor contributes *nothing*, not partially.
+  floor contributes _nothing_, not partially.
 - **Marginal gain — gaps beat duplicates (4)** — a figma-filler out-ranks an
   equally-skilled React duplicate on a React-owning team; `fills` vs
   `duplicates` labelled against the current roster; **an extra body who fills
@@ -1117,10 +1117,10 @@ if one fails, the thesis changed:
 
 ### Supabase
 
-| | Project | Role |
-| --- | --- | --- |
-| Demo | `fjxgqiveolnnrslihodl` | What everything in this build points at. Hand-built, 25 events, 40 profiles. `.env.local` and the committed fallback name the same project, so local and deployed behave identically |
-| Production Olvable | `gxxhjmwgxmjhmhtnipua` (ap-south-1) | Shaan's real aggregator, ~1,300 real events and real users. **Never referenced by this build.** Named only in the untracked `.env.example` |
+|                    | Project                             | Role                                                                                                                                                                                 |
+| ------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Demo               | `fjxgqiveolnnrslihodl`              | What everything in this build points at. Hand-built, 25 events, 40 profiles. `.env.local` and the committed fallback name the same project, so local and deployed behave identically |
+| Production Olvable | `gxxhjmwgxmjhmhtnipua` (ap-south-1) | Shaan's real aggregator, ~1,300 real events and real users. **Never referenced by this build.** Named only in the untracked `.env.example`                                           |
 
 ### Vercel
 
@@ -1143,28 +1143,28 @@ functions at 300 s, which AllEvents alone cannot fit at a 10 s crawl delay.
 
 ### GitHub Actions — `.github/workflows/`
 
-| Workflow | Schedule | Does |
-| --- | --- | --- |
-| `ci.yml` | push to main + every PR | `npm ci`, lint, `format:check`, typecheck, test, build. **Deliberately carries no secrets** so a fork can prove itself — which also catches anything needing a key at build time |
-| `ingest.yml` | daily 01:30 UTC (07:00 IST), 45 min | `npm run seed`, then one `npm run ingest -- $s` per source over 9 sources (so one broken connector cannot stop the rest), then `npm run score` |
-| `healthcheck.yml` | 03:00 / 11:00 / 19:00 UTC | Supabase keep-alive plus a staleness check; opens a de-duped GitHub issue on failure |
-| `discover.yml` | Mondays 02:30 UTC | Google CSE sweep into `discovery_leads` |
+| Workflow          | Schedule                            | Does                                                                                                                                                                             |
+| ----------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ci.yml`          | push to main + every PR             | `npm ci`, lint, `format:check`, typecheck, test, build. **Deliberately carries no secrets** so a fork can prove itself — which also catches anything needing a key at build time |
+| `ingest.yml`      | daily 01:30 UTC (07:00 IST), 45 min | `npm run seed`, then one `npm run ingest -- $s` per source over 9 sources (so one broken connector cannot stop the rest), then `npm run score`                                   |
+| `healthcheck.yml` | 03:00 / 11:00 / 19:00 UTC           | Supabase keep-alive plus a staleness check; opens a de-duped GitHub issue on failure                                                                                             |
+| `discover.yml`    | Mondays 02:30 UTC                   | Google CSE sweep into `discovery_leads`                                                                                                                                          |
 
 **None of these can be running against the demo database** — `scrape_runs` and
 `raw_listings` are empty and `sources` holds 4 rows, not 9+.
 
 ### Environment variables
 
-| Var | Used by | Fallback | Present here? |
-| --- | --- | --- | --- |
-| `SUPABASE_URL` | `createServiceClient`, `createAuthClient`, all scripts | `DEMO_URL` | yes |
-| `SUPABASE_SERVICE_ROLE_KEY` | first choice in `createServiceClient`, `create-user`, `grant-admin`, all data workflows | falls through | **present in `.env.local`, contradicting `SECURITY.md` and that file's own header** |
-| `SUPABASE_ANON_KEY` | `createAuthClient`, second choice | `'demo-no-auth'` | yes |
-| `DEMO_USER_ID` | `lib/auth/server.ts` | `00000000-0000-4000-8000-000000000001` | **no — this is why every per-user write FK-fails** |
-| `SITE_URL` | magic-link era | — | yes, vestigial |
-| `GEMINI_API_KEY`, `GROQ_API_KEY` | `lib/llm/`, `ingest.yml` | — | **no** |
-| `GOOGLE_CSE_KEY`, `GOOGLE_CSE_CX` | `scripts/discover.ts` | — | **no** |
-| `ALLOW_PROD_WRITES` | `scripts/guard.ts` | — | no |
+| Var                               | Used by                                                                                 | Fallback                               | Present here?                                                                       |
+| --------------------------------- | --------------------------------------------------------------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------- |
+| `SUPABASE_URL`                    | `createServiceClient`, `createAuthClient`, all scripts                                  | `DEMO_URL`                             | yes                                                                                 |
+| `SUPABASE_SERVICE_ROLE_KEY`       | first choice in `createServiceClient`, `create-user`, `grant-admin`, all data workflows | falls through                          | **present in `.env.local`, contradicting `SECURITY.md` and that file's own header** |
+| `SUPABASE_ANON_KEY`               | `createAuthClient`, second choice                                                       | `'demo-no-auth'`                       | yes                                                                                 |
+| `DEMO_USER_ID`                    | `lib/auth/server.ts`                                                                    | `00000000-0000-4000-8000-000000000001` | **no — this is why every per-user write FK-fails**                                  |
+| `SITE_URL`                        | magic-link era                                                                          | —                                      | yes, vestigial                                                                      |
+| `GEMINI_API_KEY`, `GROQ_API_KEY`  | `lib/llm/`, `ingest.yml`                                                                | —                                      | **no**                                                                              |
+| `GOOGLE_CSE_KEY`, `GOOGLE_CSE_CX` | `scripts/discover.ts`                                                                   | —                                      | **no**                                                                              |
+| `ALLOW_PROD_WRITES`               | `scripts/guard.ts`                                                                      | —                                      | no                                                                                  |
 
 **No env var is `NEXT_PUBLIC_`.** That rule holds.
 
@@ -1232,23 +1232,23 @@ One consolidated, honest list.
 
 ### Broken and user-visible
 
-| # | Thing | Detail |
-| --- | --- | --- |
-| 1 | **`/sources` shows "0 live"** | `source_health()` RPC does not exist on the demo DB; the error is swallowed and the page renders its empty state while four enabled sources sit in the table |
-| 2 | **`/feed` shows "New 0", no chips, no health strip** | `unseen_active_count()` also missing; the feed derives chips from the dead RPC, unlike `/events` and `/hackathons` |
-| 3 | **`/events` returns 0 results** | `visibleSourceIds()` defaults to `kind='events'`, stripping all three deadline sources; only `manual` remains and it is empty. The feed's "Browse all 14" tile links straight here |
-| 4 | **`/calendar` is empty in both scopes** | `mine` FK-fails; `all` hits the same `kind='events'` default plus a `relevance_score >= 60` floor |
-| 5 | **`/welcome` is a 404** | The directory holds `actions.ts` and no `page.tsx` |
-| 6 | **Every per-user write FK-fails silently** | Going/Save/Not-for-me flip and revert; `/saved` is permanently empty; the "New" pill never clears; `/interests` shows a raw Postgres error |
-| 7 | **`notFound()` returns HTTP 200** | `/squad/{bad-uuid}` and `/p/nobody` render Next's 404 body with a 200 status, because `await connection()` starts streaming before `notFound()` throws |
-| 8 | **The "N on the roster" pill never updates** | Server-rendered outside the client sandbox |
-| 9 | **A roster member covering nothing cannot be removed** | No roster list; removal only via a covered slot's contributor chip |
-| 10 | **The board's "Squads looking for you" duplicates cards** | Anything in the rail is re-rendered in "All squads", with a different pastel |
-| 11 | **Same squad, two different numbers** | The board shows `base`, the sandbox shows `score`; nothing explains the gap |
-| 12 | **The OG image is wrong** | Olvable wordmark plus a tagline matching neither `BRAND.tagline` nor its own `alt` export |
-| 13 | **The feed's copy contradicts the corpus** | "N events across Tamil Nadu" over hackathons in Bhopal, Jaipur, Kalyani and Kochi |
-| 14 | **`app/(app)/loading.tsx` is the wrong skeleton** | One route-group loading file, shaped like the old Olvable feed, flashing on `/teams`, `/people` and `/squad/[id]` |
-| 15 | **Sign out and Change password always fail** | Both run against a client with no real credentials; sign-out dumps the user on a `/login` they cannot use or escape |
+| #   | Thing                                                     | Detail                                                                                                                                                                             |
+| --- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **`/sources` shows "0 live"**                             | `source_health()` RPC does not exist on the demo DB; the error is swallowed and the page renders its empty state while four enabled sources sit in the table                       |
+| 2   | **`/feed` shows "New 0", no chips, no health strip**      | `unseen_active_count()` also missing; the feed derives chips from the dead RPC, unlike `/events` and `/hackathons`                                                                 |
+| 3   | **`/events` returns 0 results**                           | `visibleSourceIds()` defaults to `kind='events'`, stripping all three deadline sources; only `manual` remains and it is empty. The feed's "Browse all 14" tile links straight here |
+| 4   | **`/calendar` is empty in both scopes**                   | `mine` FK-fails; `all` hits the same `kind='events'` default plus a `relevance_score >= 60` floor                                                                                  |
+| 5   | **`/welcome` is a 404**                                   | The directory holds `actions.ts` and no `page.tsx`                                                                                                                                 |
+| 6   | **Every per-user write FK-fails silently**                | Going/Save/Not-for-me flip and revert; `/saved` is permanently empty; the "New" pill never clears; `/interests` shows a raw Postgres error                                         |
+| 7   | **`notFound()` returns HTTP 200**                         | `/squad/{bad-uuid}` and `/p/nobody` render Next's 404 body with a 200 status, because `await connection()` starts streaming before `notFound()` throws                             |
+| 8   | **The "N on the roster" pill never updates**              | Server-rendered outside the client sandbox                                                                                                                                         |
+| 9   | **A roster member covering nothing cannot be removed**    | No roster list; removal only via a covered slot's contributor chip                                                                                                                 |
+| 10  | **The board's "Squads looking for you" duplicates cards** | Anything in the rail is re-rendered in "All squads", with a different pastel                                                                                                       |
+| 11  | **Same squad, two different numbers**                     | The board shows `base`, the sandbox shows `score`; nothing explains the gap                                                                                                        |
+| 12  | **The OG image is wrong**                                 | Olvable wordmark plus a tagline matching neither `BRAND.tagline` nor its own `alt` export                                                                                          |
+| 13  | **The feed's copy contradicts the corpus**                | "N events across Tamil Nadu" over hackathons in Bhopal, Jaipur, Kalyani and Kochi                                                                                                  |
+| 14  | **`app/(app)/loading.tsx` is the wrong skeleton**         | One route-group loading file, shaped like the old Olvable feed, flashing on `/teams`, `/people` and `/squad/[id]`                                                                  |
+| 15  | **Sign out and Change password always fail**              | Both run against a client with no real credentials; sign-out dumps the user on a `/login` they cannot use or escape                                                                |
 
 ### Stubbed (present, not doing its job)
 
@@ -1308,22 +1308,22 @@ omitted from the workflow loop).
 
 ### Docs contradicting code (trust the code)
 
-| Claim | Where | Reality |
-| --- | --- | --- |
-| "its 17 tests (`npx vitest run lib/engine`)" | `CLAUDE.md`, `AGENTS.md`, `docs/ARCHITECTURE.md:131` | **41** |
-| "`npm run format:check` … passes before commit" | `AGENTS.md` | **27 files fail**, including all 11 in `lib/engine/` (double quotes, semicolons) |
-| "The admin surfaces … are reachable until `requireAdmin()` is fixed" | `SECURITY.md` | False — all four are closed, verified live |
-| "`.env.example` is not in the repo" | `AGENTS.md` | It exists **on disk** but is **not tracked**; the practical claim holds for a cloner |
-| "A weekly CI job runs `connector-test` for every source" | `scripts/connector-test.ts` header | No such workflow exists |
-| "Honest identification … used everywhere, without exception" | `config/sources.ts` | `ingest/fetch-events.mjs` sends a fake Chrome UA |
-| Five connectors | `README.md`, `docs/ARCHITECTURE.md` | Ten are built |
-| The pipeline runs "daily 07:00 IST" | `docs/ARCHITECTURE.md` | Accurate as design; the demo DB has 0 `scrape_runs` |
-| "the four `tab` items are Feed, Calendar, Saved, You" | `components/shell/nav.ts` docstring | Team Board, People, Hackathons, You |
-| `getDemoProfile` is "what the profile screen shows" | `lib/demo.ts` docstring | It is not; `/p/[handle]` reads the URL. One caller: `/teams` |
-| "the sandbox can reuse it" | `components/team/squad-card.tsx:20` | The sandbox does not import it |
-| "nine numbers" | `lib/brand.ts` | Seven |
-| "The service-role key is deliberately absent" | `.env.local` header, `SECURITY.md` | A `SUPABASE_SERVICE_ROLE_KEY` is present in `.env.local` |
-| Nudges as roadmap items 1 **and** 4 | `docs/ROADMAP.md` | Duplicated entry |
+| Claim                                                                | Where                                                | Reality                                                                              |
+| -------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| "its 17 tests (`npx vitest run lib/engine`)"                         | `CLAUDE.md`, `AGENTS.md`, `docs/ARCHITECTURE.md:131` | **41**                                                                               |
+| "`npm run format:check` … passes before commit"                      | `AGENTS.md`                                          | **27 files fail**, including all 11 in `lib/engine/` (double quotes, semicolons)     |
+| "The admin surfaces … are reachable until `requireAdmin()` is fixed" | `SECURITY.md`                                        | False — all four are closed, verified live                                           |
+| "`.env.example` is not in the repo"                                  | `AGENTS.md`                                          | It exists **on disk** but is **not tracked**; the practical claim holds for a cloner |
+| "A weekly CI job runs `connector-test` for every source"             | `scripts/connector-test.ts` header                   | No such workflow exists                                                              |
+| "Honest identification … used everywhere, without exception"         | `config/sources.ts`                                  | `ingest/fetch-events.mjs` sends a fake Chrome UA                                     |
+| Five connectors                                                      | `README.md`, `docs/ARCHITECTURE.md`                  | Ten are built                                                                        |
+| The pipeline runs "daily 07:00 IST"                                  | `docs/ARCHITECTURE.md`                               | Accurate as design; the demo DB has 0 `scrape_runs`                                  |
+| "the four `tab` items are Feed, Calendar, Saved, You"                | `components/shell/nav.ts` docstring                  | Team Board, People, Hackathons, You                                                  |
+| `getDemoProfile` is "what the profile screen shows"                  | `lib/demo.ts` docstring                              | It is not; `/p/[handle]` reads the URL. One caller: `/teams`                         |
+| "the sandbox can reuse it"                                           | `components/team/squad-card.tsx:20`                  | The sandbox does not import it                                                       |
+| "nine numbers"                                                       | `lib/brand.ts`                                       | Seven                                                                                |
+| "The service-role key is deliberately absent"                        | `.env.local` header, `SECURITY.md`                   | A `SUPABASE_SERVICE_ROLE_KEY` is present in `.env.local`                             |
+| Nudges as roadmap items 1 **and** 4                                  | `docs/ROADMAP.md`                                    | Duplicated entry                                                                     |
 
 Three roadmap items listed as pending have in fact shipped: the auto-draft
 `aria-live` region, the `h1 → h3` fix on `/people`, and the score bars (shipped
@@ -1396,7 +1396,7 @@ point all three copies of the `< UNMET_THRESHOLD` rule at it (roadmap item 6).
 ### 7. Fold `supabase/guild/*.sql` into `supabase/migrations/`
 
 Roadmap item 5. **Why:** the files currently describe a database that does not
-exist and, worse, describe RLS policies that are the *opposite* of what is
+exist and, worse, describe RLS policies that are the _opposite_ of what is
 deployed. A security reviewer reading them alone would reach the wrong
 conclusion. The fold has to fix four things: drop the colliding second `events`
 table, add `profiles.looking_for` / `projects.kind` / `projects.effort`, add the

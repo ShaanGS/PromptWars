@@ -1,12 +1,12 @@
-import type { CoverageEntry, Member, Requirement, SkillClaim } from "./types";
-import { UNVERIFIED_DAMP } from "./types";
+import type { CoverageEntry, Member, Requirement, SkillClaim } from './types'
+import { UNVERIFIED_DAMP } from './types'
 
 export function effectiveProficiency(claim: SkillClaim): number {
-  return claim.proficiency * (claim.verified ? 1 : UNVERIFIED_DAMP);
+  return claim.proficiency * (claim.verified ? 1 : UNVERIFIED_DAMP)
 }
 
 function claimFor(member: Member, skill: string): SkillClaim | undefined {
-  return member.skills.find((s) => s.skill === skill);
+  return member.skills.find((s) => s.skill === skill)
 }
 
 /**
@@ -17,13 +17,13 @@ function claimFor(member: Member, skill: string): SkillClaim | undefined {
 export function requirementCoverage(req: Requirement, team: Member[]): CoverageEntry {
   const contributors = team
     .map((m) => {
-      const claim = claimFor(m, req.skill);
-      const effective = claim ? effectiveProficiency(claim) : 0;
-      return { memberId: m.id, effective };
+      const claim = claimFor(m, req.skill)
+      const effective = claim ? effectiveProficiency(claim) : 0
+      return { memberId: m.id, effective }
     })
     .filter((c) => c.effective >= req.minProficiency && c.effective > 0)
-    .sort((a, b) => b.effective - a.effective || (a.memberId < b.memberId ? -1 : 1));
+    .sort((a, b) => b.effective - a.effective || (a.memberId < b.memberId ? -1 : 1))
 
-  const coverage = 1 - contributors.reduce((p, c) => p * (1 - c.effective), 1);
-  return { requirementId: req.id, coverage, contributors };
+  const coverage = 1 - contributors.reduce((p, c) => p * (1 - c.effective), 1)
+  return { requirementId: req.id, coverage, contributors }
 }

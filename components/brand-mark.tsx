@@ -92,7 +92,10 @@ export function Wordmark({
         alt={BRAND.name}
         height={height}
         style={{ height }}
-        className={cn('w-auto', onDark ? 'mix-blend-screen' : '[filter:invert(1)] mix-blend-multiply')}
+        className={cn(
+          'w-auto',
+          onDark ? 'mix-blend-screen' : '[filter:invert(1)] mix-blend-multiply',
+        )}
       />
       {tagline ? (
         <span

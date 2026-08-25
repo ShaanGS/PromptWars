@@ -89,7 +89,9 @@ async function fetchDevfolio() {
       title: h.name,
       host: null,
       mode: h.is_online ? 'online' : 'in_person',
-      location: h.is_online ? null : (h.location ?? ([h.city, h.country].filter(Boolean).join(', ') || null)),
+      location: h.is_online
+        ? null
+        : (h.location ?? ([h.city, h.country].filter(Boolean).join(', ') || null)),
       starts_at: toIso(h.starts_at),
       ends_at: toIso(h.ends_at),
       deadline_at: toIso(h.hackathon_setting?.reg_ends_at),
@@ -107,8 +109,18 @@ async function fetchDevfolio() {
 // parsed by hand and its end is treated as the deadline.
 // ---------------------------------------------------------------------------
 const MONTHS = {
-  jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5,
-  jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11,
+  jan: 0,
+  feb: 1,
+  mar: 2,
+  apr: 3,
+  may: 4,
+  jun: 5,
+  jul: 6,
+  aug: 7,
+  sep: 8,
+  oct: 9,
+  nov: 10,
+  dec: 11,
 }
 
 function parseDevpostRange(text) {
@@ -166,7 +178,10 @@ async function fetchDevpost() {
       ends_at: end ? end.toISOString() : null,
       deadline_at: end ? end.toISOString() : null,
       image_url: cleanImageUrl(h.thumbnail_url),
-      tags: (h.themes ?? []).map((t) => t?.name).filter(Boolean).slice(0, 5),
+      tags: (h.themes ?? [])
+        .map((t) => t?.name)
+        .filter(Boolean)
+        .slice(0, 5),
     })
   }
   return events
@@ -197,14 +212,23 @@ async function fetchUnstop() {
       const url = item.seo_url ?? (item.public_url ? `https://unstop.com/${item.public_url}` : null)
       if (!url) continue
       const region = (item.region ?? '').toLowerCase()
-      const mode = region === 'online' ? 'online' : region === 'hybrid' ? 'hybrid' : region ? 'in_person' : null
+      const mode =
+        region === 'online'
+          ? 'online'
+          : region === 'hybrid'
+            ? 'hybrid'
+            : region
+              ? 'in_person'
+              : null
       const organizer = item.organisation?.name?.trim() || null
       const filters = Array.isArray(item.filters)
         ? item.filters.map((f) => (typeof f === 'string' ? f : f?.name)).filter(Boolean)
         : []
       events.push({
         source: 'unstop',
-        external_url: url.startsWith('http') ? url : `https://unstop.com/${url.replace(/^\/+/, '')}`,
+        external_url: url.startsWith('http')
+          ? url
+          : `https://unstop.com/${url.replace(/^\/+/, '')}`,
         title: item.title,
         host: organizer,
         mode,

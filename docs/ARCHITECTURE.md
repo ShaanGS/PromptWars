@@ -47,12 +47,12 @@ lib/demo.ts — who "you" are. There is no session (see SECURITY.md), so
        identical on every machine and after every reseed.
 ```
 
-| Route | What it renders |
-| --- | --- |
-| `/teams` | Team Board — squads ranked by `gapFeed`, i.e. by *your* marginal gain |
-| `/squad/[id]` | The sandbox: open slots, ranked candidates, auto-draft, Team X-ray |
-| `/people` | The pool ranked by `guildScore` |
-| `/p/[handle]` | Profile: score breakdown, complementarity, gap feed |
+| Route         | What it renders                                                       |
+| ------------- | --------------------------------------------------------------------- |
+| `/teams`      | Team Board — squads ranked by `gapFeed`, i.e. by _your_ marginal gain |
+| `/squad/[id]` | The sandbox: open slots, ranked candidates, auto-draft, Team X-ray    |
+| `/people`     | The pool ranked by `guildScore`                                       |
+| `/p/[handle]` | Profile: score breakdown, complementarity, gap feed                   |
 
 Guild reads, with one exception: `/teams/new` posts a request. That is the
 only write — `app/(app)/teams/new/actions.ts` inserts a project, its
@@ -134,46 +134,46 @@ table and the fix.
 
 ### Guild
 
-| X | Lives in |
-| --- | --- |
-| The scoring model (all of it) | `lib/engine/` — pure, zero imports, 17 tests |
-| Weights and thresholds | `lib/engine/types.ts` — `WEIGHTS`, `UNVERIFIED_DAMP`, `UNMET_THRESHOLD`, `PROFICIENCY_FLOOR`, `OVERLAP_TARGET_MINUTES` |
-| DB rows → engine values | `lib/team/mappers.ts` (+ `PROFILE_COLUMNS` etc.) |
-| Who "you" are in the demo | `lib/demo.ts` (`DEMO_PROFILE_HANDLE = 'aarav'`) |
-| Team Board card, readiness band | `components/team/squad-card.tsx` |
-| Interactive sandbox, auto-draft UI | `components/team/sandbox.tsx` |
-| Engine tests | `lib/engine/__tests__/engine.test.ts` |
-| Demo seed data (profiles, squads) | `seed/seed-demo.mjs` (idempotent, plain ESM) |
-| Guild schema | `supabase/guild/*.sql` — **reference only, see below** |
+| X                                  | Lives in                                                                                                               |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| The scoring model (all of it)      | `lib/engine/` — pure, zero imports, 17 tests                                                                           |
+| Weights and thresholds             | `lib/engine/types.ts` — `WEIGHTS`, `UNVERIFIED_DAMP`, `UNMET_THRESHOLD`, `PROFICIENCY_FLOOR`, `OVERLAP_TARGET_MINUTES` |
+| DB rows → engine values            | `lib/team/mappers.ts` (+ `PROFILE_COLUMNS` etc.)                                                                       |
+| Who "you" are in the demo          | `lib/demo.ts` (`DEMO_PROFILE_HANDLE = 'aarav'`)                                                                        |
+| Team Board card, readiness band    | `components/team/squad-card.tsx`                                                                                       |
+| Interactive sandbox, auto-draft UI | `components/team/sandbox.tsx`                                                                                          |
+| Engine tests                       | `lib/engine/__tests__/engine.test.ts`                                                                                  |
+| Demo seed data (profiles, squads)  | `seed/seed-demo.mjs` (idempotent, plain ESM)                                                                           |
+| Guild schema                       | `supabase/guild/*.sql` — **reference only, see below**                                                                 |
 
 ### Olvable
 
-| X | Lives in |
-| --- | --- |
-| Source registry, crawl settings | `config/sources.ts` (git-owned; seeded to DB — decision 009) |
-| Luma calendar list | `config/luma-calendars.ts` (curated; verify with `luma:check`) |
-| Interest profile / scoring rubric | `config/interest-profile.ts` (its hash invalidates cached scores) |
-| Interest tags for onboarding | `config/interest-tags.ts` |
-| Fetch/parse per source | `lib/connectors/<id>.ts`, registered in `lib/connectors/index.ts` |
-| HTTP with crawl delay + UA | `lib/http/fetcher.ts` |
-| Quality gates, geo, relevance | `lib/pipeline/{quality,geo,relevance}.ts` |
-| Date parsing and formatting | `lib/dates/` (Asia/Kolkata everywhere) |
-| Deadline vs start ("effective") | `lib/events.ts` |
-| Content/scoring hashes | `lib/hash.ts` |
-| LLM provider + failover | `lib/llm/provider.ts` |
-| Olvable reads | `lib/queries/` — one module per surface, API on the barrel only |
-| Per-user fit ranking | `lib/ranking.ts` |
-| Search/filter/pagination helpers | `lib/filters.ts` |
-| Auth stub, roles, admin checks | `lib/auth/{server,roles}.ts` — see `SECURITY.md` |
-| Admin user management | `lib/admin/users.ts`, UI at `app/(app)/admin/` |
-| Calendar math, ICS generation | `lib/calendar.ts`, `lib/ics.ts` |
-| Excerpting (the legal rule) | `lib/text.ts` `snippet()` (decision 007) |
-| Brand constants | `lib/brand.ts` (`name: 'Guild'`), `brand/`, `public/guild-logo.png` |
-| Design tokens | `app/globals.css` (+ `brand/design-tokens.json`) |
-| UI primitives | `components/ui/` (catalogue at `/design`) |
-| Schema history | `supabase/migrations/NNNN_*.sql` (prose headers; never edited) |
-| Operational scripts | `scripts/` (each self-documents; all `import './load-env'`) |
-| Workflows | `.github/workflows/{ingest,healthcheck,ci}.yml` |
+| X                                 | Lives in                                                            |
+| --------------------------------- | ------------------------------------------------------------------- |
+| Source registry, crawl settings   | `config/sources.ts` (git-owned; seeded to DB — decision 009)        |
+| Luma calendar list                | `config/luma-calendars.ts` (curated; verify with `luma:check`)      |
+| Interest profile / scoring rubric | `config/interest-profile.ts` (its hash invalidates cached scores)   |
+| Interest tags for onboarding      | `config/interest-tags.ts`                                           |
+| Fetch/parse per source            | `lib/connectors/<id>.ts`, registered in `lib/connectors/index.ts`   |
+| HTTP with crawl delay + UA        | `lib/http/fetcher.ts`                                               |
+| Quality gates, geo, relevance     | `lib/pipeline/{quality,geo,relevance}.ts`                           |
+| Date parsing and formatting       | `lib/dates/` (Asia/Kolkata everywhere)                              |
+| Deadline vs start ("effective")   | `lib/events.ts`                                                     |
+| Content/scoring hashes            | `lib/hash.ts`                                                       |
+| LLM provider + failover           | `lib/llm/provider.ts`                                               |
+| Olvable reads                     | `lib/queries/` — one module per surface, API on the barrel only     |
+| Per-user fit ranking              | `lib/ranking.ts`                                                    |
+| Search/filter/pagination helpers  | `lib/filters.ts`                                                    |
+| Auth stub, roles, admin checks    | `lib/auth/{server,roles}.ts` — see `SECURITY.md`                    |
+| Admin user management             | `lib/admin/users.ts`, UI at `app/(app)/admin/`                      |
+| Calendar math, ICS generation     | `lib/calendar.ts`, `lib/ics.ts`                                     |
+| Excerpting (the legal rule)       | `lib/text.ts` `snippet()` (decision 007)                            |
+| Brand constants                   | `lib/brand.ts` (`name: 'Guild'`), `brand/`, `public/guild-logo.png` |
+| Design tokens                     | `app/globals.css` (+ `brand/design-tokens.json`)                    |
+| UI primitives                     | `components/ui/` (catalogue at `/design`)                           |
+| Schema history                    | `supabase/migrations/NNNN_*.sql` (prose headers; never edited)      |
+| Operational scripts               | `scripts/` (each self-documents; all `import './load-env'`)         |
+| Workflows                         | `.github/workflows/{ingest,healthcheck,ci}.yml`                     |
 
 ## Tables
 

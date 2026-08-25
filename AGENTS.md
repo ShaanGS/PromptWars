@@ -7,7 +7,7 @@ Guild was grafted in. `CLAUDE.md` points at this file.
 ## What this repo is
 
 **The product is Guild** — a team-formation platform answering hackathon
-Problem Statement 2 (ProjectMatch). It is built *inside* Olvable, Shaan's
+Problem Statement 2 (ProjectMatch). It is built _inside_ Olvable, Shaan's
 Chennai event aggregator (`ShaanGS/chennai-events`), which supplies the shell,
 design system, ingestion pipeline and event corpus. Both halves are live and
 both matter:
@@ -50,7 +50,7 @@ Read [`README.md`](README.md) for the product thesis and
   pure helper is testable the moment it lives under `lib/`. That is a reason to
   extract one out of a component rather than leave it there.
 - **The engine is the thing that must not regress.** `npx vitest run lib/engine`
-  is 17 tests over the scoring model. They pin the *claims* — probabilistic-OR
+  is 17 tests over the scoring model. They pin the _claims_ — probabilistic-OR
   coverage, the 0.6 unverified damp, the proficiency floor, gap-beats-duplicate,
   deterministic auto-draft — not the implementation. If a change makes one fail,
   the product's thesis changed; say so out loud rather than editing the test.

@@ -67,15 +67,15 @@ Credibility is modelled, not assumed.
 Every noun in the problem statement is a term in the score, not a filter beside
 it:
 
-| The statement asks for   | Where it lives                                                       |
-| ------------------------ | -------------------------------------------------------------------- |
-| Skills                   | `p_eff` per claim — proficiency, damped to `0.6×` without a proof link |
-| Project requirements     | Weighted slots, each with a minimum-proficiency floor                 |
-| Availability             | `overlap` — weekly minutes **all** members share, 10 h/week scores 1.0 |
-| Experience               | `balance` — `1 − variance` of experience levels across the team       |
-| Commitment               | `commitment` — the spread between the keenest and the least keen      |
-| Interests                | The ingested events corpus a squad forms around, and `scarcity` in each person's Guild Score |
-| "who is available or interested" | The gap feed — open squads ranked by *your* marginal gain     |
+| The statement asks for           | Where it lives                                                                               |
+| -------------------------------- | -------------------------------------------------------------------------------------------- |
+| Skills                           | `p_eff` per claim — proficiency, damped to `0.6×` without a proof link                       |
+| Project requirements             | Weighted slots, each with a minimum-proficiency floor                                        |
+| Availability                     | `overlap` — weekly minutes **all** members share, 10 h/week scores 1.0                       |
+| Experience                       | `balance` — `1 − variance` of experience levels across the team                              |
+| Commitment                       | `commitment` — the spread between the keenest and the least keen                             |
+| Interests                        | The ingested events corpus a squad forms around, and `scarcity` in each person's Guild Score |
+| "who is available or interested" | The gap feed — open squads ranked by _your_ marginal gain                                    |
 
 ## See it in 60 seconds
 
@@ -88,15 +88,16 @@ illustrative.
    requirements; **Frontend, Designer and Pitch are all at 0**.
 4. The ranked candidates are led by **Meera Pillai (figma 0.85, verified) at
    +7.8%**, tied with the first React developer — because at this moment
-   *both* fill an empty slot.
+   _both_ fill an empty slot.
 5. Add the React developer. Now watch the list re-rank: the **next** React
    developer — Vikram Nair, `react 0.80`, verified, on paper an excellent
    candidate — is worth **+1.6%**, while Meera is now worth **+10.1%**. That is
-   the thesis on screen: strength does not rank, *complementarity* does.
+   the thesis on screen: strength does not rank, _complementarity_ does.
 6. Press **Auto-draft**. It picks Meera (+7.8%), then Rohan (+10.1%), then
-   Kabir (+4.8%), then Kavya (+2.2%), and stops at **79.6%** when no remaining
-   person clears the 0.5% gain floor. Greedy over `marginalGain`, deterministic,
-   so it replays identically every run.
+   Kabir (+4.8%), then Kavya (+2.2%), and stops at **79.6%** — the roster cap
+   (one more than the five requirements), not the gain floor: Vikram is still
+   worth +1.5% when it stops. Greedy over `marginalGain`, deterministic, so it
+   replays identically every run.
 7. Read the **Team X-ray** — bus factor, availability dead zones, commitment
    mismatch.
 8. **People** → open any profile for a Guild Score split into credibility,
@@ -130,13 +131,13 @@ date library. Every file in it imports only its own siblings (`./types`,
 purity, and it is defensive on purpose: a malformed availability window or a
 zero weight from the database must not reach the engine and poison a score.
 
-| Route          | What it does                                              |
-| -------------- | --------------------------------------------------------- |
-| `/teams`       | Team Board — squads ranked by what *you* would add         |
-| `/squad/[id]`  | The sandbox: open slots, ranked candidates, auto-draft, risks |
-| `/people`      | The pool, ranked by Guild Score                            |
-| `/p/[handle]`  | Profile: score breakdown, complementarity, gap feed        |
-| `/`, `/events`, `/hackathons` | The event corpus a squad forms around       |
+| Route                         | What it does                                                  |
+| ----------------------------- | ------------------------------------------------------------- |
+| `/teams`                      | Team Board — squads ranked by what _you_ would add            |
+| `/squad/[id]`                 | The sandbox: open slots, ranked candidates, auto-draft, risks |
+| `/people`                     | The pool, ranked by Guild Score                               |
+| `/p/[handle]`                 | Profile: score breakdown, complementarity, gap feed           |
+| `/`, `/events`, `/hackathons` | The event corpus a squad forms around                         |
 
 The four Guild routes read Supabase through `createServiceClient()` inline
 rather than through `lib/queries/`. `lib/queries/` is Olvable's data layer,
@@ -190,7 +191,7 @@ Two caveats worth knowing before you try this:
 The seed is shaped so the maths is visible rather than asserted: React is
 deliberately over-supplied across 12 of the 40 profiles, and `figma` and
 `pitching` are deliberately scarce. That is what makes a candidate list
-*demonstrate* diminishing returns instead of claiming it.
+_demonstrate_ diminishing returns instead of claiming it.
 
 ## Testing
 
@@ -198,7 +199,7 @@ deliberately over-supplied across 12 of the 40 profiles, and `figma` and
 `lib/engine/`** — run `npx vitest run lib/engine` to see just those, in about
 0.2s.
 
-The engine tests pin the *thesis*, not the implementation. Each one is a claim
+The engine tests pin the _thesis_, not the implementation. Each one is a claim
 that would be false if the product stopped working the way it says it does:
 
 - `coverage(0.8, 0.5)` is exactly `0.9` — the probabilistic OR, not a sum.
@@ -217,7 +218,7 @@ that would be false if the product stopped working the way it says it does:
 Two more suites guard the boundary either side of that purity:
 `lib/team/mappers.test.ts` (21 tests — every defensive branch: junk jsonb, a
 zero weight clamped off zero, PostgREST numerics arriving as strings, and that
-an empty `proof_url` means *unverified* rather than *verified*) and
+an empty `proof_url` means _unverified_ rather than _verified_) and
 `lib/demo.test.ts` (9 tests — `getDemoProfile()` degrades to `null` on any
 failure rather than throwing, because a demo that 500s is worse than one that
 shows less).
