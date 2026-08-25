@@ -52,7 +52,7 @@ export default async function ProfilePage({
             <Button
               asChild
               variant="secondary"
-              className="press rounded-full border border-border font-semibold"
+              className="press rounded-xl border border-border font-semibold"
             >
               <Link href="/people">All people</Link>
             </Button>
@@ -63,7 +63,7 @@ export default async function ProfilePage({
           <section className="g-card rise-in flex flex-col gap-4 p-6 sm:flex-row sm:items-start sm:gap-5 sm:p-8">
             <Avatar name={profile.name} className="size-16 text-lg" />
             <div className="min-w-0">
-              <h2 className="text-2xl font-bold tracking-[-0.03em]">{profile.name}</h2>
+              <h2 className="text-2xl font-semibold tracking-[-0.03em]">{profile.name}</h2>
               <div className="mt-1 text-sm text-ink-muted">
                 <span className="g-figure">@{profile.handle}</span>
                 {" · "}
@@ -88,7 +88,7 @@ export default async function ProfilePage({
             <div className="grid gap-6 sm:grid-cols-[160px_1fr] sm:gap-8">
               <div>
                 <div className="g-eyebrow text-ink-subtle">Guild score</div>
-                <div className="g-figure mt-2 text-6xl leading-none font-semibold text-primary">
+                <div className="g-figure mt-2 text-6xl leading-none font-semibold text-accent">
                   {Math.round(gs.total * 100)}
                 </div>
                 <p className="mt-3 text-xs leading-relaxed text-ink-subtle">
@@ -176,7 +176,7 @@ export default async function ProfilePage({
                 className="g-card rise-in p-6"
               >
                 <h2 className="flex items-center gap-2 font-semibold">
-                  <Sparkles className="size-4 text-primary" />
+                  <Sparkles className="size-4 text-accent" />
                   People you should meet
                 </h2>
                 <p className="mt-0.5 text-xs text-ink-subtle">
@@ -220,7 +220,7 @@ export default async function ProfilePage({
                   className="g-card rise-in p-6"
                 >
                   <h2 className="flex items-center gap-2 font-semibold">
-                    <TrendingUp className="size-4 text-primary" />
+                    <TrendingUp className="size-4 text-accent" />
                     Squads that need you
                   </h2>
                   <p className="mt-0.5 text-xs text-ink-subtle">
@@ -249,7 +249,7 @@ export default async function ProfilePage({
                               </div>
                             )}
                           </div>
-                          <span className="g-figure shrink-0 text-sm font-semibold text-primary">
+                          <span className="g-figure shrink-0 text-sm font-semibold text-accent">
                             +{(gain.delta * 100).toFixed(1)}%
                           </span>
                         </Link>
@@ -275,7 +275,7 @@ function BreakdownBar({ label, value }: { label: string; value: number }) {
         <span className="g-figure font-semibold text-foreground">{pct}%</span>
       </div>
       <div className="h-2 rounded-full bg-surface-3">
-        <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
+        <div className="h-full rounded-full bg-accent" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );

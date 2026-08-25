@@ -141,7 +141,7 @@ export function NewSquadForm({
 
         <section className="flex flex-col gap-4">
           <div>
-            <h2 className="text-lg font-bold tracking-[-0.02em]">Requirements</h2>
+            <h2 className="text-lg font-semibold tracking-[-0.02em]">Requirements</h2>
             <p className="mt-1 text-sm text-ink-muted">
               One skill per slot. Weight is how much it matters; the floor is the
               proficiency a person needs before they count at all.
@@ -158,7 +158,7 @@ export function NewSquadForm({
                 }
               >
                 <div className="mb-4 flex items-start justify-between gap-3">
-                  <span className="g-figure flex size-6 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+                  <span className="g-figure flex size-6 items-center justify-center rounded-full bg-accent text-[11px] font-semibold text-primary-foreground">
                     {i + 1}
                   </span>
                   {rows.length > 1 && (
@@ -211,7 +211,7 @@ export function NewSquadForm({
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                       <Label htmlFor={`weight-${row.key}`}>Weight</Label>
-                      <span className="g-figure text-xs font-semibold text-primary">
+                      <span className="g-figure text-xs font-semibold text-accent">
                         {row.weight}
                       </span>
                     </div>
@@ -229,7 +229,7 @@ export function NewSquadForm({
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between">
                       <Label htmlFor={`min-${row.key}`}>Min proficiency</Label>
-                      <span className="g-figure text-xs font-semibold text-primary">
+                      <span className="g-figure text-xs font-semibold text-accent">
                         {row.minPct}%
                       </span>
                     </div>
@@ -254,7 +254,7 @@ export function NewSquadForm({
               variant="secondary"
               onClick={addRow}
               disabled={rows.length >= MAX_REQUIREMENTS}
-              className="press rounded-full border border-border font-semibold"
+              className="press rounded-xl border border-border font-semibold"
             >
               <Plus className="size-4" strokeWidth={2.6} />
               Add requirement
@@ -275,7 +275,7 @@ export function NewSquadForm({
                 {" — "}
                 <Link
                   href="/onboarding"
-                  className="font-semibold text-primary underline-offset-4 hover:underline"
+                  className="font-semibold text-accent underline-offset-4 hover:underline"
                 >
                   start here
                 </Link>
@@ -290,7 +290,7 @@ export function NewSquadForm({
           <Button
             type="submit"
             disabled={pending}
-            className="press rounded-full font-semibold"
+            className="press rounded-xl font-semibold"
           >
             {pending ? "Opening…" : "Open the squad"}
           </Button>

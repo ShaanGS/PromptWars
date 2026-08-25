@@ -135,7 +135,7 @@ function ScoreCard({
       <div className="flex items-end justify-between gap-4 p-5 pb-4 sm:p-6 sm:pb-5">
         <div>
           <div className="g-eyebrow text-ink-subtle">Team score</div>
-          <div className="g-figure mt-1 text-[44px] leading-none font-bold sm:text-[52px]">
+          <div className="g-figure mt-1 text-[44px] leading-none font-semibold sm:text-[52px]">
             {Math.round(ts.score * 100)}
             <span className="text-2xl text-ink-subtle">%</span>
           </div>
@@ -149,7 +149,7 @@ function ScoreCard({
 
       <div className="mx-5 h-2 overflow-hidden rounded-full bg-surface-3 sm:mx-6">
         <div
-          className="h-full origin-left rounded-full bg-primary transition-transform duration-300"
+          className="h-full origin-left rounded-full bg-accent transition-transform duration-300"
           style={{
             transform: `scaleX(${ts.score})`,
             transitionTimingFunction: "var(--ease-out)",
@@ -200,12 +200,12 @@ function SlotCard({
     return (
       <div
         style={delay}
-        className="rise-in gap-pulse rounded-2xl border-2 border-dashed p-5"
+        className="rise-in gap-pulse rounded-xl border-2 border-dashed p-5"
       >
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0">
-            <div className="g-eyebrow text-primary">Open slot</div>
-            <div className="mt-1 truncate text-lg font-bold tracking-[-0.02em]">
+            <div className="g-eyebrow text-accent">Open slot</div>
+            <div className="mt-1 truncate text-lg font-semibold tracking-[-0.02em]">
               {label}
             </div>
             <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-muted">
@@ -218,7 +218,7 @@ function SlotCard({
               </span>
             </div>
           </div>
-          <div className="g-figure shrink-0 text-lg font-bold text-primary">
+          <div className="g-figure shrink-0 text-lg font-semibold text-accent">
             {Math.round(entry.coverage * 100)}%
           </div>
         </div>
@@ -230,7 +230,7 @@ function SlotCard({
     <div style={delay} className="rise-in g-card p-5">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <div className="truncate text-base font-bold tracking-[-0.02em]">{label}</div>
+          <div className="truncate text-base font-semibold tracking-[-0.02em]">{label}</div>
           <div className="g-figure mt-0.5 text-xs text-ink-subtle">{req.skill}</div>
         </div>
         <div className="flex shrink-0 items-center gap-2.5">
@@ -311,13 +311,13 @@ function CandidateList({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between gap-2">
-        <h2 className="text-sm font-bold tracking-[-0.01em]">Best next member</h2>
+        <h2 className="text-sm font-semibold tracking-[-0.01em]">Best next member</h2>
         <div className="flex gap-2">
           <Button
             size="sm"
             onClick={onDraft}
             disabled={drafting}
-            className="press rounded-full font-semibold"
+            className="press rounded-xl font-semibold"
           >
             <Sparkles className="size-3.5" strokeWidth={2.4} />
             {drafting ? "Drafting" : "Auto-draft"}
@@ -327,7 +327,7 @@ function CandidateList({
             variant="secondary"
             onClick={onReset}
             aria-label="Reset roster"
-            className="press rounded-full border border-border"
+            className="press rounded-xl border border-border"
           >
             <RotateCcw className="size-3.5" strokeWidth={2.4} />
           </Button>
@@ -362,8 +362,8 @@ function CandidateList({
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
                     <span
-                      className={`g-figure text-sm font-bold ${
-                        fillsGap ? "text-primary" : "text-ink-subtle"
+                      className={`g-figure text-sm font-semibold ${
+                        fillsGap ? "text-accent" : "text-ink-subtle"
                       }`}
                     >
                       +{(gain.delta * 100).toFixed(1)}%
@@ -413,7 +413,7 @@ function RiskPanel({ risks }: { risks: Risk[] }) {
     <section aria-label="Team risks" className="g-card p-5">
       <div className="mb-3 flex items-center gap-2">
         <AlertTriangle className="size-4 text-warn" strokeWidth={2.2} />
-        <h2 className="text-sm font-bold tracking-[-0.01em]">Team X-ray</h2>
+        <h2 className="text-sm font-semibold tracking-[-0.01em]">Team X-ray</h2>
         <span className="g-figure ml-auto text-xs text-ink-subtle">{risks.length}</span>
       </div>
       <ul className="flex flex-col gap-2.5">

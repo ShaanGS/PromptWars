@@ -77,11 +77,11 @@ export default async function HomePage() {
           }
           action={
             me ? (
-              <Button asChild className="press rounded-full font-semibold">
+              <Button asChild className="press rounded-xl font-semibold">
                 <Link href="/projects/new">New squad</Link>
               </Button>
             ) : (
-              <Button asChild className="press rounded-full font-semibold">
+              <Button asChild className="press rounded-xl font-semibold">
                 <Link href="/onboarding">Create profile</Link>
               </Button>
             )
@@ -90,10 +90,10 @@ export default async function HomePage() {
 
         <section aria-labelledby="feed-heading" className="mb-10">
           <div className="mb-3 flex items-baseline justify-between gap-4">
-            <h2 id="feed-heading" className="text-lg font-bold tracking-[-0.02em]">
+            <h2 id="feed-heading" className="text-lg font-semibold tracking-[-0.02em]">
               Squads looking for you
             </h2>
-            <Link href="/projects" className="text-sm font-semibold text-primary">
+            <Link href="/projects" className="text-sm font-semibold text-accent">
               See all
             </Link>
           </div>
@@ -106,7 +106,7 @@ export default async function HomePage() {
               <Button
                 asChild
                 variant="secondary"
-                className="press rounded-full border border-border font-semibold"
+                className="press rounded-xl border border-border font-semibold"
               >
                 <Link href="/onboarding">Create profile</Link>
               </Button>
@@ -119,7 +119,7 @@ export default async function HomePage() {
               <Button
                 asChild
                 variant="secondary"
-                className="press rounded-full border border-border font-semibold"
+                className="press rounded-xl border border-border font-semibold"
               >
                 <Link href="/projects/new">New squad</Link>
               </Button>
@@ -150,7 +150,7 @@ export default async function HomePage() {
                             : "You deepen the roster"}
                         </div>
                       </div>
-                      <span className="g-figure flex shrink-0 items-center gap-1 text-sm font-semibold text-primary">
+                      <span className="g-figure flex shrink-0 items-center gap-1 text-sm font-semibold text-accent">
                         <TrendingUp className="size-4" strokeWidth={2.4} />+
                         {(entry.gain.delta * 100).toFixed(1)}%
                       </span>
@@ -164,10 +164,10 @@ export default async function HomePage() {
 
         <section aria-labelledby="events-heading" className="mb-10">
           <div className="mb-3 flex items-baseline justify-between gap-4">
-            <h2 id="events-heading" className="text-lg font-bold tracking-[-0.02em]">
+            <h2 id="events-heading" className="text-lg font-semibold tracking-[-0.02em]">
               Closing soon
             </h2>
-            <Link href="/events" className="text-sm font-semibold text-primary">
+            <Link href="/events" className="text-sm font-semibold text-accent">
               See all
             </Link>
           </div>
@@ -180,7 +180,7 @@ export default async function HomePage() {
               <Button
                 asChild
                 variant="secondary"
-                className="press rounded-full border border-border font-semibold"
+                className="press rounded-xl border border-border font-semibold"
               >
                 <Link href="/events/post">Post an event</Link>
               </Button>
@@ -217,10 +217,10 @@ export default async function HomePage() {
 
         <section aria-labelledby="pool-heading">
           <div className="mb-3 flex items-baseline justify-between gap-4">
-            <h2 id="pool-heading" className="text-lg font-bold tracking-[-0.02em]">
+            <h2 id="pool-heading" className="text-lg font-semibold tracking-[-0.02em]">
               New faces in the pool
             </h2>
-            <Link href="/people" className="text-sm font-semibold text-primary">
+            <Link href="/people" className="text-sm font-semibold text-accent">
               See all
             </Link>
           </div>
@@ -233,7 +233,7 @@ export default async function HomePage() {
               <Button
                 asChild
                 variant="secondary"
-                className="press rounded-full border border-border font-semibold"
+                className="press rounded-xl border border-border font-semibold"
               >
                 <Link href="/onboarding">Create profile</Link>
               </Button>
@@ -268,7 +268,7 @@ export default async function HomePage() {
 
           <Link
             href="/people"
-            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent"
           >
             <Users className="size-4" strokeWidth={2.4} />
             Browse the whole pool

@@ -157,7 +157,7 @@ export default function PostEventPage() {
                     {" — "}
                     <Link
                       href="/onboarding"
-                      className="font-semibold text-primary underline underline-offset-4"
+                      className="font-semibold text-accent underline underline-offset-4"
                     >
                       set one up
                     </Link>

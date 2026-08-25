@@ -36,7 +36,7 @@ export default async function Landing() {
           >
             <Link href="/events">Browse hackathons</Link>
           </Button>
-          <Button asChild className="press rounded-full font-semibold">
+          <Button asChild className="press rounded-xl font-semibold">
             <Link href="/demo">Open the demo</Link>
           </Button>
         </div>
@@ -47,11 +47,11 @@ export default async function Landing() {
           {/* Orbit first on mobile: it explains the idea before any words do. */}
           <div className="order-1 lg:order-2">
             <div className="relative mx-auto aspect-square w-full max-w-[380px] sm:max-w-[440px]">
-              <div className="absolute inset-[9%] rounded-full border border-dashed border-primary/25" />
+              <div className="absolute inset-[9%] rounded-full border border-dashed border-accent/25" />
               <div className="absolute inset-[22%] rounded-full bg-primary-soft/60" />
               <div className="absolute inset-[30%] rounded-full bg-white shadow-[var(--shadow-lift)]" />
               <div className="absolute inset-[30%] flex items-center justify-center">
-                <GuildMark className="size-[42%] text-primary" />
+                <GuildMark className="size-[46%] rounded-2xl" />
               </div>
 
               {faces.map((p, i) => (
@@ -80,9 +80,9 @@ export default async function Landing() {
               <Users className="size-3.5" strokeWidth={2.4} />
               Built for SRM
             </span>
-            <h1 className="text-[38px] leading-[1.06] font-extrabold tracking-[-0.035em] text-balance sm:text-[52px] lg:text-[58px]">
+            <h1 className="text-[38px] leading-[1.06] font-semibold tracking-[-0.035em] text-balance sm:text-[52px] lg:text-[58px]">
               Let&apos;s build something{" "}
-              <span className="text-primary">together</span>
+              <span className="text-accent">together</span>
             </h1>
             <p className="max-w-md text-[17px] leading-relaxed text-ink-muted">
               Find people, form teams, and bring ideas to life. Guild scores the
@@ -93,7 +93,7 @@ export default async function Landing() {
               <Button
                 asChild
                 size="lg"
-                className="press h-13 rounded-full bg-primary-deep px-7 text-[15px] font-semibold hover:bg-primary-deep/90"
+                className="press h-12 rounded-xl bg-foreground px-7 text-[15px] font-semibold hover:bg-foreground/90"
               >
                 <Link href="/demo">
                   Open the demo
@@ -104,7 +104,7 @@ export default async function Landing() {
                 asChild
                 size="lg"
                 variant="secondary"
-                className="press h-13 rounded-full border border-border px-7 text-[15px] font-semibold"
+                className="press h-12 rounded-xl border border-border px-7 text-[15px] font-semibold"
               >
                 <Link href="/events">Browse hackathons</Link>
               </Button>
@@ -123,8 +123,8 @@ export default async function Landing() {
             { n: "1−Π(1−p)", label: "how coverage is scored", icon: BadgeCheck },
           ].map((s) => (
             <div key={s.label} className="g-card p-4 sm:p-5">
-              <s.icon className="size-4 text-primary" strokeWidth={2.2} />
-              <div className="g-figure mt-3 text-xl font-bold sm:text-2xl">{s.n}</div>
+              <s.icon className="size-4 text-accent" strokeWidth={2.2} />
+              <div className="g-figure mt-3 text-xl font-semibold sm:text-2xl">{s.n}</div>
               <div className="mt-0.5 text-xs leading-snug text-ink-muted sm:text-sm">
                 {s.label}
               </div>
@@ -148,7 +148,7 @@ export default async function Landing() {
             },
           ].map((f) => (
             <div key={f.t} className="g-card p-6">
-              <h3 className="text-[17px] leading-snug font-bold tracking-[-0.02em]">
+              <h3 className="text-[17px] leading-snug font-semibold tracking-[-0.02em]">
                 {f.t}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-muted">{f.d}</p>
@@ -158,7 +158,7 @@ export default async function Landing() {
 
         <section className="pb-16">
           <div className="g-card overflow-hidden p-8 text-center sm:p-12">
-            <h2 className="mx-auto max-w-lg text-2xl font-extrabold tracking-[-0.03em] text-balance sm:text-3xl">
+            <h2 className="mx-auto max-w-lg text-2xl font-semibold tracking-[-0.03em] text-balance sm:text-3xl">
               Stop building teams out of your group chat.
             </h2>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink-muted">
@@ -183,7 +183,7 @@ export default async function Landing() {
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-7 text-xs text-ink-subtle">
           <span>Guild — built at the FAST hackathon</span>
-          <Link href="/events" className="font-semibold text-primary">
+          <Link href="/events" className="font-semibold text-accent">
             Browse hackathons
           </Link>
         </div>

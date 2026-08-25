@@ -93,7 +93,7 @@ export function OnboardingForm() {
   return (
     <div className="flex flex-col gap-5">
       <section className="g-card p-5 sm:p-7">
-        <h2 className="text-base font-bold tracking-[-0.02em]">Who you are</h2>
+        <h2 className="text-base font-semibold tracking-[-0.02em]">Who you are</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <Field label="Name">
             <Input
@@ -156,7 +156,7 @@ export function OnboardingForm() {
 
       <section className="g-card p-5 sm:p-7">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-base font-bold tracking-[-0.02em]">What you bring</h2>
+          <h2 className="text-base font-semibold tracking-[-0.02em]">What you bring</h2>
           <p className="text-xs text-ink-muted">
             <span className="g-figure font-semibold text-foreground">{verified}</span> of{" "}
             <span className="g-figure font-semibold text-foreground">{skills.length}</span>{" "}
@@ -251,7 +251,7 @@ export function OnboardingForm() {
       </section>
 
       <section className="g-card p-5 sm:p-7">
-        <h2 className="text-base font-bold tracking-[-0.02em]">When you are free</h2>
+        <h2 className="text-base font-semibold tracking-[-0.02em]">When you are free</h2>
         <p className="mt-1 text-xs text-ink-muted">
           Squads score on shared hours, not just skills. Tap the blocks you can
           actually show up for.
@@ -365,7 +365,7 @@ function BlockRow({
             onClick={() => toggleSlot(key)}
             className={`h-9 rounded-lg border transition-colors duration-150 ${
               on
-                ? "border-primary bg-primary-soft"
+                ? "border-accent bg-primary-soft"
                 : "border-border bg-card hover:bg-surface-2"
             }`}
           />

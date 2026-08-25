@@ -63,7 +63,7 @@ export default async function ProjectsPage() {
           title="Squads"
           sub={`${projects.length} forming across a pool of ${pool.length} people.`}
           action={
-            <Button asChild className="press rounded-full font-semibold">
+            <Button asChild className="press rounded-xl font-semibold">
               <Link href="/projects/new">
                 <Plus className="size-4" strokeWidth={2.6} />
                 New squad
@@ -75,10 +75,10 @@ export default async function ProjectsPage() {
         {me ? (
           <section aria-labelledby="feed-heading" className="mb-10">
             <div className="mb-1 flex items-baseline justify-between gap-4">
-              <h2 id="feed-heading" className="text-lg font-bold tracking-[-0.02em]">
+              <h2 id="feed-heading" className="text-lg font-semibold tracking-[-0.02em]">
                 Squads looking for you
               </h2>
-              <Link href="/people" className="text-sm font-semibold text-primary">
+              <Link href="/people" className="text-sm font-semibold text-accent">
                 See the pool
               </Link>
             </div>
@@ -93,7 +93,7 @@ export default async function ProjectsPage() {
                 <Button
                   asChild
                   variant="secondary"
-                  className="press rounded-full border border-border font-semibold"
+                  className="press rounded-xl border border-border font-semibold"
                 >
                   <Link href="/projects/new">New squad</Link>
                 </Button>
@@ -131,7 +131,7 @@ export default async function ProjectsPage() {
                               : "You deepen the roster"}
                           </div>
                         </div>
-                        <span className="g-figure flex shrink-0 items-center gap-1 text-sm font-semibold text-primary">
+                        <span className="g-figure flex shrink-0 items-center gap-1 text-sm font-semibold text-accent">
                           <TrendingUp className="size-4" strokeWidth={2.4} />+
                           {(entry.gain.delta * 100).toFixed(1)}%
                         </span>
@@ -151,7 +151,7 @@ export default async function ProjectsPage() {
               <Button
                 asChild
                 variant="secondary"
-                className="press rounded-full border border-border font-semibold"
+                className="press rounded-xl border border-border font-semibold"
               >
                 <Link href="/onboarding">Create profile</Link>
               </Button>
@@ -160,7 +160,7 @@ export default async function ProjectsPage() {
         )}
 
         <section aria-labelledby="all-heading">
-          <h2 id="all-heading" className="mb-3 text-lg font-bold tracking-[-0.02em]">
+          <h2 id="all-heading" className="mb-3 text-lg font-semibold tracking-[-0.02em]">
             All squads
           </h2>
           {scored.length === 0 ? (
@@ -171,7 +171,7 @@ export default async function ProjectsPage() {
               <Button
                 asChild
                 variant="secondary"
-                className="press rounded-full border border-border font-semibold"
+                className="press rounded-xl border border-border font-semibold"
               >
                 <Link href="/projects/new">New squad</Link>
               </Button>
@@ -201,7 +201,7 @@ export default async function ProjectsPage() {
                           </div>
                         </div>
                         <div className="shrink-0 text-right">
-                          <div className="g-figure text-xl leading-none font-bold">
+                          <div className="g-figure text-xl leading-none font-semibold">
                             {Math.round(s.base * 100)}%
                           </div>
                           <div className="g-eyebrow mt-1 text-ink-subtle">coverage</div>

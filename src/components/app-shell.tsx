@@ -2,127 +2,149 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, Home, Plus, UserRound, Users } from "lucide-react";
+import {
+  CalendarDays,
+  LayoutDashboard,
+  Plus,
+  UserRoundPlus,
+  UsersRound,
+  Users,
+} from "lucide-react";
 import { GuildMark, Wordmark } from "@/components/brand";
 import { Button } from "@/components/ui/button";
 
-const NAV = [
-  { href: "/home", label: "Home", icon: Home },
+const MAIN = [
+  { href: "/home", label: "Dashboard", icon: LayoutDashboard },
   { href: "/events", label: "Events", icon: CalendarDays },
   { href: "/projects", label: "Squads", icon: Users },
-  { href: "/people", label: "People", icon: UserRound },
+  { href: "/people", label: "People", icon: UsersRound },
 ];
+
+const SETUP = [{ href: "/onboarding", label: "Your profile", icon: UserRoundPlus }];
 
 function isActive(pathname: string, href: string): boolean {
   return href === "/home" ? pathname === "/home" : pathname.startsWith(href);
 }
 
 /**
- * Two navigations, one source of truth. Desktop gets a persistent rail so the
- * sections stay one click apart; mobile gets a thumb-height tab bar, because a
- * hamburger would hide the entire app behind a tap.
+ * Desktop sidebar on the canvas, separated by a hairline; phones get a tab
+ * bar. The active item is solid ink rather than a tint — it is the only
+ * heavy element in the chrome, so there is never a question where you are.
  */
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
     <div className="flex min-h-full flex-col lg:flex-row">
-      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col border-r border-border bg-card px-4 py-6 lg:flex">
-        <Link href="/" className="px-2">
-          <Wordmark />
-        </Link>
+      <aside className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col border-r border-border bg-card lg:flex">
+        <div className="px-5 pt-7 pb-5">
+          <Link href="/" className="inline-flex">
+            <Wordmark />
+          </Link>
+        </div>
 
-        <nav className="mt-8 flex flex-col gap-1">
-          {NAV.map(({ href, label, icon: Icon }) => {
-            const active = isActive(pathname, href);
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-current={active ? "page" : undefined}
-                className={`flex items-center gap-3 rounded-full px-4 py-2.5 text-sm transition-colors duration-150 ${
-                  active
-                    ? "bg-primary-soft font-semibold text-accent-foreground"
-                    : "font-medium text-ink-muted hover:bg-surface-2 hover:text-foreground"
-                }`}
-              >
-                <Icon className="size-[18px]" strokeWidth={active ? 2.4 : 2} />
-                {label}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 overflow-y-auto px-3">
+          <Group items={MAIN} pathname={pathname} />
+          <Group title="Setup" items={SETUP} pathname={pathname} />
         </nav>
 
-        <div className="mt-auto flex flex-col gap-3">
-          <Button asChild className="press h-11 rounded-full font-semibold">
+        <div className="border-t border-border p-3">
+          <Button
+            asChild
+            className="press h-11 w-full justify-start gap-2 rounded-xl font-medium"
+          >
             <Link href="/projects/new">
-              <Plus className="size-4" strokeWidth={2.6} />
+              <Plus className="size-4" strokeWidth={2.4} />
               New squad
             </Link>
           </Button>
-          <Link
-            href="/onboarding"
-            className="rounded-2xl bg-surface-2 px-4 py-3 text-xs leading-relaxed text-ink-muted transition-colors hover:bg-surface-3"
-          >
-            <span className="font-semibold text-foreground">Not in the pool yet?</span>
-            <br />
-            Add your skills so squads can find you.
-          </Link>
         </div>
       </aside>
 
-      {/* Mobile top bar: identity and the one action worth a thumb up here. */}
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/85 px-4 backdrop-blur lg:hidden">
+      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/90 px-4 backdrop-blur lg:hidden">
         <Link href="/">
           <Wordmark />
         </Link>
-        <Button asChild size="sm" variant="secondary" className="press rounded-full border border-border font-semibold">
-          <Link href="/onboarding">Join</Link>
+        <Button
+          asChild
+          size="sm"
+          className="press h-9 rounded-xl px-3 font-medium"
+        >
+          <Link href="/projects/new">
+            <Plus className="size-4" strokeWidth={2.4} />
+            New
+          </Link>
         </Button>
       </header>
 
-      <div className="min-w-0 flex-1 pb-24 lg:pb-0">{children}</div>
+      <div className="min-w-0 flex-1 pb-20 lg:pb-0">{children}</div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 backdrop-blur lg:hidden">
-        <div className="mx-auto flex max-w-md items-stretch justify-around px-2 py-1.5">
-          {NAV.map(({ href, label, icon: Icon }) => {
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card lg:hidden">
+        <div className="mx-auto flex max-w-lg items-stretch justify-around px-1 py-1">
+          {[...MAIN, ...SETUP].map(({ href, label, icon: Icon }) => {
             const active = isActive(pathname, href);
             return (
               <Link
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className="flex min-w-14 flex-col items-center gap-1 rounded-2xl px-3 py-2 text-[11px] font-medium transition-colors duration-150"
+                className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-1 py-2 text-[10.5px] font-medium transition-colors ${
+                  active ? "text-foreground" : "text-ink-subtle"
+                }`}
               >
-                <span
-                  className={`flex h-8 w-12 items-center justify-center rounded-full transition-colors duration-200 ${
-                    active ? "bg-primary-soft text-accent-foreground" : "text-ink-subtle"
-                  }`}
-                >
-                  <Icon className="size-[19px]" strokeWidth={active ? 2.5 : 2} />
-                </span>
-                <span className={active ? "text-accent-foreground" : "text-ink-subtle"}>
-                  {label}
-                </span>
+                <Icon className="size-[19px]" strokeWidth={active ? 2.4 : 1.9} />
+                <span className="truncate">{label === "Your profile" ? "Profile" : label}</span>
               </Link>
             );
           })}
-          <Link
-            href="/projects/new"
-            className="flex min-w-14 flex-col items-center gap-1 px-3 py-2 text-[11px] font-medium"
-          >
-            <span className="flex h-8 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
-              <Plus className="size-[19px]" strokeWidth={2.6} />
-            </span>
-            <span className="text-ink-subtle">New</span>
-          </Link>
         </div>
       </nav>
     </div>
   );
 }
 
-/** Standard page frame: consistent gutters and rhythm on every screen. */
+function Group({
+  title,
+  items,
+  pathname,
+}: {
+  title?: string;
+  items: typeof MAIN;
+  pathname: string;
+}) {
+  return (
+    <div className="mb-6">
+      {title && (
+        <p className="mb-2 px-3 text-[11.5px] font-medium tracking-[0.08em] text-ink-subtle uppercase">
+          {title}
+        </p>
+      )}
+      <ul className="space-y-0.5">
+        {items.map(({ href, label, icon: Icon }) => {
+          const active = isActive(pathname, href);
+          return (
+            <li key={href}>
+              <Link
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={`flex h-11 items-center gap-3 rounded-xl px-3 text-[14.5px] font-medium transition-colors ${
+                  active
+                    ? "bg-foreground text-background"
+                    : "text-ink-muted hover:bg-surface-2 hover:text-foreground"
+                }`}
+              >
+                <Icon className="size-[19px]" strokeWidth={active ? 2.2 : 1.9} />
+                {label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+/** Standard page padding: gutters, room for the tab bar on phones. */
 export function Page({
   children,
   className = "",
@@ -131,12 +153,13 @@ export function Page({
   className?: string;
 }) {
   return (
-    <main className={`mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:py-10 ${className}`}>
+    <main className={`mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:py-9 ${className}`}>
       {children}
     </main>
   );
 }
 
+/** The first 80px of every screen look the same. */
 export function PageHead({
   title,
   sub,
@@ -147,13 +170,15 @@ export function PageHead({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="mb-6 flex flex-wrap items-start justify-between gap-4 lg:mb-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-[-0.03em] sm:text-[28px]">{title}</h1>
-        {sub && <p className="mt-1 max-w-xl text-sm text-ink-muted">{sub}</p>}
+    <header className="mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 lg:mb-8">
+      <div className="min-w-0">
+        <h1 className="text-[28px] leading-[1.1] font-semibold tracking-[-0.02em] sm:text-[34px]">
+          {title}
+        </h1>
+        {sub && <p className="mt-2 max-w-xl text-[15px] text-ink-muted">{sub}</p>}
       </div>
-      {action}
-    </div>
+      {action && <div className="flex shrink-0 items-center gap-2">{action}</div>}
+    </header>
   );
 }
 

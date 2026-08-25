@@ -58,7 +58,7 @@ export default async function EventsPage() {
             <Button
               asChild
               variant="secondary"
-              className="press rounded-full border border-border font-semibold"
+              className="press rounded-xl border border-border font-semibold"
             >
               <Link href="/events/post">Post an event</Link>
             </Button>
@@ -151,7 +151,7 @@ export default async function EventsPage() {
                           href={e.external_url}
                           target="_blank"
                           rel="noreferrer"
-                          className="relative z-10 flex items-center gap-1 text-xs font-medium text-ink-muted transition-colors hover:text-primary"
+                          className="relative z-10 flex items-center gap-1 text-xs font-medium text-ink-muted transition-colors hover:text-accent"
                         >
                           Event site
                           <ArrowUpRight className="size-4" strokeWidth={2} />

@@ -76,7 +76,7 @@ export default async function EventPage({
             )}
           </div>
 
-          <h1 className="mt-4 text-2xl font-bold tracking-[-0.03em] text-balance sm:text-3xl">
+          <h1 className="mt-4 text-2xl font-semibold tracking-[-0.03em] text-balance sm:text-3xl">
             {event.title}
           </h1>
 

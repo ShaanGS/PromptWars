@@ -48,7 +48,7 @@ export default async function ProjectPage({
             </Link>
           )}
 
-          <h1 className="mt-3 text-[26px] leading-tight font-extrabold tracking-[-0.03em] text-balance sm:text-[32px]">
+          <h1 className="mt-3 text-[26px] leading-tight font-semibold tracking-[-0.03em] text-balance sm:text-[32px]">
             {project.title}
           </h1>
           {project.description && (

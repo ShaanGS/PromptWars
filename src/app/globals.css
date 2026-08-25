@@ -1,57 +1,89 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Guild design system.
-   Light lavender canvas, one purple accent, pill controls, soft cards.
-   Every colour, radius and curve is a token — restyling happens here, not in
-   component files. */
+/*
+ * Guild design tokens — ported from the Olvable/chennai-events system so the
+ * two projects read as one hand.
+ *
+ * Rules the tokens encode:
+ *  - one accent (indigo), used for the single primary emphasis on a screen
+ *  - the primary control colour is INK, not the accent: black buttons, black
+ *    active nav. The accent is for meaning, not for furniture.
+ *  - pastels carry category meaning; text on a pastel is the dark stop of the
+ *    same hue, never black
+ *  - borders do the work of elevation; shadows are near-zero
+ *  - Inter 400/500/600 only. A neutral grotesque is what makes cards, pills
+ *    and tables read as one system rather than as a "designed" page.
+ */
 
 :root {
-  --background: #f6f5fb; /* canvas — off-white with a lavender cast */
-  --foreground: #171325; /* ink */
-
+  /* surfaces */
+  --background: #f5f6fa; /* canvas */
   --card: #ffffff;
-  --card-foreground: #171325;
+  --surface-2: #eef0f5;
+  --surface-3: #e2e4ec;
+  --border: #e2e4ec;
+  --line-strong: #cdd0dc;
   --popover: #ffffff;
-  --popover-foreground: #171325;
 
-  --primary: #6c4ce0; /* the purple from the mark */
+  /* ink */
+  --foreground: #12131a;
+  --card-foreground: #12131a;
+  --popover-foreground: #12131a;
+  --ink-muted: #6b7080;
+  --ink-subtle: #9a9fb2;
+
+  /* the primary control is ink, so buttons and the active nav read as
+     structure; the accent stays reserved for meaning */
+  --primary: #12131a;
   --primary-foreground: #ffffff;
-  --secondary: #ffffff;
-  --secondary-foreground: #171325;
-  --muted: #f2f0fa;
-  --muted-foreground: #6b6580;
-  --accent: #ede8fc;
-  --accent-foreground: #4d2fb5;
-  --destructive: #e0485f;
+  --secondary: #eef0f5;
+  --secondary-foreground: #12131a;
+  --muted: #eef0f5;
+  --muted-foreground: #6b7080;
+
+  /* accent: indigo */
+  --accent: #5b5bd6;
+  --accent-hover: #4a4ac4;
+  --primary-soft: #eeeefb; /* accent-soft */
+  --accent-foreground: #3b3ba6; /* accent-ink */
+  --primary-deep: #3b3ba6;
+  --primary-hover: #4a4ac4;
+  --ring: #5b5bd6;
+  --input: #e2e4ec;
+
+  /* status */
+  --destructive: #d8385e;
   --destructive-foreground: #ffffff;
+  --success: #1f8a5b;
+  --success-soft: #ddf5e8;
+  --warn: #7a5a00;
+  --cream: #fff1c2; /* lemon */
 
-  --border: #e9e5f3;
-  --input: #e2ddf0;
-  --ring: #6c4ce0;
+  /* categorical pastels: fill + ink */
+  --sky: #dcebff;
+  --sky-ink: #1d4f91;
+  --mint: #d9f3e6;
+  --mint-ink: #146c43;
+  --lemon: #fff1c2;
+  --lemon-ink: #7a5a00;
+  --rose: #ffdde8;
+  --rose-ink: #9b2c52;
+  --lilac: #e8e1ff;
+  --lilac-ink: #4b3a9e;
+  --peach: #ffe4d1;
+  --peach-ink: #8a4a16;
+  --accent-pink: #ffdde8;
 
-  --radius: 0.75rem;
+  /* shape */
+  --radius: 0.75rem; /* 12px controls */
 
-  /* Guild extensions */
-  --primary-deep: #3b1d6e; /* the near-black purple of the main CTA */
-  --primary-soft: #ede8fc; /* tinted fills, active nav, chips */
-  --primary-hover: #5a3ccc;
-  --surface-2: #f2f0fa;
-  --surface-3: #eae6f7;
-  --ink-muted: #6b6580;
-  --ink-subtle: #9a94ac;
-  --accent-pink: #f3a7d4;
-  --cream: #fdf4e3;
-  --success: #16a34a;
-  --success-soft: #e6f6ec;
-  --warn: #e08a26;
+  /* elevation is a hairline, not a cloud */
+  --shadow-card: 0 1px 2px rgb(18 19 26 / 0.04);
+  --shadow-lift: 0 8px 24px rgb(18 19 26 / 0.08), 0 2px 6px rgb(18 19 26 / 0.04);
 
-  /* Motion. Strong curves only — built-in easings are too weak to read. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-
-  --shadow-card: 0 1px 2px rgb(23 19 37 / 0.04), 0 8px 24px rgb(23 19 37 / 0.04);
-  --shadow-lift: 0 2px 4px rgb(23 19 37 / 0.05), 0 12px 32px rgb(108 76 224 / 0.1);
 }
 
 @theme inline {
@@ -80,6 +112,7 @@
   --color-primary-hover: var(--primary-hover);
   --color-surface-2: var(--surface-2);
   --color-surface-3: var(--surface-3);
+  --color-line-strong: var(--line-strong);
   --color-ink-muted: var(--ink-muted);
   --color-ink-subtle: var(--ink-subtle);
   --color-accent-pink: var(--accent-pink);
@@ -88,25 +121,40 @@
   --color-success-soft: var(--success-soft);
   --color-warn: var(--warn);
 
-  --font-sans: var(--font-poppins), -apple-system, "Segoe UI", Roboto, sans-serif;
+  --color-sky: var(--sky);
+  --color-sky-ink: var(--sky-ink);
+  --color-mint: var(--mint);
+  --color-mint-ink: var(--mint-ink);
+  --color-lemon: var(--lemon);
+  --color-lemon-ink: var(--lemon-ink);
+  --color-rose: var(--rose);
+  --color-rose-ink: var(--rose-ink);
+  --color-lilac: var(--lilac);
+  --color-lilac-ink: var(--lilac-ink);
+  --color-peach: var(--peach);
+  --color-peach-ink: var(--peach-ink);
+
+  --font-sans: var(--font-inter), -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
 
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem; /* cards */
-  --radius-2xl: 1.75rem; /* panels, hero surfaces */
-
-  --shadow-card: var(--shadow-card);
-  --shadow-lift: var(--shadow-lift);
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px; /* controls */
+  --radius-xl: 16px; /* cards */
+  --radius-2xl: 20px; /* panels */
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/40;
+    border-color: var(--border);
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
   body {
-    @apply bg-background text-foreground;
+    background: var(--background);
+    color: var(--foreground);
   }
   h1,
   h2,
@@ -114,33 +162,35 @@
     letter-spacing: -0.02em;
   }
   ::selection {
-    background: color-mix(in srgb, var(--primary) 22%, transparent);
+    background: var(--primary-soft);
+    color: var(--accent-foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 }
 
 @layer components {
-  /* One card recipe, used everywhere. Depth comes from a soft shadow on a
-     tinted canvas, never from borders alone. */
+  /* One card recipe. A hairline plus a whisper of shadow — the reference
+     dashboards read as one surface, which is what stops a page of white
+     cards looking like it is floating. */
   .g-card {
-    @apply rounded-2xl border border-border bg-card;
+    @apply rounded-xl border border-border bg-card;
     box-shadow: var(--shadow-card);
   }
   .g-card-interactive {
-    @apply rounded-2xl border border-border bg-card transition-[transform,box-shadow,border-color] duration-200;
+    @apply rounded-xl border border-border bg-card transition-[border-color,box-shadow] duration-150;
     box-shadow: var(--shadow-card);
-    transition-timing-function: var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {
     .g-card-interactive:hover {
+      border-color: var(--line-strong);
       box-shadow: var(--shadow-lift);
-      border-color: color-mix(in srgb, var(--primary) 28%, var(--border));
     }
   }
-  .g-card-interactive:active {
-    transform: scale(0.995);
-  }
 
-  /* Numbers the engine produces: aligned, never reflowing as they animate. */
+  /* Engine figures: aligned, and they hold their width while animating. */
   .g-figure {
     @apply font-mono tabular-nums;
     font-feature-settings: "tnum";
@@ -150,36 +200,35 @@
     @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-2.5 py-1 text-xs font-medium text-ink-muted;
   }
   .g-chip-accent {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-semibold text-accent-foreground;
+    @apply inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-accent-foreground;
   }
   .g-eyebrow {
-    @apply text-[11px] font-semibold tracking-[0.09em] uppercase;
+    @apply text-[11.5px] font-medium tracking-[0.08em] text-ink-subtle uppercase;
   }
 }
 
 @layer utilities {
-  /* An unfilled requirement is the loudest thing on the page. Border + tint
-     breathe together so the slot reads as "waiting", not "broken". */
+  /* An unfilled requirement is the loudest thing on the page — but it pulses
+     in the accent, the one colour reserved for meaning. */
   .gap-pulse {
     animation: gap-pulse 2.6s var(--ease-in-out) infinite;
   }
   @keyframes gap-pulse {
     0%,
     100% {
-      border-color: color-mix(in srgb, var(--primary) 30%, transparent);
-      background-color: color-mix(in srgb, var(--primary) 3%, var(--card));
+      border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+      background-color: color-mix(in srgb, var(--accent) 3%, var(--card));
     }
     50% {
-      border-color: color-mix(in srgb, var(--primary) 70%, transparent);
-      background-color: color-mix(in srgb, var(--primary) 8%, var(--card));
+      border-color: color-mix(in srgb, var(--accent) 62%, transparent);
+      background-color: color-mix(in srgb, var(--accent) 7%, var(--card));
     }
   }
 
-  /* Entrances: opacity plus a short rise, staggered by an inline delay. */
   .rise-in {
     opacity: 0;
-    transform: translateY(10px);
-    animation: rise-in 320ms var(--ease-out) forwards;
+    transform: translateY(8px);
+    animation: rise-in 300ms var(--ease-out) forwards;
     animation-delay: var(--rise-delay, 0ms);
   }
   @keyframes rise-in {
@@ -189,7 +238,6 @@
     }
   }
 
-  /* Pressable elements confirm the tap before anything else happens. */
   .press {
     transition: transform 160ms var(--ease-out);
   }
@@ -197,27 +245,14 @@
     transform: scale(0.97);
   }
 
-  .orbit-spin {
-    animation: orbit-spin 48s linear infinite;
-  }
-  @keyframes orbit-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .gap-pulse {
       animation: none;
-      border-color: color-mix(in srgb, var(--primary) 55%, transparent);
-      background-color: color-mix(in srgb, var(--primary) 5%, var(--card));
+      border-color: color-mix(in srgb, var(--accent) 50%, transparent);
     }
     .rise-in {
       animation-duration: 1ms;
       transform: none;
-    }
-    .orbit-spin {
-      animation: none;
     }
   }
 }

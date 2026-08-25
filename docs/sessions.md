@@ -2,7 +2,29 @@
 
 Append ≤10 lines per session: done / decisions / gotchas. Newest at top.
 
-## 2026-08-25 · S2 (Fable) — design pass, MVP complete
+## 2026-08-25 · S3 (Fable) — design system corrected to Olvable/AETHER
+
+THE DESIGN SYSTEM IS NOW A PORT OF SHAAN'S OWN `ShaanGS/chennai-events`
+(Olvable) SYSTEM. Do not reinvent it. Its rules, which we now follow:
+- Inter 400/500/600 ONLY. A neutral grotesque is what makes the app read as
+  one system rather than as a "designed" page. No Poppins, no ExtraBold.
+- The primary control colour is INK (#12131a) — black buttons, black active
+  nav. Indigo (#5b5bd6) is the ONE accent and is reserved for meaning
+  (marginal-gain deltas, open slots, score bars), never for furniture.
+- Borders do the work of elevation. Shadows are near-zero
+  (`0 1px 2px rgb(18 19 26 / 0.04)`). No big soft drop shadows.
+- Radius: controls 12px, cards 16px, panels 20px. NOT pill — pills are only
+  for small chips and avatars.
+- Categorical pastels (sky/mint/lemon/rose/lilac/peach) each pair with the
+  dark stop of their own hue; text on a pastel is never plain black.
+- Canvas #f5f6fa, surface #fff, line #e2e4ec, ink scale 12131a/6b7080/9a9fb2.
+Reference dashboard for layout density and spacing: the AETHER screenshot in
+the chat (sidebar + main + right rail, pastel stat cards, black active pill).
+The logo is used AS SUPPLIED — `public/brand/guild-{logo,mark}.png`, white
+artwork inside an ink tile. Do not redraw or recolour it.
+`/onboarding` is now a real nav item ("Your profile") in both navs.
+
+## 2026-08-25 · S2 (Fable) — first design pass (SUPERSEDED by S3)
 - Replaced the dark Linear theme with the moodboard system: light lavender
   canvas, single purple accent, pill controls, soft rounded cards, Poppins.
 - `AppShell` = desktop sidebar rail + mobile bottom tab bar; `Page`/`PageHead`
