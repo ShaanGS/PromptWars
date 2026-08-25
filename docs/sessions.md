@@ -2,6 +2,31 @@
 
 Append ≤10 lines per session: done / decisions / gotchas. Newest at top.
 
+## READ THIS FIRST: `docs/target-product.md`
+
+Shaan built Guild in Lovable and that build is the target for **what the app
+does**. This repo has the engine and the data; the Lovable build has the product
+around it. `docs/target-product.md` is the transcribed screen-by-screen spec and
+the gap list. The headline gaps: a 6-step onboarding wizard, **Nudges** (the
+connection primitive — WhatsApp is revealed only when a Nudge is accepted),
+Team Board, Idea Board, Communities, Notifications, and a three-column Home
+with Profile Strength.
+
+The scoring engine is the differentiator, not the product. Keep it, build the
+network around it.
+
+## 2026-08-25 · S5 (Fable) — dark + emerald reskin to match the Lovable build
+- Tokens flipped to the Lovable system: canvas #0b0e11, cards #131820, one
+  emerald accent #10e098, amber = interests, violet = effort. Chips are MONO
+  — that is the signature. Space Grotesk headings, Inter body, JetBrains chips.
+- Logo fixed: `public/brand/guild-logo.png` is used as ONE image. The mark and
+  the wordmark are the same artwork — never crop them apart or retype "Guild"
+  in a font. `mix-blend-screen` drops the black on the dark canvas.
+- Squad/event "Open" buttons became emerald outline (they had inverted to white
+  on dark).
+- NOT done: none of the functionality in `docs/target-product.md`. The reskin
+  landed; the product gap is the whole job.
+
 ## 2026-08-25 · S4 (Fable) — Olvable components ported
 
 Shaan's verdict on S3: still not usable, "I want it exactly like olvable and

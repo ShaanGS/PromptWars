@@ -163,7 +163,7 @@ export default async function EventsPage() {
                         )}
                         <Link
                           href={`/events/${e.id}`}
-                          className="press inline-flex h-9 items-center gap-1.5 rounded-xl bg-foreground px-4 text-[13.5px] font-medium text-background"
+                          className="press inline-flex h-9 items-center gap-1.5 rounded-lg border border-accent/50 bg-primary-soft px-4 text-[13.5px] font-medium text-accent"
                         >
                           {squads > 0 ? "See squads" : "Start a squad"}
                         </Link>

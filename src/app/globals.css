@@ -2,85 +2,87 @@
 @import "tw-animate-css";
 
 /*
- * Guild design tokens — ported from the Olvable/chennai-events system so the
- * two projects read as one hand.
+ * Guild design tokens — matched to the Lovable build Shaan designed.
  *
- * Rules the tokens encode:
- *  - one accent (indigo), used for the single primary emphasis on a screen
- *  - the primary control colour is INK, not the accent: black buttons, black
- *    active nav. The accent is for meaning, not for furniture.
- *  - pastels carry category meaning; text on a pastel is the dark stop of the
- *    same hue, never black
- *  - borders do the work of elevation; shadows are near-zero
- *  - Inter 400/500/600 only. A neutral grotesque is what makes cards, pills
- *    and tables read as one system rather than as a "designed" page.
+ * Rules:
+ *  - dark canvas, one emerald accent. The accent marks what is live, chosen,
+ *    or actionable; nothing else is coloured.
+ *  - amber marks interests, violet marks effort/time. Two supporting hues,
+ *    used only for those meanings.
+ *  - chips and tags are MONO. That is the signature of the system.
+ *  - display type is a wide geometric grotesque; body is a neutral grotesque.
+ *  - borders do elevation. Shadows are near-zero on dark.
  */
 
 :root {
   /* surfaces */
-  --background: #f5f6fa; /* canvas */
-  --card: #ffffff;
-  --surface-2: #eef0f5;
-  --surface-3: #e2e4ec;
-  --border: #e2e4ec;
-  --line-strong: #cdd0dc;
-  --popover: #ffffff;
+  --background: #0b0e11; /* canvas */
+  --card: #131820; /* panels, cards */
+  --surface-2: #1a212b;
+  --surface-3: #232c38;
+  --border: #222b36;
+  --line-strong: #33404f;
+  --popover: #131820;
 
   /* ink */
-  --foreground: #12131a;
-  --card-foreground: #12131a;
-  --popover-foreground: #12131a;
-  --ink-muted: #6b7080;
-  --ink-subtle: #9a9fb2;
+  --foreground: #f2f5f7;
+  --card-foreground: #f2f5f7;
+  --popover-foreground: #f2f5f7;
+  --ink-muted: #9aa7b4;
+  --ink-subtle: #66737f;
 
-  /* the primary control is ink, so buttons and the active nav read as
-     structure; the accent stays reserved for meaning */
-  --primary: #12131a;
-  --primary-foreground: #ffffff;
-  --secondary: #eef0f5;
-  --secondary-foreground: #12131a;
-  --muted: #eef0f5;
-  --muted-foreground: #6b7080;
+  /* the accent is emerald, and it is the only "live" colour */
+  --accent: #10e098;
+  --accent-hover: #0cc986;
+  --accent-ink: #04120c; /* text on a solid accent fill */
+  --primary: #10e098;
+  --primary-foreground: #04120c;
+  --primary-soft: #0f2a22; /* tinted accent fill */
+  --accent-foreground: #10e098;
+  --primary-deep: #0cc986;
+  --primary-hover: #0cc986;
+  --ring: #10e098;
+  --input: #2a3542;
 
-  /* accent: indigo */
-  --accent: #5b5bd6;
-  --accent-hover: #4a4ac4;
-  --primary-soft: #eeeefb; /* accent-soft */
-  --accent-foreground: #3b3ba6; /* accent-ink */
-  --primary-deep: #3b3ba6;
-  --primary-hover: #4a4ac4;
-  --ring: #5b5bd6;
-  --input: #e2e4ec;
+  --secondary: #1a212b;
+  --secondary-foreground: #f2f5f7;
+  --muted: #1a212b;
+  --muted-foreground: #9aa7b4;
+
+  /* supporting hues, each with one job */
+  --amber: #e8a33d; /* interests */
+  --amber-soft: #2a2113;
+  --violet: #8b7bf0; /* effort, hours per week */
+  --violet-soft: #1e1b33;
+  --sky: #5ba8f5;
+  --sky-soft: #12212f;
 
   /* status */
-  --destructive: #d8385e;
+  --destructive: #f2555a;
   --destructive-foreground: #ffffff;
-  --success: #1f8a5b;
-  --success-soft: #ddf5e8;
-  --warn: #7a5a00;
-  --cream: #fff1c2; /* lemon */
+  --success: #10e098;
+  --success-soft: #0f2a22;
+  --warn: #e8a33d;
+  --cream: #2a2113;
 
-  /* categorical pastels: fill + ink */
-  --sky: #dcebff;
-  --sky-ink: #1d4f91;
-  --mint: #d9f3e6;
-  --mint-ink: #146c43;
-  --lemon: #fff1c2;
-  --lemon-ink: #7a5a00;
-  --rose: #ffdde8;
-  --rose-ink: #9b2c52;
-  --lilac: #e8e1ff;
-  --lilac-ink: #4b3a9e;
-  --peach: #ffe4d1;
-  --peach-ink: #8a4a16;
-  --accent-pink: #ffdde8;
+  /* legacy aliases so pre-reskin screens shift with the system */
+  --sky-ink: #5ba8f5;
+  --mint: #0f2a22;
+  --mint-ink: #10e098;
+  --lemon: #2a2113;
+  --lemon-ink: #e8a33d;
+  --rose: #2f1620;
+  --rose-ink: #f2839a;
+  --lilac: #1e1b33;
+  --lilac-ink: #8b7bf0;
+  --peach: #2a2113;
+  --peach-ink: #e8a33d;
+  --accent-pink: #f2839a;
 
-  /* shape */
-  --radius: 0.75rem; /* 12px controls */
+  --radius: 0.75rem;
 
-  /* elevation is a hairline, not a cloud */
-  --shadow-card: 0 1px 2px rgb(18 19 26 / 0.04);
-  --shadow-lift: 0 8px 24px rgb(18 19 26 / 0.08), 0 2px 6px rgb(18 19 26 / 0.04);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-lift: 0 8px 28px rgb(0 0 0 / 0.45);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
@@ -101,6 +103,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-ink: var(--accent-ink);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -115,13 +118,17 @@
   --color-line-strong: var(--line-strong);
   --color-ink-muted: var(--ink-muted);
   --color-ink-subtle: var(--ink-subtle);
-  --color-accent-pink: var(--accent-pink);
   --color-cream: var(--cream);
   --color-success: var(--success);
   --color-success-soft: var(--success-soft);
   --color-warn: var(--warn);
 
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+  --color-violet: var(--violet);
+  --color-violet-soft: var(--violet-soft);
   --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
   --color-sky-ink: var(--sky-ink);
   --color-mint: var(--mint);
   --color-mint-ink: var(--mint-ink);
@@ -133,15 +140,17 @@
   --color-lilac-ink: var(--lilac-ink);
   --color-peach: var(--peach);
   --color-peach-ink: var(--peach-ink);
+  --color-accent-pink: var(--accent-pink);
 
   --font-sans: var(--font-inter), -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-grotesk), var(--font-inter), sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
 
   --radius-sm: 8px;
   --radius-md: 10px;
-  --radius-lg: 12px; /* controls */
-  --radius-xl: 16px; /* cards */
-  --radius-2xl: 20px; /* panels */
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 18px;
 }
 
 @layer base {
@@ -151,19 +160,21 @@
   html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    color-scheme: dark;
   }
   body {
     background: var(--background);
     color: var(--foreground);
   }
+  /* Headings carry the display face; body stays neutral. */
   h1,
   h2,
   h3 {
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
   }
   ::selection {
-    background: var(--primary-soft);
-    color: var(--accent-foreground);
+    background: color-mix(in srgb, var(--accent) 30%, transparent);
   }
   :focus-visible {
     outline: 2px solid var(--accent);
@@ -172,56 +183,56 @@
 }
 
 @layer components {
-  /* One card recipe. A hairline plus a whisper of shadow — the reference
-     dashboards read as one surface, which is what stops a page of white
-     cards looking like it is floating. */
   .g-card {
     @apply rounded-xl border border-border bg-card;
-    box-shadow: var(--shadow-card);
   }
   .g-card-interactive {
-    @apply rounded-xl border border-border bg-card transition-[border-color,box-shadow] duration-150;
-    box-shadow: var(--shadow-card);
+    @apply rounded-xl border border-border bg-card transition-colors duration-150;
   }
   @media (hover: hover) and (pointer: fine) {
     .g-card-interactive:hover {
-      border-color: var(--line-strong);
-      box-shadow: var(--shadow-lift);
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
     }
   }
 
-  /* Engine figures: aligned, and they hold their width while animating. */
   .g-figure {
     @apply font-mono tabular-nums;
     font-feature-settings: "tnum";
   }
 
+  /* Chips are mono. It is the signature of the system — every tag, skill,
+     status and duration reads as a token, not as prose. */
   .g-chip {
-    @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-2 px-2.5 py-1 text-xs font-medium text-ink-muted;
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface-2 px-2.5 py-1 font-mono text-[12px] font-medium text-ink-muted;
   }
   .g-chip-accent {
-    @apply inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-accent-foreground;
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-accent/45 bg-primary-soft px-2.5 py-1 font-mono text-[12px] font-medium text-accent;
+  }
+  .g-chip-amber {
+    @apply inline-flex items-center gap-1.5 rounded-lg border border-amber/45 bg-amber-soft px-2.5 py-1 font-mono text-[12px] font-medium text-amber;
+  }
+  .g-chip-violet {
+    @apply inline-flex items-center gap-1.5 rounded-lg border-violet/45 bg-violet-soft px-2.5 py-1 font-mono text-[12px] font-medium text-violet;
   }
   .g-eyebrow {
-    @apply text-[11.5px] font-medium tracking-[0.08em] text-ink-subtle uppercase;
+    @apply text-[11.5px] font-medium tracking-[0.09em] text-ink-subtle uppercase;
   }
 }
 
 @layer utilities {
-  /* An unfilled requirement is the loudest thing on the page — but it pulses
-     in the accent, the one colour reserved for meaning. */
+  /* An unfilled requirement is the loudest thing on the page. */
   .gap-pulse {
     animation: gap-pulse 2.6s var(--ease-in-out) infinite;
   }
   @keyframes gap-pulse {
     0%,
     100% {
-      border-color: color-mix(in srgb, var(--accent) 28%, transparent);
-      background-color: color-mix(in srgb, var(--accent) 3%, var(--card));
+      border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+      background-color: color-mix(in srgb, var(--accent) 4%, var(--card));
     }
     50% {
-      border-color: color-mix(in srgb, var(--accent) 62%, transparent);
-      background-color: color-mix(in srgb, var(--accent) 7%, var(--card));
+      border-color: color-mix(in srgb, var(--accent) 75%, transparent);
+      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
     }
   }
 
@@ -248,7 +259,7 @@
   @media (prefers-reduced-motion: reduce) {
     .gap-pulse {
       animation: none;
-      border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+      border-color: color-mix(in srgb, var(--accent) 55%, transparent);
     }
     .rise-in {
       animation-duration: 1ms;
