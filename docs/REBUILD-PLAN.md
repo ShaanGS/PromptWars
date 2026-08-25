@@ -1,7 +1,11 @@
 # Olvable — rebuild plan and working agreement
 
 > **Historical document** (2026-08-06, kept as written, gap statuses
-> updated in place). The living versions are elsewhere: the working
+> updated in place). It predates Guild entirely: where it says "the
+> product is Olvable", read that as true of 2026-08-06 and superseded on
+> 2026-08-25, when Guild was grafted in and became the product. The
+> auth sections describe a system this build no longer has
+> ([`../SECURITY.md`](../SECURITY.md)). The living versions are elsewhere: the working
 > agreement and environment gotchas are maintained in
 > [`AGENTS.md`](../AGENTS.md), settled decisions in
 > [`decisions/`](decisions/README.md), what's next in

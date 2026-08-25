@@ -1,5 +1,9 @@
 # Design punch list
 
+> Scope: **Olvable's** event feed and cards, from the 2026-08-24 design
+> pass. Nothing here concerns Guild's team screens (`/teams`,
+> `/squad/[id]`, `/people`, `/p/[handle]`), which were built afterwards.
+
 Working evidence file for the design-quality pass (roadmap, Next).
 Shaan's verdict 2026-08-24: the app "looks so AI made", not
 professional-designer made, "a bit sloppy". Items land here as they are

@@ -6,7 +6,51 @@ What is next, one screen. What shipped is in
 [`AGENTS.md`](../AGENTS.md) — plan first, one feature per session, each
 item below becomes a session plan before any code.
 
-## Next
+## Next — Guild
+
+The submission's own backlog. Everything below the "Next — Olvable" heading is
+the aggregator's, and is parked while Guild is the product.
+
+1. **Make `requireAdmin()` assert the role.** `lib/auth/server.ts` returns the
+   stand-in user unconditionally, so `/admin`, `/design` and seven admin server
+   actions are open to anyone — contradicting the posture stated in
+   `lib/auth/roles.ts`, `SECURITY.md` and this repo's README. One function:
+   assert `isAdmin(user)`, `redirect('/')` otherwise. Closes every call site at
+   once. **Top priority; it is the one place the documented posture is not
+   enforced.**
+2. **`/teams/new` does not exist.** `app/(app)/teams/page.tsx` links to it twice
+   (the header CTA and the empty state) and both 404. It is also the only
+   "post what you need" affordance in the product, so the demand side of the
+   problem statement currently has no entry point. Build it or drop the links.
+3. **Wire up or delete `explainScore`.** `lib/engine/explain.ts` is exported
+   from the barrel with zero callers and zero tests. It is exactly the
+   "explain the score" affordance the sandbox should have; exported-and-unused
+   is the worst of the three options.
+4. **Nudges.** Guild can identify the right teammate and cannot let you contact
+   them. This is the largest genuine capability gap. Sketch in
+   `target-product.md` §2.
+5. **Fold the Guild tables into `supabase/migrations/`.** They live in
+   `supabase/guild/`, unnumbered and applied by hand, and that file's `events`
+   collides with Olvable's. See the caveat in `ARCHITECTURE.md`.
+6. **Tests for everything the engine touches but does not own**:
+   `lib/team/mappers.ts` (the defensive branches — malformed windows, zero
+   weight, `proof_url: ''`), the readiness bands, and the open-slot rule, which
+   is currently duplicated in three components and will drift.
+7. **Performance, measured not asserted.** `guildScore` recomputes the same
+   per-skill supply scan for every person on `/people`; `sandbox.tsx` re-runs
+   `rankCandidates` and `teamRisks` unmemoized on every render, including every
+   420 ms during auto-draft. Hoist the supply map, `useMemo` the sandbox, then
+   check the "well under a millisecond" claim in that file's docstring is true.
+8. **Accessibility.** `components/shell/page-header.tsx` renders a `<div>`
+   where a `<main>` belongs — one word, fixes the missing landmark on every
+   page. Then: the `h1 → h3` skip on `/people`, an `aria-live` region for
+   auto-draft (it rewrites the page in silence today), and
+   `role="progressbar"` on the score bars.
+
+## Next — Olvable
+
+Parked while Guild is the product. `olvable.vercel.app` is the aggregator's
+own deploy; Guild is at `tryguild.vercel.app`.
 
 - **Feed + card redesign** (Shaan, 2026-08-24, after batch 1 of
   mechanical fixes shipped: the dashboard and cards still look
@@ -53,7 +97,8 @@ item below becomes a session plan before any code.
 - **Scoring provenance** (REBUILD-PLAN gap 8) — record keywordPass vs
   LLM per score so the model's value can be measured.
 - **`shaanvishy@gmail.com`** — if it is Shaan's own second account,
-  grant it: `npm run admin:grant`.
+  grant it: `npm run admin:grant`. Blocked in this build: that script
+  needs a service-role key and there is none.
 
 ## Blocked on a decision
 
@@ -80,7 +125,13 @@ item below becomes a session plan before any code.
 
 ## Standing facts a plan must respect
 
+**Guild:** the engine imports nothing and must stay that way ·
+`WEIGHTS` / `UNVERIFIED_DAMP` / `UNMET_THRESHOLD` are product decisions, not
+tunables · there is no auth, but the stand-in user is a `member` — do not
+"simplify" `isAdmin()` · Guild is read-only · no new npm dependencies.
+
+**Olvable:**
 Free tier everywhere (decisions 002, 005) · no email exists (001) ·
 deadline sources never join the feed (006) · excerpts only (007) ·
-one public page (008) · phone-first — Shaan uses it from a phone, and
-the phone pass on live is his.
+phone-first — Shaan uses it from a phone, and the phone pass on live is
+his. Decisions 001 and 008 are superseded in this build; the rest hold.

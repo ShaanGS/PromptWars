@@ -22,7 +22,7 @@ saying so.
 | [005](005-scoring-cheapest-path-first.md)    | Scoring: keyword pass first, LLM for the middle, fit at request time   | 2026-08-23         |
 | [006](006-deadline-sources.md)               | Deadline sources are a separate surface, keyed on the cutoff           | 2026-08-23         |
 | [007](007-excerpts-not-full-descriptions.md) | Descriptions are excerpts with a link out, never full prose            | 2026-08-23         |
-| [008](008-public-surface-one-page.md)        | The public surface is one page per event                               | 2026-08-24         |
+| [008](008-public-surface-one-page.md)        | The public surface is one page per event — **superseded**               | 2026-08-24         |
 | [009](009-config-in-git.md)                  | Config lives in git; the DB is the runtime copy                        | 2026-08-05         |
 | [010](010-hygiene-tooling.md)                | Prettier + CI as the gate; no pre-commit hook; ADR-lite records        | 2026-08-24         |
 | [011](011-feed-opt-in-sources.md)            | High-volume sources are feed-opt-in, not feed-default                  | 2026-08-24         |

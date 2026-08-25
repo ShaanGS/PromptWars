@@ -4,7 +4,73 @@ What shipped, dated, newest first. Each entry keeps the facts that were
 learned by shipping it; the full session plans (scope, decision menus,
 verify steps) live in git history — `git log docs/ROADMAP.md` before
 2026-08-24 — and the rules they settled live in
-[`docs/decisions/`](decisions/README.md).
+[`docs/decisions/`](decisions/README.md). Guild's own decisions are in
+[`docs/decisions.md`](decisions.md).
+
+## 2026-08-25
+
+- **Guild merged into Olvable.** The product is now **Guild**, a
+  team-formation platform answering hackathon Problem Statement 2
+  (ProjectMatch), built inside this repo. Olvable's shell, design system,
+  components, event corpus and ingestion are untouched and are the
+  surface a team forms around — a squad points at a real ingested
+  hackathon via `projects.event_id`. Live at `tryguild.vercel.app`.
+  - `lib/engine/` — the scoring model, moved over intact: pure TypeScript,
+    zero imports, 17 unit tests. Coverage is a probabilistic OR
+    (`1 − Π(1 − p_eff)`), so diminishing returns falls out of the
+    arithmetic rather than being a rule that could be got wrong.
+    Candidates are ranked by `marginalGain`, never by absolute strength —
+    which is what makes a designer out-rank a fifth React developer.
+  - `/teams`, `/squad/[id]`, `/people`, `/p/[handle]` — Team Board (ranked
+    by `gapFeed`), the sandbox (open slots, ranked candidates, auto-draft,
+    Team X-ray), the pool by Guild Score, and the profile breakdown.
+    Read-only: no mutations, no forms, no server actions.
+  - `lib/team/mappers.ts` is the only boundary between Postgres and the
+    engine's purity, and is deliberately defensive — a malformed jsonb
+    window or a zero weight reaching the engine would poison every score
+    on the page.
+  - Nav: Team Board and People added to `NAV_PRIMARY`; Team Board takes a
+    phone tab, Calendar moves to sidebar-only.
+- **Auth removed, authorization kept.** Judges must not hit a login, so
+  `middleware.ts` is a pass-through and `lib/auth/server.ts` returns one
+  stand-in user, keeping the twenty-odd call sites working and making the
+  gate a three-file revert. **That user is a `member`, not an admin.** A
+  subagent originally hardcoded `isAdmin() -> true`, which would have
+  handed every anonymous visitor the corpus-editing and access-control
+  screens — a different decision from "skip the login", and not the one
+  asked for. It was reverted; `lib/auth/roles.ts` defers to `roleOf`.
+  Learned writing this up: the intent is **not fully enforced** —
+  `requireAdmin()` still returns the user unconditionally, leaving
+  `/admin`, `/design` and seven admin server actions open. Stated in
+  `SECURITY.md` rather than papered over, and now the top roadmap item.
+- **Database.** Supabase project `guild` (`fjxgqiveolnnrslihodl`,
+  ap-south-1) reset with Shaan's approval, carrying Olvable's schema plus
+  `profiles, skills, projects, requirements, memberships`. Seeded by
+  `node seed/seed-demo.mjs` (idempotent): 25 real hackathons from the
+  Devfolio/Devpost/Unstop ingest, 40 profiles, 5 squads. React is
+  over-supplied across 12 of the 40 and `figma`/`pitching` are scarce **on
+  purpose** — a demo that asserts diminishing returns is a claim; one
+  where the list visibly re-ranks after the first React dev joins is a
+  demonstration.
+  GOTCHA: no service-role key in this build. It runs on the publishable
+  key and the demo tables carry open `demo_all` policies, applied by hand
+  — `supabase/guild/0002_rls.sql` describes stricter policies that are
+  **not** deployed. Safe only because the database is a throwaway holding
+  generated data. Olvable's production project (1,328 real events, real
+  user rows) is separate and was never touched.
+- **Documentation rewritten to match** (same day). `README.md` had still
+  been 152 lines about a Chennai events aggregator — no mention of Guild,
+  the problem statement or the engine — which was the single largest
+  thing a reviewer opening the repo cold would have got wrong. Added
+  `SECURITY.md`; corrected `AGENTS.md` (it instructed agents that "the
+  product is Olvable", which would have steered a fixer into renaming
+  Guild), `CONTRIBUTING.md` (it described an auth gate and a route-group
+  boundary that no longer exist), `ARCHITECTURE.md` (no Guild content at
+  all), and `target-product.md` (it described a different codebase, down
+  to a `src/` directory this repo does not have, and argued the
+  submission was not what PS-2 asks for). Decisions 001 and 008 marked
+  superseded. All demo numbers in the README are computed from the seed
+  data through the engine, not asserted.
 
 ## 2026-08-24
 

@@ -2,6 +2,41 @@
 
 Newest at top.
 
+## 2026-08-25 · S7 — documentation made true
+
+The code shipped in S6; the docs did not follow it. Every prose file in the
+repo still described Olvable-the-event-aggregator, which is what a judge opening
+the repo cold would have read first.
+
+Rewritten around Guild and PS-2: `README.md` (thesis, formula, the
+statement→model mapping, a 60-second walkthrough whose numbers are **computed
+through the engine from the seed data**, not asserted), plus `CLAUDE.md`,
+`AGENTS.md`, `CONTRIBUTING.md`, `ARCHITECTURE.md`, `ROADMAP.md`, `CHANGELOG.md`,
+`decisions.md`. Added `SECURITY.md`. `package.json` name → `guild`.
+
+Three things worth carrying forward, found while checking claims rather than
+copying them:
+
+- **`requireAdmin()` does not check anything.** It returns the stand-in user
+  unconditionally, so `/admin`, `/design` and seven admin server actions are
+  open — contradicting `lib/auth/roles.ts`, S6's entry below, and the posture
+  the README states. Documented as a known gap in `SECURITY.md` rather than
+  written around, and now roadmap item 1. Only `/admin/add` and
+  `/admin/discovery` gate correctly, via their own `roleOf` check.
+- **`supabase/guild/*.sql` does not describe the deployed database.**
+  `0002_rls.sql` shows ownership-scoped policies that are not applied (the live
+  tables are open), and `0001_schema.sql` declares its own `public.events` that
+  collides with Olvable's, so it cannot be run on top of the migrations. A
+  security reviewer reading those files alone would conclude the opposite of the
+  truth. Stated in `SECURITY.md` and `ARCHITECTURE.md`.
+- **`.env.example` is not in the repo.** `.gitignore` puts `!.env.example`
+  before the broader `.env*` rule, so the negation loses and a cloner never
+  receives it. Docs that said "copy `.env.example`" were wrong; they now name
+  the two variables directly. Fixing the `.gitignore` ordering is still open.
+
+Also corrected: S6 below recorded a `nudges` table. No such table is created,
+read or written anywhere in the repo.
+
 ## 2026-08-25 · S6 (Fable) — Guild merged INTO Olvable
 
 The repo is no longer "Guild with an Olvable-ish skin". It **is** Olvable
@@ -32,13 +67,16 @@ call sites keep working.
 `isAdmin() -> true`, which would have handed every anonymous visitor the
 corpus-editing and access-control screens. That is a different decision from
 "skip the login" and was not asked for, so it was reverted:
-`lib/auth/roles.ts` now defers to `roleOf`, and `/admin/*` stays closed.
-Restoring real auth is a `git revert` of the two auth files plus middleware.
+`lib/auth/roles.ts` now defers to `roleOf`, and `/admin/*` is meant to stay
+closed. Restoring real auth is a `git revert` of the two auth files plus
+middleware. (**Correction, S7:** `requireAdmin()` was left unchecked, so that
+intent is not actually enforced on `/admin`, `/design` or the admin server
+actions. See `SECURITY.md`.)
 
 ### Database
 Supabase project `guild` (`fjxgqiveolnnrslihodl`, ap-south-1) was reset with
 Shaan's approval and now carries Olvable's schema plus Guild's tables:
-`profiles, skills, projects, requirements, memberships, nudges`.
+`profiles, skills, projects, requirements, memberships`.
 `projects.event_id` -> Olvable's `events.id`, so a squad forms around a real
 ingested listing.
 
@@ -54,9 +92,14 @@ this build at Olvable's production database — it has 1,328 real events and
 real user rows, and the open policies would apply there too.
 
 ### Not done
-`docs/target-product.md` still lists the Lovable feature set. Nudges has a
-table but no UI. Idea Board, Communities and Notifications are unbuilt.
+Nudges, Idea Board, Communities and Notifications are unbuilt — Guild can
+identify the right teammate but cannot let you contact them, which is the
+largest genuine gap. `/teams/new` is linked twice from the Team Board and does
+not exist. `explainScore` is exported with no callers.
 
-## READ ALSO: `docs/target-product.md`
-The Lovable build transcribed screen by screen — onboarding wizard, Nudges,
-Team Board, Idea Board, Communities, Home rail — with a build order.
+## Related, but not this build's plan: `docs/target-product.md`
+An earlier Guild prototype Shaan made in **Lovable** — a different app and a
+different design system — transcribed screen by screen. It is a useful feature
+backlog (Nudges especially) and nothing more; its paths, colours and fonts do
+not describe this repo, and it now carries a banner saying so. Do not follow it
+as a spec.

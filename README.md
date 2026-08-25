@@ -194,21 +194,36 @@ deliberately over-supplied across 12 of the 40 profiles, and `figma` and
 
 ## Testing
 
-`npm test` runs **185 tests across 19 files**; **17 of them cover
-`lib/engine/`** and are the ones that matter for this submission.
+`npm test` runs **241 tests across 21 files**. **41 of them cover
+`lib/engine/`** — run `npx vitest run lib/engine` to see just those, in about
+0.2s.
 
-They pin the thesis rather than the implementation:
+The engine tests pin the *thesis*, not the implementation. Each one is a claim
+that would be false if the product stopped working the way it says it does:
 
 - `coverage(0.8, 0.5)` is exactly `0.9` — the probabilistic OR, not a sum.
 - Two identical 0.8 claims give `0.96`, so the duplicate is worth `0.16`.
 - An unverified `0.8` claim contributes `0.48`, not `0.8`.
 - A claim below a requirement's floor contributes **nothing**, not a little.
-- A gap-filler always out-ranks a duplicate, even a stronger duplicate — this
-  is the test that would fail if the product's claim stopped being true.
-- Auto-draft is deterministic across runs, ties broken by id.
-- Guild Score scarcity ranks a rare skill above a common one.
+- The score is the `0.60/0.15/0.15/0.10` weighted sum of its four terms, to the
+  last decimal — the headline equation, asserted directly.
+- A gap-filler out-ranks an equally-skilled duplicate, and an extra body who
+  fills nothing scores a **negative** gain.
+- Auto-draft is deterministic across runs, improves monotonically, and stops on
+  diminishing returns.
+- Degenerate inputs return `0`, never `NaN`: no requirements, no roster, a
+  malformed availability window, a profile with no skills.
 
-Run `npx vitest run lib/engine` to see just those.
+Two more suites guard the boundary either side of that purity:
+`lib/team/mappers.test.ts` (21 tests — every defensive branch: junk jsonb, a
+zero weight clamped off zero, PostgREST numerics arriving as strings, and that
+an empty `proof_url` means *unverified* rather than *verified*) and
+`lib/demo.test.ts` (9 tests — `getDemoProfile()` degrades to `null` on any
+failure rather than throwing, because a demo that 500s is worse than one that
+shows less).
+
+The rest is Olvable's pipeline: date parsing, geo classification, content
+hashing, ICS generation, filters, connectors.
 
 ## Security posture
 
