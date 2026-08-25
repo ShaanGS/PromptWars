@@ -22,20 +22,26 @@ the aggregator's, and is parked while Guild is the product.
    (the header CTA and the empty state) and both 404. It is also the only
    "post what you need" affordance in the product, so the demand side of the
    problem statement currently has no entry point. Build it or drop the links.
-3. **Wire up or delete `explainScore`.** `lib/engine/explain.ts` is exported
-   from the barrel with zero callers and zero tests. It is exactly the
-   "explain the score" affordance the sandbox should have; exported-and-unused
-   is the worst of the three options.
+3. **Wire up or delete `explainScore`.** `lib/engine/explain.ts` is tested but
+   has **zero callers** — nothing in `app/` or `components/` imports it. It is
+   exactly the "explain the score" affordance the sandbox should have;
+   exported-and-unused is the worst of the three options.
 4. **Nudges.** Guild can identify the right teammate and cannot let you contact
    them. This is the largest genuine capability gap. Sketch in
    `target-product.md` §2.
 5. **Fold the Guild tables into `supabase/migrations/`.** They live in
    `supabase/guild/`, unnumbered and applied by hand, and that file's `events`
    collides with Olvable's. See the caveat in `ARCHITECTURE.md`.
-6. **Tests for everything the engine touches but does not own**:
-   `lib/team/mappers.ts` (the defensive branches — malformed windows, zero
-   weight, `proof_url: ''`), the readiness bands, and the open-slot rule, which
-   is currently duplicated in three components and will drift.
+6. **Extract and test the last two pure helpers.** `mappers.ts` and `demo.ts`
+   are covered now; these are not, because they sit inside component files and
+   `vitest.config.ts` only collects `lib/**` and `scripts/**`:
+   - `readiness()` (`components/team/squad-card.tsx:37`) — four bands with
+     boundaries at 85/60/35 and nothing asserting them.
+   - The open-slot rule (`coverage < UNMET_THRESHOLD`) is **duplicated in three
+     places** — `squad-card.tsx` and twice in `sandbox.tsx`. It is the
+     product's core claim about which roles are open; three copies will drift.
+     Extract `openRequirements(reqs, coverage)` into `lib/engine/`, where it
+     belongs, and point all three at it.
 7. **Performance, measured not asserted.** `guildScore` recomputes the same
    per-skill supply scan for every person on `/people`; `sandbox.tsx` re-runs
    `rankCandidates` and `teamRisks` unmemoized on every render, including every

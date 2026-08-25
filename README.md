@@ -148,7 +148,7 @@ own surfaces still go through `lib/queries/` and should keep doing so.
 
 ```bash
 npm install
-npm test          # 185 tests, 19 files
+npm test          # 241 tests, 21 files
 npm run dev       # http://localhost:3000
 ```
 

@@ -1,7 +1,9 @@
 import 'server-only'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { createServerClient } from '@supabase/ssr'
 import type { User } from '@supabase/supabase-js'
+import { isAdmin } from './roles'
 
 /**
  * Auth, stubbed out for the demo build.
@@ -84,5 +86,10 @@ export async function getSessionUser(): Promise<User | null> {
 
 /** Same user, no gate -- the admin screens are part of the demo. */
 export async function requireAdmin(): Promise<User> {
-  return DEMO_USER
+  // Removing the login wall is not the same as handing every anonymous
+  // visitor the corpus-editing screens. There is no session in this build,
+  // and the stand-in user is a member, so this asserts rather than assumes.
+  const user = await getSessionUser()
+  if (!user || !isAdmin(user)) redirect('/')
+  return user
 }

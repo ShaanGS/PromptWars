@@ -35,34 +35,24 @@ What actually enforces that today:
 | --- | --- | --- |
 | `/admin/add` | `roleOf(user) !== 'admin'` → `redirect('/')` | Yes |
 | `/admin/discovery` | `roleOf(user) !== 'admin'` → `redirect('/')` | Yes |
-| `/admin` | `requireAdmin()` | **No — see below** |
-| `/design` | `requireAdmin()` | **No — see below** |
-| `app/(app)/admin/**/actions.ts` (7 server actions) | `requireAdmin()` | **No — see below** |
+| `/admin` | `requireAdmin()` → asserts `isAdmin`, else `redirect('/')` | Yes |
+| `/design` | `requireAdmin()` | Yes |
+| `app/(app)/admin/**/actions.ts` (7 server actions) | `requireAdmin()` | Yes |
 
-### Known gap: `requireAdmin()` does not assert the role
-
-`lib/auth/server.ts` `requireAdmin()` currently returns the stand-in user
-unconditionally — no role check, no redirect, no throw:
+`requireAdmin()` asserts rather than assumes:
 
 ```ts
 export async function requireAdmin(): Promise<User> {
-  return DEMO_USER
+  const user = await getSessionUser()
+  if (!user || !isAdmin(user)) redirect('/')
+  return user
 }
 ```
 
-Every surface in the table above that depends on it is therefore open to any
-visitor, which contradicts the intent stated one directory away in
-`lib/auth/roles.ts`. Two consequences worth knowing:
-
-- `/admin` renders, then calls `auth.admin.listUsers()` on a publishable key,
-  which 401s and surfaces as a server error rather than a clean 403 — there is
-  no `error.tsx` in `app/`.
-- The admin server actions are POST-invocable regardless of what any page-level
-  check does, because a server action is its own entry point.
-
-The one-line fix that closes all seven call sites at once is to make
-`requireAdmin()` assert `isAdmin(user)` and `redirect('/')` otherwise. That is
-tracked as the top security item in [docs/ROADMAP.md](docs/ROADMAP.md).
+Because the stand-in user is a `member`, every surface above redirects to `/`
+for an anonymous visitor. Server actions are their own entry points, so putting
+the check inside `requireAdmin()` closes all seven at once rather than relying
+on a page-level guard.
 
 ## Keys
 

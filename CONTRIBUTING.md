@@ -88,6 +88,13 @@ The demo database (`fjxgqiveolnnrslihodl`) is a **throwaway** seeded for the
 submission — not Olvable's production project, which is separate and untouched.
 Write scripts still deserve respect: the demo is what a judge sees.
 
+Every write script calls `assertProdWritesAllowed()` from `scripts/guard.ts`
+first, so a local run refuses unless you set `ALLOW_PROD_WRITES=true`. GitHub
+Actions is exempt — ingestion is supposed to write from there. Read-only
+scripts (`healthcheck`, `connector:test`, `luma:check`) are deliberately
+unguarded: a guard that also blocks harmless reads trains you to always set the
+flag, which unmakes the guard.
+
 - **Reading is always safe** — `npm run dev` and browsing touch nothing.
 - **Parse without writing**: `npm run connector:test -- devpost` runs a
   connector against the live site and prints what it parsed. This is the
