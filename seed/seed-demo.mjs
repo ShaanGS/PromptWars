@@ -56,6 +56,7 @@ const events = ingested.map((e, i) => {
     description: null,
     url: e.external_url ?? 'https://example.com',
     canonical_url: e.external_url ?? null,
+    image_url: e.image_url ?? null,
     organizer: e.host,
     starts_at_local: starts ? starts.toISOString().slice(0, 19) : null,
     ends_at_local: ends ? ends.toISOString().slice(0, 19) : null,

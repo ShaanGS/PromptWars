@@ -3,6 +3,11 @@
  * fetch-events.mjs — pulls upcoming hackathon/competition listings from the
  * public Devfolio, Devpost, and Unstop APIs and writes ingest/events.json.
  *
+ * Each source names its artwork differently: Devfolio `cover_img` (a real
+ * banner), Devpost `thumbnail_url` (a square), Unstop `logoUrl2` (a 150x150
+ * logo). All three land in `image_url`; size tuning happens at render time in
+ * lib/images.ts, so this file stores what the source actually said.
+ *
  * Plain Node (>=18), ESM, zero dependencies — uses global fetch.
  * Run:  node ingest/fetch-events.mjs
  */
@@ -36,6 +41,20 @@ function toIso(value) {
   if (!value) return null
   const d = new Date(value)
   return Number.isNaN(d.getTime()) ? null : d.toISOString()
+}
+
+/**
+ * Devpost hands out one shared grey .gif from /assets/defaults/ for every
+ * hackathon whose organiser never uploaded artwork -- 8 of 51 on the day this
+ * was written. Storing it would put the identical grey tile on a row of cards;
+ * the app's own placeholder varies its hue and carries the date, so null is
+ * the better picture.
+ */
+function cleanImageUrl(url) {
+  if (typeof url !== 'string' || !url.trim()) return null
+  if (url.includes('/assets/defaults/')) return null
+  // Devpost's thumbnail_url is protocol-relative ("//d112y...").
+  return url.startsWith('//') ? `https:${url}` : url
 }
 
 /** An event is upcoming if its deadline or start (whichever exists) is in the future. */
@@ -74,6 +93,7 @@ async function fetchDevfolio() {
       starts_at: toIso(h.starts_at),
       ends_at: toIso(h.ends_at),
       deadline_at: toIso(h.hackathon_setting?.reg_ends_at),
+      image_url: cleanImageUrl(h.cover_img),
       tags: themes.slice(0, 5),
     })
   }
@@ -145,6 +165,7 @@ async function fetchDevpost() {
       starts_at: start ? start.toISOString() : null,
       ends_at: end ? end.toISOString() : null,
       deadline_at: end ? end.toISOString() : null,
+      image_url: cleanImageUrl(h.thumbnail_url),
       tags: (h.themes ?? []).map((t) => t?.name).filter(Boolean).slice(0, 5),
     })
   }
@@ -193,6 +214,9 @@ async function fetchUnstop() {
         starts_at: null,
         ends_at: null,
         deadline_at: toIso(item.end_date),
+        // Unstop publishes no banner -- logoUrl2 is the organiser's 150x150
+        // mark, and only that size exists on their CDN.
+        image_url: cleanImageUrl(item.logoUrl2),
         tags: filters.slice(0, 5),
       })
     }
