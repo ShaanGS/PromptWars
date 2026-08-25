@@ -3,12 +3,7 @@ import Link from 'next/link'
 import { Sparkle, UsersThree } from '@phosphor-icons/react/dist/ssr'
 import { createServiceClient } from '@/lib/supabase'
 import { getDemoProfile } from '@/lib/demo'
-import {
-  gapFeed,
-  type AvailabilityWindow,
-  type Member,
-  type Requirement,
-} from '@/lib/engine'
+import { gapFeed, type AvailabilityWindow, type Member, type Requirement } from '@/lib/engine'
 import { Page, PageHeader } from '@/components/shell/page-header'
 import { SectionHeading } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/bits'
@@ -181,7 +176,9 @@ export default async function TeamsPage() {
     : []
 
   return (
-    <Page>
+    // role="main" rather than <main>: Page is the shared shell wrapper and is
+    // shared with Olvable's screens, so the landmark is declared per page.
+    <Page role="main">
       <PageHeader
         title="Team Board"
         subtitle="Find your next team. Or post what you need."
@@ -195,32 +192,35 @@ export default async function TeamsPage() {
       {forYou.length ? (
         <section className="mt-8">
           <SectionHeading
-            icon={<Sparkle weight="duotone" />}
+            icon={<Sparkle aria-hidden="true" weight="duotone" />}
             title="Squads looking for you"
             aside={`Ranked by what you'd add`}
           />
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {/* A ranked run of cards is a list, so a screen reader gets the count
+              and "3 of 4" while arrowing through it. */}
+          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {forYou.map((entry, i) => (
-              <SquadCard
-                key={entry.squad.id}
-                squad={entry.squad}
-                gain={{ delta: entry.gain.delta, fills: entry.gain.fills }}
-                index={i}
-              />
+              <li key={entry.squad.id}>
+                <SquadCard
+                  squad={entry.squad}
+                  gain={{ delta: entry.gain.delta, fills: entry.gain.fills }}
+                  index={i}
+                />
+              </li>
             ))}
-          </div>
+          </ul>
         </section>
       ) : null}
 
       <section className="mt-8">
         <SectionHeading
-          icon={<UsersThree weight="duotone" />}
+          icon={<UsersThree aria-hidden="true" weight="duotone" />}
           title="All squads"
           aside={squads.length ? `${squads.length} open` : undefined}
         />
         {squads.length === 0 ? (
           <EmptyState
-            icon={<UsersThree weight="duotone" />}
+            icon={<UsersThree aria-hidden="true" weight="duotone" />}
             title="No squads yet"
             body="Nobody has posted what they need. Be the first — say what you're building and which role is missing."
             action={
@@ -230,11 +230,13 @@ export default async function TeamsPage() {
             }
           />
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {squads.map((squad, i) => (
-              <SquadCard key={squad.id} squad={squad} index={i} />
+              <li key={squad.id}>
+                <SquadCard squad={squad} index={i} />
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </section>
     </Page>

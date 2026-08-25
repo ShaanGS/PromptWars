@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { createServiceClient } from '@/lib/supabase'
 import type { AvailabilityWindow } from '@/lib/engine'
 
@@ -41,8 +42,13 @@ const COLUMNS =
  * Never throws. A missing row, an unseeded database, or absent Supabase env
  * vars all return null, because the alternative is a hard 500 on the root
  * layout in front of judges. Callers render an empty state instead.
+ *
+ * Wrapped in React's `cache`, which memoises per request: "who am I" is asked
+ * by every Guild screen and could be asked twice on one render (a layout and
+ * the page inside it), and that must not become two queries for a row that
+ * cannot change mid-render.
  */
-export async function getDemoProfile(): Promise<DemoProfile | null> {
+export const getDemoProfile = cache(async function getDemoProfile(): Promise<DemoProfile | null> {
   try {
     const db = createServiceClient()
     const { data, error } = await db
@@ -63,4 +69,4 @@ export async function getDemoProfile(): Promise<DemoProfile | null> {
   } catch {
     return null
   }
-}
+})

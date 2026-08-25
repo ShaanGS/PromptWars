@@ -1,5 +1,16 @@
 # 001 — Email + password, no sign-up, no email sending
 
+> **SUPERSEDED 2026-08-25 by the Guild demo build.** Everything below describes
+> the auth system this repo *had* and is the specification for restoring it —
+> none of it is true of the current build. There is no session, no login page
+> that works, no `getUser()` in `middleware.ts` (it is a pass-through), and no
+> service-role key for `admin:grant` or `user:create` to use. See
+> [`../../SECURITY.md`](../../SECURITY.md) for the posture that replaced it and
+> the three-file revert that brings this record back into force.
+>
+> Kept, not deleted: it is the most precise statement of the target state, and
+> the "gotcha learned live" below still applies whenever auth returns.
+
 Settled 2026-08-05 (passwords) and 2026-08-23 (admin + access control).
 
 **Decision.** Accounts are email + password, created only by the admin —

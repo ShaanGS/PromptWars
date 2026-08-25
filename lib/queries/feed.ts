@@ -58,12 +58,16 @@ export async function getDashboardData(
   // Ranked by relevance, then soonest. `nulls last` is not optional: Postgres
   // orders DESC as NULLS FIRST, so without it every unscored event would sit
   // at the very top of the dashboard.
+  // Six independent reads, one round trip. `source_health` used to be awaited
+  // after this block: it depends on nothing above it, so serialising it cost
+  // the dashboard a whole extra round trip for no ordering it needed.
   const [
     { data: events },
     { data: closing },
     { count: filteredCount },
     { data: unseenCount },
     { count: totalActive },
+    { data: healthRows },
   ] = await Promise.all([
     applyFilters(
       db
@@ -110,11 +114,11 @@ export async function getDashboardData(
       .eq('status', 'active')
       .in('source_id', sourceFilter)
       .gte('starts_at', nowIso),
+    // One round trip for the whole health strip. This used to be two queries
+    // per source -- sixteen sequential round trips that dominated page latency.
+    db.rpc('source_health'),
   ])
 
-  // One round trip for the whole health strip. This used to be two queries
-  // per source -- sixteen sequential round trips that dominated page latency.
-  const { data: healthRows } = await db.rpc('source_health')
   const health: SourceHealth[] = (healthRows ?? []).map((r: Record<string, unknown>) => ({
     id: r.id as string,
     display_name: r.display_name as string,

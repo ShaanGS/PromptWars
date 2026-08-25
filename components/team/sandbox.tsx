@@ -32,6 +32,18 @@ const pct = (n: number) => `${Math.round(n * 100)}%`
 /** Marginal gain can be negative -- adding a sixth person costs overlap. */
 const signedPct = (n: number) => `${n >= 0 ? '+' : '−'}${Math.abs(n * 100).toFixed(1)}%`
 
+/**
+ * Auto-draft is a staged reveal, and a staged reveal is motion. Someone who
+ * asked the OS for less of it gets the finished roster in one step instead --
+ * the same end state, which is all the setting ever promises.
+ */
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true
+  )
+}
+
 type Props = {
   pool: Member[]
   requirements: Requirement[]
@@ -74,6 +86,30 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
   const risks = teamRisks(team, requirements)
   const openCount = ts.coverage.filter((c) => c.coverage < UNMET_THRESHOLD).length
 
+  const roleWord = `role${requirements.length === 1 ? '' : 's'}`
+  const summary =
+    `${team.length} on the roster. Team score ${Math.round(ts.score * 100)} percent. ` +
+    (openCount === 0
+      ? `All ${requirements.length} ${roleWord} covered.`
+      : `${openCount} of ${requirements.length} ${roleWord} still open.`)
+
+  // Auto-draft rewrites the score, the slots and the candidate list every
+  // 420ms. A live region wired straight to the score would fire once per pick
+  // and be dropped or talked over, so nothing is announced until the roster
+  // settles -- then the new state is read once, as a sentence.
+  const [live, setLive] = React.useState('')
+  const settled = React.useRef(false)
+  React.useEffect(() => {
+    if (drafting) return
+    // Skip the first settled render: nobody asked to have the page read out
+    // to them the moment it loaded.
+    if (!settled.current) {
+      settled.current = true
+      return
+    }
+    setLive(summary)
+  }, [drafting, summary])
+
   const add = (id: string) => setTeamIds((t) => (t.includes(id) ? t : [...t, id]))
   const remove = (id: string) => {
     if (id === ownerId) return
@@ -93,6 +129,10 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
       maxSize: Math.max(requirements.length + 1, team.length + 1),
     })
     if (picks.length === 0) return
+    if (prefersReducedMotion()) {
+      setTeamIds((t) => [...t, ...picks.map((p) => p.member.id).filter((id) => !t.includes(id))])
+      return
+    }
     setDrafting(true)
     let i = 0
     timer.current = setInterval(() => {
@@ -113,7 +153,7 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
   if (requirements.length === 0) {
     return (
       <EmptyState
-        icon={<ShieldWarning weight="duotone" />}
+        icon={<ShieldWarning aria-hidden="true" weight="duotone" />}
         title="This squad has no roles yet"
         body="Add a requirement — a skill, a weight and a minimum — and the engine will start ranking people against it."
       />
@@ -135,10 +175,19 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {live}
+      </p>
+
       <div className="flex min-w-0 flex-col gap-5">
         <ScoreCard ts={ts} openCount={openCount} total={requirements.length} />
 
-        <section aria-label="Roles" className="flex flex-col gap-3">
+        <section aria-labelledby="sandbox-roles" className="flex flex-col gap-3">
+          {/* The roles are the page's real structure; without a heading above
+              them their h3s would dangle under "Team score". */}
+          <h2 id="sandbox-roles" className="sr-only">
+            Roles
+          </h2>
           {requirements.map((req) => (
             <Slot
               key={req.id}
@@ -170,13 +219,15 @@ function ScoreCard({ ts, openCount, total }: { ts: TeamScore; openCount: number;
     { label: 'Commitment', value: ts.commitment },
   ]
 
+  const score = Math.round(ts.score * 100)
+
   return (
     <Card padded={false}>
       <div className="flex items-end justify-between gap-4 p-4 pb-3.5 sm:p-5 sm:pb-4">
         <div>
-          <p className="text-[13px] font-medium text-ink-2">Team score</p>
+          <h2 className="text-[13px] font-medium text-ink-2">Team score</h2>
           <p className="mt-1 text-[44px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-ink sm:text-[52px]">
-            {Math.round(ts.score * 100)}
+            {score}
             <span className="text-[24px] text-ink-3">%</span>
           </p>
         </div>
@@ -187,18 +238,27 @@ function ScoreCard({ ts, openCount, total }: { ts: TeamScore; openCount: number;
         </p>
       </div>
 
-      <div className="mx-4 h-2 overflow-hidden rounded-full bg-surface-2 sm:mx-5">
+      {/* The headline number is drawn twice -- as digits and as a fill. Only the
+          meter role makes the fill mean anything to a screen reader. */}
+      <div
+        role="meter"
+        aria-valuenow={score}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Team score"
+        className="mx-4 h-2 overflow-hidden rounded-full bg-surface-2 sm:mx-5"
+      >
         <Bar value={ts.score} className="bg-accent" />
       </div>
 
-      <div className="mt-4 grid grid-cols-4 divide-x divide-line border-t border-line">
+      <ul className="mt-4 grid grid-cols-4 divide-x divide-line border-t border-line">
         {parts.map((p) => (
-          <div key={p.label} className="px-2 py-3 text-center">
+          <li key={p.label} className="px-2 py-3 text-center">
             <p className="text-[15px] font-semibold tabular-nums text-ink">{pct(p.value)}</p>
             <p className="mt-0.5 text-[11.5px] text-ink-3">{p.label}</p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </Card>
   )
 }
@@ -243,12 +303,14 @@ function Slot({
       <div className="rounded-card border-2 border-dashed border-accent bg-accent-soft p-4 sm:p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
+            {/* "Open slot" in words: the dashed accent border is a second
+                signal, never the only one. */}
             <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-accent-ink">
               Open slot
             </p>
-            <p className="mt-1 truncate text-[20px] font-semibold tracking-[-0.02em] text-ink">
+            <h3 className="mt-1 truncate text-[20px] font-semibold tracking-[-0.02em] text-ink">
               {label}
-            </p>
+            </h3>
             <p className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-accent-ink">
               <span className="font-medium">{req.skill}</span>
               <span aria-hidden="true" className="opacity-50">
@@ -263,6 +325,7 @@ function Slot({
           </div>
           <span className="shrink-0 text-[20px] font-semibold tabular-nums text-accent-ink">
             {pct(coverage)}
+            <span className="sr-only"> covered</span>
           </span>
         </div>
       </div>
@@ -273,51 +336,66 @@ function Slot({
     <Card>
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="truncate text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+          <h3 className="truncate text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">
             {label}
-          </p>
+          </h3>
           <p className="mt-0.5 text-[13px] text-ink-3">
             {req.skill} · weight {req.weight}
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2.5">
-          <div className="h-1.5 w-16 overflow-hidden rounded-full bg-surface-2 sm:w-24">
+          <div
+            role="meter"
+            aria-valuenow={Math.round(coverage * 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${label} coverage`}
+            className="h-1.5 w-16 overflow-hidden rounded-full bg-surface-2 sm:w-24"
+          >
             <Bar value={coverage} className="bg-success" />
           </div>
-          <span className="text-[14px] font-semibold tabular-nums text-ink">{pct(coverage)}</span>
+          <span className="text-[14px] font-semibold tabular-nums text-ink">
+            {pct(coverage)}
+            <span className="sr-only"> covered</span>
+          </span>
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-1.5">
+      <ul aria-label={`${label} — who covers it`} className="mt-3 flex flex-wrap gap-1.5">
         {(entry?.contributors ?? []).map((c) => {
           const m = team.find((x) => x.id === c.memberId)
           if (!m) return null
           return (
-            <span
+            <li
               key={c.memberId}
               className="flex items-center gap-2 rounded-full border border-line bg-surface-2 p-1"
             >
               <Avatar name={m.name} size={26} />
               <span className="text-[13.5px] font-medium text-ink">{m.name}</span>
-              <span className="text-[12.5px] tabular-nums text-ink-2">{pct(c.effective)}</span>
+              <span className="text-[12.5px] tabular-nums text-ink-2">
+                {pct(c.effective)}
+                <span className="sr-only"> effective proficiency</span>
+              </span>
               {c.memberId === ownerId ? (
                 <span className="pr-2 text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-3">
                   Owner
                 </span>
               ) : (
+                // The X alone is the control, so the name and the object of the
+                // action both have to live in its label.
                 <button
                   type="button"
-                  aria-label={`Remove ${m.name}`}
+                  aria-label={`Remove ${m.name} from the roster`}
                   onClick={() => onRemove(c.memberId)}
                   className="flex size-6 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-danger-soft hover:text-danger-ink"
                 >
-                  <X size={13} weight="bold" />
+                  <X aria-hidden="true" size={13} weight="bold" />
                 </button>
               )}
-            </span>
+            </li>
           )
         })}
-      </div>
+      </ul>
     </Card>
   )
 }
@@ -353,11 +431,11 @@ function CandidateList({
         <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-ink">Best next member</h2>
         <div className="flex shrink-0 items-center gap-2">
           <Button variant="accent" size="sm" onClick={onDraft} disabled={drafting}>
-            <MagicWand weight="fill" />
+            <MagicWand aria-hidden="true" weight="fill" />
             {drafting ? 'Drafting' : 'Auto-draft'}
           </Button>
-          <Button size="icon-sm" onClick={onReset} aria-label="Reset roster">
-            <ArrowClockwise weight="bold" />
+          <Button size="icon-sm" onClick={onReset} aria-label="Reset the roster">
+            <ArrowClockwise aria-hidden="true" weight="bold" />
           </Button>
         </div>
       </div>
@@ -367,60 +445,72 @@ function CandidateList({
           <p className="text-[14px] text-ink-2">Everyone in the pool is already on this squad.</p>
         </Card>
       ) : (
-        <div className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-2">
           {ranked.map((gain) => {
             const c = byId.get(gain.candidateId)
             if (!c) return null
             const fillsGap = gain.fills.length > 0
             const top = [...c.skills].sort((a, b) => b.proficiency - a.proficiency).slice(0, 3)
+            // Fills vs duplicates is drawn in accent-vs-grey and in the pills;
+            // the label says it in words so colour is never carrying it alone.
+            const effect = fillsGap
+              ? `Fills ${gain.fills.map(labelOf).join(', ')}.`
+              : gain.duplicates.length
+                ? 'Duplicates cover the roster already has.'
+                : 'Adds no new role coverage.'
             return (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => onAdd(c.id)}
-                className="group w-full rounded-card border border-line bg-surface p-3 text-left shadow-card transition-colors hover:border-line-strong"
-              >
-                <div className="flex items-center gap-3">
-                  <Avatar name={c.name} size={40} />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-[14.5px] font-semibold text-ink">{c.name}</p>
-                    <p className="truncate text-[13px] text-ink-3">
-                      {top.map((s) => s.skill).join(' · ') || 'No skills listed'}
-                    </p>
+              <li key={c.id}>
+                <button
+                  type="button"
+                  onClick={() => onAdd(c.id)}
+                  aria-label={`Add ${c.name} to the roster. ${signedPct(gain.delta)} team score. ${effect}`}
+                  className="group w-full rounded-card border border-line bg-surface p-3 text-left shadow-card transition-colors hover:border-line-strong"
+                >
+                  <div className="flex items-center gap-3">
+                    <Avatar name={c.name} size={40} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[14.5px] font-semibold text-ink">{c.name}</p>
+                      <p className="truncate text-[13px] text-ink-3">
+                        {top.map((s) => s.skill).join(' · ') || 'No skills listed'}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span
+                        className={cn(
+                          'text-[14px] font-semibold tabular-nums',
+                          fillsGap ? 'text-accent' : 'text-ink-3',
+                        )}
+                      >
+                        {signedPct(gain.delta)}
+                      </span>
+                      <span
+                        aria-hidden="true"
+                        className="flex size-7 items-center justify-center rounded-full bg-accent-soft text-accent-ink transition-colors group-hover:bg-accent group-hover:text-white"
+                      >
+                        <Plus size={14} weight="bold" />
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex shrink-0 items-center gap-2">
-                    <span
-                      className={cn(
-                        'text-[14px] font-semibold tabular-nums',
-                        fillsGap ? 'text-accent' : 'text-ink-3',
-                      )}
-                    >
-                      {signedPct(gain.delta)}
-                    </span>
-                    <span className="flex size-7 items-center justify-center rounded-full bg-accent-soft text-accent-ink transition-colors group-hover:bg-accent group-hover:text-white">
-                      <Plus size={14} weight="bold" />
-                    </span>
-                  </div>
-                </div>
 
-                {gain.fills.length > 0 || gain.duplicates.length > 0 ? (
-                  <div className="mt-2.5 flex flex-wrap gap-1.5">
-                    {gain.fills.map((id) => (
-                      <Pill key={id} tone="accent-soft" size="sm">
-                        fills {labelOf(id)}
-                      </Pill>
-                    ))}
-                    {gain.duplicates.map((d) => (
-                      <Pill key={d.requirementId} tone="neutral" size="sm">
-                        {nameOf(d.alreadyCoveredBy[0])} already covers {labelOf(d.requirementId)}
-                      </Pill>
-                    ))}
-                  </div>
-                ) : null}
-              </button>
+                  {gain.fills.length > 0 || gain.duplicates.length > 0 ? (
+                    <div className="mt-2.5 flex flex-wrap gap-1.5">
+                      {gain.fills.map((id) => (
+                        <Pill key={id} tone="accent-soft" size="sm">
+                          fills {labelOf(id)}
+                        </Pill>
+                      ))}
+                      {gain.duplicates.map((d) => (
+                        <Pill key={d.requirementId} tone="neutral" size="sm">
+                          {nameOf(d.alreadyCoveredBy[0])} already covers {labelOf(d.requirementId)}
+                        </Pill>
+                      ))}
+                    </div>
+                  ) : null}
+                </button>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )}
     </div>
   )
@@ -430,7 +520,7 @@ function RiskPanel({ risks }: { risks: Risk[] }) {
   return (
     <Card>
       <SectionHeading
-        icon={<ShieldWarning weight="duotone" />}
+        icon={<ShieldWarning aria-hidden="true" weight="duotone" />}
         title="Team X-ray"
         aside={
           risks.length === 0 ? 'All clear' : `${risks.length} flag${risks.length === 1 ? '' : 's'}`
@@ -451,7 +541,12 @@ function RiskPanel({ risks }: { risks: Risk[] }) {
                   r.severity === 'high' ? 'bg-danger' : 'bg-warning-ink',
                 )}
               />
-              <span className="text-[14px] leading-snug text-ink">{r.message}</span>
+              {/* Red vs amber is the only visual difference between a high and
+                  a medium flag; the severity has to survive in words too. */}
+              <span className="text-[14px] leading-snug text-ink">
+                <span className="sr-only">{r.severity === 'high' ? 'High: ' : 'Medium: '}</span>
+                {r.message}
+              </span>
             </li>
           ))}
         </ul>

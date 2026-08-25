@@ -141,13 +141,17 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
     },
   ]
 
+  const total = Math.round(gs.total * 100)
+
   return (
-    <Page>
+    // role="main" rather than <main>: Page is the shared shell wrapper and is
+    // shared with Olvable's screens, so the landmark is declared per page.
+    <Page role="main">
       <Link
         href="/people"
         className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-ink-2 transition-colors hover:text-ink"
       >
-        <ArrowLeft size={15} weight="bold" />
+        <ArrowLeft aria-hidden="true" size={15} weight="bold" />
         All people
       </Link>
 
@@ -169,33 +173,59 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
       <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
         <div className="flex flex-col gap-4">
           <section className={CARD}>
-            <SectionHeading icon={<Medal weight="duotone" />} title="Guild Score" />
-            <div className="flex items-end gap-2.5">
-              <p className="text-[52px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-accent">
-                {Math.round(gs.total * 100)}
+            <SectionHeading
+              icon={<Medal aria-hidden="true" weight="duotone" />}
+              title="Guild Score"
+            />
+            {/* A score you cannot audit is a vanity metric, and a score only
+                drawn as a bar is one a screen reader cannot audit at all. */}
+            <div
+              role="meter"
+              aria-valuenow={total}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Guild Score"
+              className="flex items-end gap-2.5"
+            >
+              <p
+                aria-hidden="true"
+                className="text-[52px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-accent"
+              >
+                {total}
               </p>
-              <p className="pb-1.5 text-[13.5px] text-ink-2">out of 100</p>
+              <p aria-hidden="true" className="pb-1.5 text-[13.5px] text-ink-2">
+                out of 100
+              </p>
             </div>
 
-            <div className="mt-5 space-y-4">
-              {bars.map((bar) => (
-                <div key={bar.label}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <p className="text-[13.5px] font-medium text-ink">{bar.label}</p>
-                    <p className="text-[13px] tabular-nums text-ink-2">
-                      {Math.round(bar.value * 100)}%
-                    </p>
-                  </div>
-                  <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-surface-2">
+            <ul className="mt-5 space-y-4">
+              {bars.map((bar) => {
+                const value = Math.round(bar.value * 100)
+                return (
+                  <li key={bar.label}>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="text-[13.5px] font-medium text-ink">{bar.label}</p>
+                      <p className="text-[13px] tabular-nums text-ink-2">{value}%</p>
+                    </div>
                     <div
-                      className="h-2 rounded-full bg-accent"
-                      style={{ width: `${Math.round(bar.value * 100)}%` }}
-                    />
-                  </div>
-                  <p className="mt-1.5 text-[12.5px] text-ink-3">{bar.hint}</p>
-                </div>
-              ))}
-            </div>
+                      role="meter"
+                      aria-valuenow={value}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-label={`${bar.label} — ${bar.hint}`}
+                      className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-surface-2"
+                    >
+                      <div
+                        aria-hidden="true"
+                        className="h-2 rounded-full bg-accent"
+                        style={{ width: `${value}%` }}
+                      />
+                    </div>
+                    <p className="mt-1.5 text-[12.5px] text-ink-3">{bar.hint}</p>
+                  </li>
+                )
+              })}
+            </ul>
 
             {gs.rareSkills.length ? (
               <div className="mt-5 border-t border-line pt-4">
@@ -219,7 +249,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
 
           <section className={CARD}>
             <SectionHeading
-              icon={<PuzzlePiece weight="duotone" />}
+              icon={<PuzzlePiece aria-hidden="true" weight="duotone" />}
               title="Skills"
               aside={claims.length ? `${claims.filter((c) => c.proof_url).length} verified` : null}
             />
@@ -237,20 +267,23 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
                         {s.skill}
                         {s.proof_url ? (
                           <Pill tone="mint" size="sm">
-                            <SealCheck weight="fill" />
+                            <SealCheck aria-hidden="true" weight="fill" />
                             Verified
                           </Pill>
                         ) : null}
                       </p>
                       {s.proof_url ? (
+                        // One "See the proof" per skill: the skill has to be in
+                        // the link's name or they are all the same link.
                         <a
                           href={s.proof_url}
                           target="_blank"
                           rel="noreferrer noopener"
+                          aria-label={`See the proof for ${s.skill} (opens in a new tab)`}
                           className="mt-1 inline-flex items-center gap-1 text-[13px] text-accent-ink underline-offset-2 hover:underline"
                         >
                           See the proof
-                          <ArrowSquareOut size={13} weight="bold" />
+                          <ArrowSquareOut aria-hidden="true" size={13} weight="bold" />
                         </a>
                       ) : (
                         <p className="mt-1 text-[13px] text-ink-3">
@@ -261,6 +294,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
                     </div>
                     <p className="shrink-0 text-[14.5px] font-medium tabular-nums text-ink-2">
                       {Math.round(Number(s.proficiency) * 100)}%
+                      <span className="sr-only"> proficiency</span>
                     </p>
                   </li>
                 ))}
@@ -271,7 +305,10 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
 
         <div className="flex flex-col gap-4">
           <section className={CARD}>
-            <SectionHeading icon={<Handshake weight="duotone" />} title="People you should meet" />
+            <SectionHeading
+              icon={<Handshake aria-hidden="true" weight="duotone" />}
+              title="People you should meet"
+            />
             {meet.length === 0 ? (
               <p className="text-[14px] text-ink-2">Nobody else in the community yet.</p>
             ) : (
@@ -285,6 +322,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
                     <li key={member.id}>
                       <Link
                         href={row ? `/p/${row.handle}` : '/people'}
+                        aria-label={`${member.name} — ${reason}`}
                         className="flex items-center gap-3 rounded-ctl px-2 py-2.5 transition-colors hover:bg-surface-2"
                       >
                         <Avatar name={member.name} size={38} />
@@ -304,7 +342,10 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
 
           {gaps.length ? (
             <section className={CARD}>
-              <SectionHeading icon={<Target weight="duotone" />} title="Squads that need you" />
+              <SectionHeading
+                icon={<Target aria-hidden="true" weight="duotone" />}
+                title="Squads that need you"
+              />
               <ul className="-mx-2">
                 {gaps.map(({ projectId, gain }) => {
                   const project = projectById.get(projectId)
@@ -318,6 +359,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
                     <li key={projectId}>
                       <Link
                         href={`/squad/${projectId}`}
+                        aria-label={`${project?.title ?? 'Untitled squad'} — joining adds ${(
+                          gain.delta * 100
+                        ).toFixed(1)}% to their team score`}
                         className="flex items-start gap-3 rounded-ctl px-2 py-2.5 transition-colors hover:bg-surface-2"
                       >
                         <div className="min-w-0 flex-1">

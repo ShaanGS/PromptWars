@@ -33,19 +33,22 @@ export type PublicEvent = Omit<
  */
 export async function getPublicEvent(id: string): Promise<PublicEvent | null> {
   const db = createServiceClient()
+  // The source check is an inner join rather than a second query: it used to
+  // be a follow-up read keyed on the row we had just fetched, which made the
+  // share page two sequential round trips to answer one question. `!inner`
+  // means a row from a switched-off source does not come back at all, so the
+  // 404 is decided in Postgres.
   const { data, error } = await db
     .from('events')
-    .select(PUBLIC_COLUMNS)
+    .select(`${PUBLIC_COLUMNS}, sources!inner(enabled)`)
     .eq('id', id)
     .eq('status', 'active')
+    .eq('sources.enabled', true)
     .maybeSingle()
   if (error || !data) return null
-  const row = data as unknown as PublicEvent
-  const { data: source } = await db
-    .from('sources')
-    .select('enabled')
-    .eq('id', row.source_id)
-    .maybeSingle()
-  if (!source?.enabled) return null
+  // The embed is a filter, not payload -- drop it so nothing about our source
+  // table is serialised into a public page.
+  const row = data as unknown as PublicEvent & { sources?: unknown }
+  delete row.sources
   return row
 }

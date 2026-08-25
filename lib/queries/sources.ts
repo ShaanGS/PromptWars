@@ -1,6 +1,6 @@
 import { createServiceClient } from '../supabase'
-import { isDeadlineSource, type SourceKind } from '../sources'
-import { mutedSourceIds, visibleSourceIds, type SourceHealth } from './shared'
+import { isDeadlineSource, selectSourceIds, type SourceKind } from '../sources'
+import { mutedSourceIds, type SourceHealth } from './shared'
 
 /**
  * Enabled sources as filter chips, display name included.
@@ -13,13 +13,22 @@ export async function getSourceChips(
   kind: SourceKind | 'all' = 'events',
 ): Promise<Array<{ id: string; label: string }>> {
   const db = createServiceClient()
-  const [{ data }, { ids }] = await Promise.all([
+  // Two reads, not three. visibleSourceIds() would re-select the same enabled
+  // sources this query already returns, so the ids are derived from these rows
+  // instead and only the mute list is fetched alongside.
+  const [{ data }, muted] = await Promise.all([
     db.from('sources').select('id, display_name').eq('enabled', true).order('display_name'),
-    visibleSourceIds(userId, kind),
+    mutedSourceIds(userId),
   ])
-  return (data ?? [])
-    .filter((s) => ids.includes(s.id as string))
-    .map((s) => ({ id: s.id as string, label: s.display_name as string }))
+  const rows = (data ?? []).map((s) => ({ id: s.id as string, label: s.display_name as string }))
+  const ids = new Set(
+    selectSourceIds(
+      rows.map((s) => s.id),
+      muted,
+      kind,
+    ),
+  )
+  return rows.filter((s) => ids.has(s.id))
 }
 
 export interface SourceInfo extends SourceHealth {

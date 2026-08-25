@@ -8,9 +8,14 @@ explicitly, not overridden in passing.
 Format: ADR-lite, numbered in the order they were settled. A superseded
 record is marked at the top and kept, never deleted.
 
+These are **Olvable's** decisions. Guild's — the scoring model and the demo
+posture — are in [`../decisions.md`](../decisions.md). Records 001 and 008 were
+superseded on 2026-08-25 by the no-login demo build; both carry a banner
+saying so.
+
 | #                                            | Decision                                                               | Settled            |
 | -------------------------------------------- | ---------------------------------------------------------------------- | ------------------ |
-| [001](001-auth-email-password-no-signup.md)  | Email + password, no sign-up, no email sending                         | 2026-08-05 / 08-23 |
+| [001](001-auth-email-password-no-signup.md)  | Email + password, no sign-up, no email sending — **superseded**         | 2026-08-05 / 08-23 |
 | [002](002-ingestion-on-github-actions.md)    | Ingestion runs on GitHub Actions, not Vercel                           | 2026-08-05         |
 | [003](003-nothing-silently-deleted.md)       | The pipeline never silently deletes                                    | 2026-08-05         |
 | [004](004-geo-asymmetry.md)                  | Geo: local sources keep-unless-elsewhere; national sources prove-local | 2026-08-23         |

@@ -18,7 +18,7 @@ import { NAV_PRIMARY, NAV_YOU, isActive } from './nav'
 export function TopBar({ admin }: { admin: boolean }) {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-canvas/90 px-4 backdrop-blur-md lg:hidden">
-      <Link href="/" className="inline-flex" aria-label="Feed">
+      <Link href="/" className="inline-flex" aria-label="Guild home">
         <Wordmark size="sm" />
       </Link>
       {admin ? (

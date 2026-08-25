@@ -20,11 +20,17 @@ export async function getCalendarEvents(
 ): Promise<EventRow[]> {
   const db = createServiceClient()
 
-  const { data: actions } = await db
-    .from('user_event_actions')
-    .select('event_id, state')
-    .eq('user_id', userId)
-    .in('state', ['interested', 'registered', 'going', 'attended'])
+  // Both reads are independent of each other, so they go out together: the
+  // source list used to be fetched only after the actions came back, which
+  // made the 'all' calendar three sequential round trips instead of two.
+  const [{ data: actions }, sources] = await Promise.all([
+    db
+      .from('user_event_actions')
+      .select('event_id, state')
+      .eq('user_id', userId)
+      .in('state', ['interested', 'registered', 'going', 'attended']),
+    scope === 'all' ? visibleSourceIds(userId) : null,
+  ])
   const stateById = new Map((actions ?? []).map((a) => [a.event_id as string, a.state as string]))
   const mineIds = [...stateById.keys()]
 
@@ -43,8 +49,8 @@ export async function getCalendarEvents(
       db.from('events').select(EVENT_COLUMNS).in('id', mineIds).returns<EventRow[]>() as never,
     )
   }
-  if (scope === 'all') {
-    const { filter: sourceFilter } = await visibleSourceIds(userId)
+  if (sources) {
+    const { filter: sourceFilter } = sources
     queries.push(
       inRange(
         db

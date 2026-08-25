@@ -137,7 +137,7 @@ export function EventCard({
             : 'border-line hover:border-line-strong',
       )}
     >
-      <Link href={`/event/${event.id}`} className="relative block" aria-label={title}>
+      <Link href={`/event/${event.id}`} className="relative block shrink-0" aria-label={title}>
         {image ? (
           <EventImage src={image} />
         ) : (
@@ -266,7 +266,7 @@ function Placeholder({
   Icon: typeof Rocket
 }) {
   return (
-    <div className={cn('relative flex aspect-[16/9] w-full items-end p-4', toneClass(tone))}>
+    <div className={cn('relative flex h-44 w-full shrink-0 items-end p-4', toneClass(tone))}>
       <Icon size={28} weight="duotone" className="absolute right-4 top-4 opacity-60" />
       {dt ? (
         <div className="leading-none">

@@ -155,16 +155,22 @@ export default async function SquadPage({ params }: { params: Promise<{ id: stri
     : null
 
   return (
-    <Page>
+    // role="main" rather than <main>: Page is the shared shell wrapper and is
+    // shared with Olvable's screens, so the landmark is declared per page.
+    <Page role="main">
       <PageHeader
         eyebrow={
           event ? (
-            <Link href={`/event/${event.id}`} className="inline-flex">
+            <Link
+              href={`/event/${event.id}`}
+              aria-label={`${event.title}${eventWhen ? `, ${eventWhen}` : ''} — view the event`}
+              className="inline-flex"
+            >
               <Pill
                 tone="accent-soft"
                 className="transition-colors hover:bg-accent hover:text-white"
               >
-                <Ticket weight="fill" />
+                <Ticket aria-hidden="true" weight="fill" />
                 {event.title}
                 {eventWhen ? <span className="opacity-70">· {eventWhen}</span> : null}
               </Pill>
@@ -178,25 +184,31 @@ export default async function SquadPage({ params }: { params: Promise<{ id: stri
         actions={
           deadline ? (
             <Pill tone="outline">
-              <CalendarBlank weight="duotone" />
+              <CalendarBlank aria-hidden="true" weight="duotone" />
               Due {deadline.toFormat('d LLL')}
             </Pill>
           ) : undefined
         }
       />
 
-      <div className="mt-4 flex flex-wrap items-center gap-1.5">
-        <Pill tone="neutral" size="sm">
-          <UsersThree weight="duotone" />
-          {initialTeamIds.length} on the roster
-        </Pill>
-        <Pill tone="neutral" size="sm">
-          {requirements.length} role{requirements.length === 1 ? '' : 's'}
-        </Pill>
-        <Pill tone="neutral" size="sm">
-          {pool.length} in the pool
-        </Pill>
-      </div>
+      <ul aria-label="Squad at a glance" className="mt-4 flex flex-wrap items-center gap-1.5">
+        <li>
+          <Pill tone="neutral" size="sm">
+            <UsersThree aria-hidden="true" weight="duotone" />
+            {initialTeamIds.length} on the roster
+          </Pill>
+        </li>
+        <li>
+          <Pill tone="neutral" size="sm">
+            {requirements.length} role{requirements.length === 1 ? '' : 's'}
+          </Pill>
+        </li>
+        <li>
+          <Pill tone="neutral" size="sm">
+            {pool.length} in the pool
+          </Pill>
+        </li>
+      </ul>
 
       <div className="mt-6">
         <Sandbox

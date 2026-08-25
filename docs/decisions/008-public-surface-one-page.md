@@ -1,5 +1,17 @@
 # 008 — The public surface is one page per event
 
+> **SUPERSEDED 2026-08-25 by the Guild demo build.** There is no login, so
+> **every** route is public, not just `/e/:id`. Two further notes for a reader
+> checking this against the code: the `(app)` route group still exists but no
+> longer carries any auth meaning (the shell lives in `app/layout.tsx`, and
+> there is no `app/(app)/layout.tsx`), and the `robots.ts` disallow is now the
+> only thing keeping the app out of indexes. See
+> [`../../SECURITY.md`](../../SECURITY.md).
+>
+> The "found on the way, structural" note below is still load-bearing and
+> outlives the decision: metadata must be checked before the first byte, or a
+> bogus link unfurls as a 200.
+
 Settled 2026-08-24 (roadmap 3.9).
 
 **Decision.** Exactly one route is public: `/e/:id` (plus its `.ics`).

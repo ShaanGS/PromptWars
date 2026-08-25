@@ -1,24 +1,39 @@
-# Target product — the Lovable build
+# Parked direction — the Lovable prototype
 
-Shaan built Guild in Lovable and it is the reference for **what the app does**.
-The current repo has the engine and the data; the Lovable build has the product
-around it. This file is the gap list. Screens below are transcribed from the
-build, not invented.
-
-The one-line difference: today's repo is a *team scoring tool*. The target is a
-*campus network* where scoring is one feature among several, and the connection
-primitive is a **Nudge**.
+> **This is not the plan for this build, and it does not describe this
+> codebase.** It is a transcription of an earlier Guild prototype Shaan made in
+> Lovable — a different app, a different design system, a different repo.
+>
+> It is kept for one reason: it is a genuine, screen-by-screen feature backlog,
+> and section 2 (Nudges) names the one capability this build really is missing.
+> Read it as *ideas that were considered*, never as a description of what
+> exists here or a source of paths, colours or fonts.
+>
+> **Everything in the "Design system" section below is wrong for this repo** —
+> corrected in place, 2026-08-25. See [`ARCHITECTURE.md`](ARCHITECTURE.md) for
+> what is actually here.
+>
+> Where it argues this repo is "just a team scoring tool", disagree with it:
+> scoring whole teams against project requirements is precisely what Problem
+> Statement 2 asks for, and it is this submission's thesis. The features below
+> are adjacent, not corrective.
 
 ---
 
 ## Navigation
 
-Sidebar, dark, emerald active state with a left border:
-`Home · Discover · Team Board · Idea Board · Communities · Notifications ·
-Nudges · My Profile`, then `Settings` and the user block pinned at the bottom.
+**In the Lovable prototype:** a dark sidebar with an emerald active state and a
+left border: `Home · Discover · Team Board · Idea Board · Communities ·
+Notifications · Nudges · My Profile`, then `Settings` and a user block pinned to
+the bottom.
 
-Current repo has: Dashboard, Events, Squads, People, Your profile.
-Missing: Discover, Team Board, Idea Board, Communities, Notifications, Nudges.
+**In this repo** (`components/shell/nav.ts`): `Feed · All events · Hackathons ·
+Team Board · People · Calendar · Saved`, then a setup group (`Sources ·
+Interests · Settings`) and an admin group. Team Board, Feed and Saved take the
+phone tabs; the "You" tab is `/settings`. Routes are `/teams` and `/squad/[id]`
+— there is no route called "Squads".
+
+Not built here: Discover, Idea Board, Communities, Notifications, Nudges.
 
 ---
 
@@ -52,10 +67,13 @@ Progress bar across the top, `Step N of 6`, dot indicators, Back / Next.
 6. **Here's how you appear to others** — renders the profile card as others see
    it, then "Let's go". Footnote: "You can edit this anytime from your profile."
 
-**Data this needs that the schema lacks:** `year_of_study`, `registration_no`,
-`interests[]`, `looking_for`, `commitment_band` (casual|serious|startup),
-`availability_band`, `github_url`, `linkedin_url`, `devfolio_url`,
-`portfolio_url`, `whatsapp` (private until a Nudge is accepted).
+**Data this needs that `profiles` lacks:** `registration_no`, `interests[]`,
+`commitment_band` (casual|serious|startup), `availability_band`, `github_url`,
+`linkedin_url`, `devfolio_url`, `portfolio_url`, `whatsapp` (private until a
+Nudge is accepted). Already present: `year`, `looking_for`,
+`experience_level`, `commitment_level` (1–5, which the engine scores),
+`availability_windows` (structured jsonb, which the engine intersects — richer
+than the prototype's single `availability_band` chip, and not a downgrade).
 
 ## 2. Nudges — the connection primitive
 
@@ -113,7 +131,8 @@ Seeded topics: AI/ML · App Development · Cybersecurity · Hackathons ·
 IoT & Embedded · Research & Academia · Robotics & Automation · Startups &
 Founders · Sustainability Tech · VLSI & Chip Design · Web Development
 
-The repo already has `communities` and `community_members` tables, unused.
+`supabase/guild/0001_schema.sql` declares `communities` and `community_members`,
+but nothing in the repo applies that file and no code reads either table.
 
 ## 7. My Profile
 
@@ -126,31 +145,42 @@ emerald), `Interests` (mono chips, amber), `Portfolio links` as icon tiles
 
 ---
 
-## Design system (matches the Lovable build)
+## Design system — the prototype's, NOT this repo's
 
-Already ported into `src/app/globals.css`:
-- Canvas `#0b0e11`, cards `#131820`, borders `#222b36`.
-- **One emerald accent `#10e098`** — marks what is live, chosen or actionable.
-- **Amber `#e8a33d` = interests. Violet `#8b7bf0` = effort/hours.** Nothing else
-  is coloured.
-- **Chips are mono** (`.g-chip`, `.g-chip-accent`, `.g-chip-amber`,
-  `.g-chip-violet`). This is the signature of the system.
-- Display type: Space Grotesk (headings). Body: Inter. Chips/figures: JetBrains
-  Mono.
-- Logo: `public/brand/guild-logo.png`, used as ONE image — the mark and the
-  wordmark are the same artwork and must never be separated or retyped. On the
-  dark canvas it renders with `mix-blend-screen` so the black drops out.
+None of the following was ported. It is recorded only so nobody mistakes a
+screenshot of the prototype for a bug in this app.
 
-## Build order suggestion
+| | Lovable prototype | **This repo** |
+| --- | --- | --- |
+| Stylesheet | `src/app/globals.css` | `app/globals.css` — **there is no `src/` directory here** |
+| Canvas | `#0b0e11` (dark) | `#f5f6fa` (light) — `--canvas` |
+| Cards | `#131820` | `#ffffff` — `--surface` |
+| Accent | emerald `#10e098` | indigo `#5b5bd6` — `--accent`, the only accent |
+| Secondary colour | amber = interests, violet = effort | none; nothing else is coloured |
+| Chips | `.g-chip`, `.g-chip-accent`, … | `components/ui/pill.tsx`; no `.g-chip` class exists |
+| Display type | Space Grotesk | Inter (400/500/600), with JetBrains Mono for figures |
+| Logo | `public/brand/guild-logo.png`, `mix-blend-screen` on dark | `public/guild-logo.png`, via `components/brand-mark.tsx` |
 
-1. Extend the profile schema + rebuild onboarding as the 6-step wizard.
-2. Nudges (table, send, inbox, accept → reveal WhatsApp). Nothing else matters
-   until two people can connect.
-3. Team Board (prose posts + `Needs:` chips) on top of the existing projects.
+The one rule that did carry over: the logo is ONE image — the mark and the
+wordmark are the same artwork and must never be separated or retyped.
+
+## If this direction were ever picked up
+
+An ordering, not a commitment. Nothing here is scheduled; `ROADMAP.md` is what
+is actually next.
+
+1. **Nudges** (table, send, inbox, accept → reveal contact). This is the only
+   item that changes what the product can do: today Guild can *identify* the
+   right teammate and cannot let you contact them. Everything else on this list
+   is surface area.
+2. Extend the profile schema + a multi-step onboarding wizard.
+3. Prose team requests (`Needs:` chips) alongside the structured requirements —
+   the prose post is how people actually write, the structured requirements are
+   what the engine scores. Both should exist.
 4. Home three-column with Profile Strength and Quick Actions.
-5. Communities (tables already exist).
+5. Communities — `supabase/guild/0001_schema.sql` declares `communities` and
+   `community_members`, but nothing applies that file and nothing reads them.
 6. Idea Board.
 
-The scoring engine stays exactly as it is — it is what makes the ranking on
-Discover and "People with skills you need" better than a filter list. It is the
-differentiator, not the product.
+The scoring engine stays exactly as it is. It is what makes any of these
+rankings better than a filter list.

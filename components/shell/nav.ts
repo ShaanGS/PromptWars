@@ -33,16 +33,16 @@ export type NavItem = {
 }
 
 export const NAV_PRIMARY: NavItem[] = [
-  { href: '/', label: 'Feed', icon: House, exact: true, tab: true },
+  // Guild is a team-formation platform: the two supply-side surfaces come
+  // first and own the root. The event corpus below them is what a squad forms
+  // around -- supporting material, not the product.
+  { href: '/teams', label: 'Team Board', icon: Handshake, exact: true, tab: true },
+  { href: '/people', label: 'People', icon: UsersThree, tab: true },
+  { href: '/hackathons', label: 'Hackathons', icon: Trophy, tab: true },
   { href: '/events', label: 'All events', icon: ListBullets },
-  { href: '/hackathons', label: 'Hackathons', icon: Trophy },
-  // Guild: the events corpus is the demand side, these two are the supply.
-  // Team Board takes a bottom tab because forming a squad is the reason to
-  // open the app on a phone; Calendar moves to the sidebar.
-  { href: '/teams', label: 'Team Board', icon: Handshake, tab: true },
-  { href: '/people', label: 'People', icon: UsersThree },
+  { href: '/feed', label: 'Feed', icon: House },
   { href: '/calendar', label: 'Calendar', icon: CalendarBlank },
-  { href: '/saved', label: 'Saved', icon: BookmarkSimple, tab: true },
+  { href: '/saved', label: 'Saved', icon: BookmarkSimple },
 ]
 
 export const NAV_SETUP: NavItem[] = [
