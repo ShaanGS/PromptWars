@@ -1,26 +1,142 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* Guild design system — Linear-derived (see DESIGN.md). Single dark theme:
+   the canvas is the whitespace. Lavender is scarce: brand, primary CTA,
+   focus, link emphasis. Hierarchy is the surface ladder, not shadows. */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #010102; /* canvas — near-black with a faint blue tint */
+  --foreground: #f7f8f8; /* ink */
+
+  --card: #0f1011; /* surface-1 */
+  --card-foreground: #f7f8f8;
+  --popover: #18191a; /* surface-3 — dropdowns, menus */
+  --popover-foreground: #f7f8f8;
+
+  --primary: #5e6ad2; /* lavender — the only chromatic accent */
+  --primary-foreground: #ffffff;
+  --secondary: #141516; /* surface-2 */
+  --secondary-foreground: #f7f8f8;
+  --muted: #18191a;
+  --muted-foreground: #8a8f98; /* ink-subtle */
+  --accent: #18191a;
+  --accent-foreground: #f7f8f8;
+  --destructive: #d2555a;
+  --destructive-foreground: #ffffff;
+
+  --border: #23252a; /* hairline */
+  --input: #34343a; /* hairline-strong */
+  --ring: #5e69d1; /* primary-focus */
+
+  --radius: 0.5rem; /* 8px buttons/inputs; cards land at 12px via radius-xl */
+
+  /* Guild extensions (names from DESIGN.md) */
+  --surface-2: #141516;
+  --surface-3: #18191a;
+  --surface-4: #191a1b;
+  --hairline-strong: #34343a;
+  --hairline-tertiary: #3e3e44;
+  --ink-muted: #d0d6e0;
+  --ink-tertiary: #62666d;
+  --success: #27a644;
+  --primary-hover: #828fff;
+
+  /* Motion tokens — strong curves, never built-in weak easings */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-hairline-tertiary: var(--hairline-tertiary);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-tertiary: var(--ink-tertiary);
+  --color-success: var(--success);
+  --color-primary-hover: var(--primary-hover);
+
+  --font-sans: var(--font-inter), "SF Pro Display", -apple-system, system-ui,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11";
+  }
+  /* Display tracking pulls negative, Linear-style */
+  h1, h2, h3 {
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--primary) 35%, transparent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Empty requirement slots are the loudest element on the page. Pulse is
+     opacity-only: cheap, calm, and legible under prefers-reduced-motion. */
+  .gap-pulse {
+    animation: gap-pulse 2.4s var(--ease-in-out) infinite;
+  }
+  @keyframes gap-pulse {
+    0%, 100% { border-color: var(--hairline-tertiary); }
+    50% { border-color: var(--primary); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gap-pulse { animation: none; border-color: var(--hairline-tertiary); }
+  }
+
+  /* List entrances: opacity + small translate, staggered by inline delay. */
+  .rise-in {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: rise-in 300ms var(--ease-out) forwards;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+  @keyframes rise-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rise-in { animation-duration: 150ms; transform: none; }
+  }
+
+  .press-feedback {
+    transition: transform 160ms var(--ease-out);
+  }
+  .press-feedback:active {
+    transform: scale(0.97);
+  }
 }
