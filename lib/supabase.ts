@@ -21,9 +21,22 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
  *    requests, and a shared client leaks state between them. Construct inside
  *    the request handler, every time.
  */
+/**
+ * Demo fallbacks.
+ *
+ * This build has no login, so it cannot hold a service-role key: it runs on
+ * the PUBLISHABLE key, which is public by design. The database behind it is a
+ * throwaway seeded for the demo and its tables are deliberately open, so the
+ * key grants nothing that the running app does not already show. Real
+ * deployments still win by setting the env vars.
+ */
+const DEMO_URL = 'https://fjxgqiveolnnrslihodl.supabase.co'
+const DEMO_PUBLISHABLE_KEY = 'sb_publishable_IyaMeO1ngN7JBBPSHwU8aQ_xp6Q4LtX'
+
 export function createServiceClient(): SupabaseClient {
-  const url = process.env.SUPABASE_URL
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const url = process.env.SUPABASE_URL ?? DEMO_URL
+  const key =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_ANON_KEY ?? DEMO_PUBLISHABLE_KEY
 
   if (!url || !key) {
     throw new Error(
