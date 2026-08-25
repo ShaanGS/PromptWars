@@ -140,23 +140,34 @@ export default async function EventsPage() {
                       )}
                     </div>
 
+                    {/* Action row, Olvable-style: the state on the left, the
+                        one thing to do on the right in ink. */}
                     <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-3.5">
-                      <span className="flex items-center gap-1.5 text-xs text-ink-muted">
+                      <span className="flex min-w-0 items-center gap-1.5 text-xs text-ink-muted">
                         <Users className="size-4 shrink-0" strokeWidth={2} />
                         <span className="g-figure">{squads}</span>{" "}
                         {squads === 1 ? "squad" : "squads"} forming
                       </span>
-                      {e.external_url && (
-                        <a
-                          href={e.external_url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="relative z-10 flex items-center gap-1 text-xs font-medium text-ink-muted transition-colors hover:text-accent"
+                      <div className="relative z-10 flex shrink-0 items-center gap-1.5">
+                        {e.external_url && (
+                          <a
+                            href={e.external_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label="Event site"
+                            title="Event site"
+                            className="press flex size-9 items-center justify-center rounded-xl border border-border text-ink-muted transition-colors hover:text-foreground"
+                          >
+                            <ArrowUpRight className="size-4" strokeWidth={2.2} />
+                          </a>
+                        )}
+                        <Link
+                          href={`/events/${e.id}`}
+                          className="press inline-flex h-9 items-center gap-1.5 rounded-xl bg-foreground px-4 text-[13.5px] font-medium text-background"
                         >
-                          Event site
-                          <ArrowUpRight className="size-4" strokeWidth={2} />
-                        </a>
-                      )}
+                          {squads > 0 ? "See squads" : "Start a squad"}
+                        </Link>
+                      </div>
                     </div>
                   </article>
                 </li>

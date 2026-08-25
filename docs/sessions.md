@@ -2,7 +2,34 @@
 
 Append ≤10 lines per session: done / decisions / gotchas. Newest at top.
 
-## 2026-08-25 · S3 (Fable) — design system corrected to Olvable/AETHER
+## 2026-08-25 · S4 (Fable) — Olvable components ported
+
+Shaan's verdict on S3: still not usable, "I want it exactly like olvable and
+you have the code". So the actual components are now ported, not approximated.
+
+- `src/components/ui/bits.tsx` — direct port of Olvable's `components/ui/bits.tsx`:
+  `toneClass` pastel map, `Pill`, `Avatar` (size in px, tone from name length),
+  `StatTile` (pastel tile, 13px label + 30px figure — the AETHER stat card),
+  `DataRow`, `EmptyState`. Plus `ScoreBand` + `coverageBand`, which are the
+  feed's "Worth it 75" badge applied to squad coverage.
+- `src/components/squad-card.tsx` — Guild's version of Olvable's `EventCard`:
+  same skeleton (`flex h-full flex-col overflow-hidden rounded-xl border
+  bg-card shadow-card`, border turns accent on state), one title, one meta
+  line, a few pills, then an ACTION ROW. The action row is the usability fix
+  that was missing: state on the left, one ink button on the right.
+- Sidebar now matches Olvable exactly: active item is `bg-surface-2
+  text-foreground` (NOT black — that was the AETHER read, Olvable is lighter),
+  grouped nav with a SETUP heading, user block pinned at the bottom.
+- Events list cards got the same action row (`See squads` / `Start a squad`
+  in ink, external link demoted to an icon button).
+
+WHEN CONTINUING: read Olvable's real components before inventing anything —
+`gh api repos/ShaanGS/chennai-events/contents/components/<file> --jq '.content'
+| base64 -d`. Useful ones not yet ported: `card-actions.tsx` (the Going /
+save / skip row), `feed/`, `filter-bar.tsx`, `shell/mobile.tsx`,
+`components/ui/pill.tsx`.
+
+## 2026-08-25 · S3 (Fable) — design tokens corrected to Olvable
 
 THE DESIGN SYSTEM IS NOW A PORT OF SHAAN'S OWN `ShaanGS/chennai-events`
 (Olvable) SYSTEM. Do not reinvent it. Its rules, which we now follow:

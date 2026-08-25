@@ -1,11 +1,13 @@
 import Link from "next/link";
-import { ArrowRight, CalendarDays, TrendingUp, Users } from "lucide-react";
+import { ArrowRight, CalendarDays, Users } from "lucide-react";
 import { AppShell, Page, PageHead } from "@/components/app-shell";
 import { Avatar } from "@/components/brand";
+import { SquadCard } from "@/components/squad-card";
+import { StatTile } from "@/components/ui/bits";
 import { Button } from "@/components/ui/button";
-import { gapFeed, type Member, type Requirement } from "@/engine";
+import { gapFeed, guildScore, scoreTeam, UNMET_THRESHOLD } from "@/engine";
 import { toMember, toRequirement } from "@/lib/mappers";
-import type { EventRow, SkillRow } from "@/lib/types";
+import type { EventRow, ProjectDetail, SkillRow } from "@/lib/types";
 import { getMyProfile, getPool, listEvents, listProjectDetails } from "@/repo/queries";
 
 const FEED_LIMIT = 4;
@@ -26,7 +28,7 @@ function topSkill(skills: SkillRow[]): string | null {
 }
 
 /** Only events still open, soonest first. Undated ones have nothing to count down. */
-function closingSoon(events: EventRow[]): EventRow[] {
+function stillOpen(events: EventRow[]): EventRow[] {
   const now = Date.now();
   return events
     .filter((e) => e.deadline_at !== null && new Date(e.deadline_at).getTime() >= now)
@@ -34,8 +36,18 @@ function closingSoon(events: EventRow[]): EventRow[] {
       (a, b) =>
         new Date(a.deadline_at as string).getTime() -
         new Date(b.deadline_at as string).getTime(),
-    )
-    .slice(0, EVENT_LIMIT);
+    );
+}
+
+/** A squad counts as open while any requirement sits under the coverage bar. */
+function hasOpenSlot(project: ProjectDetail): boolean {
+  const reqs = project.requirements.map(toRequirement);
+  const ts = scoreTeam(project.members.map(toMember), reqs);
+  return reqs.some(
+    (r) =>
+      (ts.coverage.find((c) => c.requirementId === r.id)?.coverage ?? 0) <
+      UNMET_THRESHOLD,
+  );
 }
 
 export default async function HomePage() {
@@ -47,23 +59,35 @@ export default async function HomePage() {
   ]);
 
   // Same construction as the squads hub: the engine is pure, so the feed is
-  // computed on the server and shipped as plain rows.
-  const scored = projects.map((project) => ({
-    project,
-    reqs: project.requirements.map(toRequirement) as Requirement[],
-    team: project.members.map(toMember) as Member[],
-  }));
-  const byId = new Map(scored.map((s) => [s.project.id, s]));
+  // computed on the server and the cards read the project straight off it.
+  const byId = new Map(projects.map((p) => [p.id, p]));
 
   const feed = me
     ? gapFeed(
         toMember(me),
-        scored.map((s) => ({ projectId: s.project.id, reqs: s.reqs, team: s.team })),
+        projects.map((p) => ({
+          projectId: p.id,
+          reqs: p.requirements.map(toRequirement),
+          team: p.members.map(toMember),
+        })),
       ).slice(0, FEED_LIMIT)
     : [];
 
-  const upcoming = closingSoon(events);
+  const openNow = stillOpen(events);
+  const upcoming = openNow.slice(0, EVENT_LIMIT);
   const faces = pool.slice(0, FACE_LIMIT);
+  const openSquads = projects.filter(hasOpenSlot).length;
+
+  // Same inputs as /people, so the number on the dashboard is the pool number.
+  const myScore = me
+    ? Math.round(
+        guildScore(
+          toMember(me),
+          pool.map(toMember),
+          projects.flatMap((p) => p.requirements.map(toRequirement)),
+        ).total * 100,
+      )
+    : null;
 
   return (
     <AppShell>
@@ -87,6 +111,15 @@ export default async function HomePage() {
             )
           }
         />
+
+        <div className="mb-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatTile tone="sky" label="In the pool" value={pool.length} />
+          <StatTile tone="lilac" label="Open squads" value={openSquads} />
+          <StatTile tone="peach" label="Hackathons open" value={openNow.length} />
+          {myScore !== null && (
+            <StatTile tone="mint" label="Your Guild Score" value={myScore} />
+          )}
+        </div>
 
         <section aria-labelledby="feed-heading" className="mb-10">
           <div className="mb-3 flex items-baseline justify-between gap-4">
@@ -125,40 +158,20 @@ export default async function HomePage() {
               </Button>
             </div>
           ) : (
-            <ul className="flex flex-col gap-3">
+            <div className="grid gap-4 sm:grid-cols-2">
               {feed.map((entry, i) => {
-                const s = byId.get(entry.projectId);
-                if (!s) return null;
-                const filled = s.reqs.find((r) => r.id === entry.gain.fills[0]);
+                const p = byId.get(entry.projectId);
+                if (!p) return null;
                 return (
-                  <li
+                  <SquadCard
                     key={entry.projectId}
-                    className="rise-in"
-                    style={{ "--rise-delay": `${riseDelay(i)}ms` } as React.CSSProperties}
-                  >
-                    <Link
-                      href={`/projects/${entry.projectId}`}
-                      className="g-card-interactive flex items-center gap-4 p-5"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate font-semibold tracking-[-0.01em]">
-                          {s.project.title}
-                        </div>
-                        <div className="mt-1 text-sm text-ink-muted">
-                          {filled
-                            ? `You fill ${filled.roleLabel ?? filled.skill}`
-                            : "You deepen the roster"}
-                        </div>
-                      </div>
-                      <span className="g-figure flex shrink-0 items-center gap-1 text-sm font-semibold text-accent">
-                        <TrendingUp className="size-4" strokeWidth={2.4} />+
-                        {(entry.gain.delta * 100).toFixed(1)}%
-                      </span>
-                    </Link>
-                  </li>
+                    project={p}
+                    gain={{ delta: entry.gain.delta, fills: entry.gain.fills }}
+                    index={i}
+                  />
                 );
               })}
-            </ul>
+            </div>
           )}
         </section>
 

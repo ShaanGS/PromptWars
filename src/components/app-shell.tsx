@@ -11,6 +11,7 @@ import {
   Users,
 } from "lucide-react";
 import { GuildMark, Wordmark } from "@/components/brand";
+import { Avatar } from "@/components/ui/bits";
 import { Button } from "@/components/ui/button";
 
 const MAIN = [
@@ -43,7 +44,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3">
+        <nav className="flex-1 overflow-y-auto px-3 pb-4">
           <Group items={MAIN} pathname={pathname} />
           <Group title="Setup" items={SETUP} pathname={pathname} />
         </nav>
@@ -58,6 +59,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               New squad
             </Link>
           </Button>
+          <Link
+            href="/onboarding"
+            className="mt-3 flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-surface-2"
+          >
+            <Avatar name="SRM Student" size={34} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[13.5px] font-medium">You</p>
+              <p className="truncate text-[12.5px] text-ink-muted">
+                Add your skills
+              </p>
+            </div>
+          </Link>
         </div>
       </aside>
 
@@ -129,8 +142,8 @@ function Group({
                 aria-current={active ? "page" : undefined}
                 className={`flex h-11 items-center gap-3 rounded-xl px-3 text-[14.5px] font-medium transition-colors ${
                   active
-                    ? "bg-foreground text-background"
-                    : "text-ink-muted hover:bg-surface-2 hover:text-foreground"
+                    ? "bg-surface-2 text-foreground"
+                    : "text-ink-muted hover:bg-surface-2/70 hover:text-foreground"
                 }`}
               >
                 <Icon className="size-[19px]" strokeWidth={active ? 2.2 : 1.9} />
