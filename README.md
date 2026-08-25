@@ -1,152 +1,155 @@
-# Olvable
+# Guild
 
-**Touch grass, professionally.** Olvable aggregates tech, startup and
-maker events across Chennai and Tamil Nadu — meetups, conferences,
-hackathons, competition deadlines — scores them for relevance, and serves
-them as a private, invite-only feed with a calendar, saved lists and
-per-user interests.
+A team-formation platform for SRM, built for **Problem Statement 2 —
+ProjectMatch**. Guild helps people form effective project teams from skills,
+interests, availability, experience and project requirements, and it does that
+by scoring **whole teams against what a project needs** rather than ranking
+people against each other.
 
-It exists because the alternative is checking Luma, AllEvents, Devfolio,
-Devpost and Unstop by hand and still missing things. It is a personal
-product run for a small circle: there is no sign-up page, accounts are
-created by the admin, and the public surface is exactly one page
-(`/e/:id`, a shareable event link).
+Live demo: <https://tryguild.vercel.app> — no login, no signup.
 
-Live at <https://olvable.vercel.app> (the older
-`kairoevents-beta.vercel.app` URL stays attached and keeps working; the
-Vercel _project_ still carries its pre-rename name, which is cosmetic).
+## The problem
 
-## Stack
+> When people need to form teams for projects, competitions, hackathons,
+> research, or startups, they often rely on existing social connections. This
+> can make it difficult to discover people with complementary skills. A
+> developer may need a designer and domain expert, while a researcher may need
+> someone with data engineering experience, but neither knows who is available
+> or interested.
 
-| Layer     | Choice                                                                                                       |
-| --------- | ------------------------------------------------------------------------------------------------------------ |
-| App       | Next.js 16 (App Router) · React 19 · TypeScript                                                              |
-| UI        | Tailwind CSS 4 · Base UI · shadcn patterns · Phosphor icons                                                  |
-| Data      | Supabase — Postgres + Auth, `ap-south-1`                                                                     |
-| Hosting   | Vercel (`bom1`), Hobby tier                                                                                  |
-| Ingestion | GitHub Actions (daily, 07:00 IST) — **not** Vercel Cron; Hobby's 300s function cap cannot fit a polite crawl |
-| Scoring   | Gemini (primary) with Groq failover, behind a keyword pass that answers most listings for free               |
-| Tests     | Vitest — pure logic only (dates, geo, ICS, filters, hashing, text)                                           |
+The hard part is not search. It is that **the best individuals do not make the
+best team.** A second person with a skill you already have adds almost nothing;
+the person who fills your gap changes everything. A tool that ranks people by
+raw skill will hand a hackathon team five React developers and no designer.
 
-Node 24. No self-hosted services, no paid tiers; the free-tier limits are
-design constraints throughout, not accidents.
+## The approach
 
-## The data pipeline
+Coverage of a requirement is a probabilistic OR over the people who can do it:
 
 ```
-config/sources.ts  ──seed──►  sources table (git owns config; DB is runtime)
+coverage(r) = 1 − Π(1 − p_eff)        for each member meeting r's floor
+p_eff       = proficiency × (has a proof link ? 1.0 : 0.6)
 
-GitHub Actions, daily
-  scripts/ingest.ts  — per source, so one broken connector stops nothing else
-     │
-     ▼
-  lib/connectors/*   fetch + parse (allevents, luma, devfolio, devpost, unstop)
-     │                 raw payloads persisted to raw_listings unconditionally
-     ▼
-  normalise          canonical URLs, titles, organizers, dates (lib/text, lib/dates)
-     ▼
-  quality gates      lib/pipeline/quality.ts — catches the real failure mode:
-     │               a changed selector returning 40 rows of empty titles
-     ▼
-  geo classify       lib/pipeline/geo.ts — out-of-area rows get status
-     │               'filtered_geo', never deleted, so the app can prove
-     ▼               nothing real was thrown away
-  upsert events      content-hashed; unchanged rows untouched
-     ▼
-  scripts/score.ts   keyword pass first, LLM only for the ambiguous middle;
-                     scores cached by content + profile hash
+base        = Σ(weight_r × coverage_r) / Σ(weight_r)
+score       = 0.60·base + 0.15·overlap + 0.15·balance + 0.10·commitment
 
-Request time (Vercel)
-  middleware.ts      auth gate — session refresh, no sign-up, fails closed
-     ▼
-  app/(app)/*        feed, events, hackathons, calendar, saved, sources,
-     │               interests, settings, admin
-     ▼
-  lib/queries/       reads; lib/ranking.ts layers per-user fit on the
-                     global score at request time (no SQL, no LLM per user)
+marginalGain(candidate) = score(team ∪ candidate) − score(team)
 ```
 
-Two shapes of listing: **events** (something happens at a time and place)
-and **deadlines** (hackathons/competitions you enter before a cutoff —
-these live on `/hackathons` and stay out of the feed and calendar; see
-`config/sources.ts` for the full reasoning).
+Two React developers at 0.8 give `1 − 0.2 × 0.2 = 0.96`, not 1.6. So the
+**second React developer moves coverage 0.80 → 0.90, while the designer you do
+not have moves it from 0.** Diminishing returns is not a rule bolted on top —
+it falls out of the maths, which is why the ranking cannot be gamed by piling
+on more of the same person.
 
-## Run it locally
+`marginalGain` is the single number behind every ranking and every explanation
+in the UI: candidate order, the gap feed, auto-draft, and the chips that say
+"fills Designer" or "Rohan already covers Frontend".
+
+### How the statement maps to the model
+
+| The statement asks for | Where it lives in the score |
+| --- | --- |
+| Skills | `p_eff` per claim, damped to 0.6× without a proof link |
+| Project requirements | Weighted slots, each with a minimum proficiency floor |
+| Availability | `overlap` — weekly minutes **all** members share, capped at 10h |
+| Experience | `balance` — 1 − variance of experience levels |
+| Commitment | `commitment` — 1 − spread between the keenest and the least keen |
+| Interests | The events corpus, and `scarcity` in each person's Guild Score |
+| "Who is available or interested" | The gap feed: open squads ranked by *your* marginal gain |
+
+Self-reported skill tags are the least reliable thing on any profile, so a
+claim backed by a repo or past project counts in full and an unbacked one
+counts at 0.6×. Credibility is modelled, not assumed.
+
+## See it in 60 seconds
+
+1. Open <https://tryguild.vercel.app> — you are straight in, no account.
+2. **Team Board** → open **CropGuard — on-device crop disease detection**.
+3. The squad sits at **55%**, with three open slots pulsing.
+4. Look at the ranked candidates: **Meera Pillai (figma) is +7.8% and fills
+   Designer**, ranked above four React developers who would each add ~1%.
+   That is the thesis on screen.
+5. Press **Auto-draft** and watch the greedy picks land one at a time and the
+   coverage climb.
+6. Read the **Team X-ray** — bus factor, availability dead zones, commitment
+   mismatch.
+7. **People** → any profile shows a Guild Score broken into credibility,
+   versatility and scarcity, plus who complements you and which squads need you.
+
+## Architecture
+
+```
+app/(app)/         Server Components — thin, no business logic
+lib/queries/       the only place Supabase is read (service client, per request)
+lib/engine/        the scoring engine — PURE TypeScript, ZERO imports
+supabase/          schema and migrations
+```
+
+`lib/engine` imports nothing: not React, not Supabase, not Node. Plain objects
+in, plain objects out. That is deliberate — it makes the maths testable in
+milliseconds, lets the same code run on the server for ranking and in the
+browser for the interactive sandbox, and means the product's core idea has no
+framework dependency at all.
+
+| Route | What it does |
+| --- | --- |
+| `/teams` | Team Board — squads ranked by what *you* would add |
+| `/squad/[id]` | The sandbox: open slots, ranked candidates, auto-draft, risks |
+| `/people` | The pool, ranked by Guild Score |
+| `/p/[handle]` | Profile: score breakdown, complementarity, gap feed |
+| `/`, `/events`, `/hackathons` | The event corpus a squad forms around |
+
+## Running it
 
 ```bash
-git clone https://github.com/ShaanGS/chennai-events.git
-cd chennai-events
 npm install
-# create .env.local — see the table below
+npm test          # 185 tests across 19 files
 npm run dev
 ```
 
-Then create yourself an account (there is no sign-up):
+Seeding a fresh database (idempotent — safe to re-run):
 
 ```bash
-npm run user:create -- you@example.com "a-password"
-npm run admin:grant -- you@example.com
+SUPABASE_URL=... SUPABASE_ANON_KEY=... node seed/seed-demo.mjs
 ```
 
-and sign in at <http://localhost:3000>. The dev server reads the shared
-Supabase project — there is no staging database. Browsing is safe;
-running ingestion scripts locally writes real rows (see
-`CONTRIBUTING.md` before doing that).
+The seed is shaped to make the maths visible: React is deliberately
+over-supplied and figma/pitching deliberately scarce, so a candidate list
+demonstrates diminishing returns rather than asserting it.
 
-### Environment variables
+## Testing
 
-All server-side. **None are `NEXT_PUBLIC_`** — the service role key must
-never reach the browser.
+`npm test` runs 185 tests across 19 files. The engine tests pin the thesis
+rather than the implementation — that `coverage(0.8, 0.5)` is exactly `0.9`,
+that an unverified 0.8 claim contributes `0.48`, that a claim below a
+requirement's floor contributes nothing, that a duplicate always scores below a
+gap-filler, and that auto-draft is deterministic across runs.
 
-| Variable                    | What it is                                                                                                        | Who reads it                     |
-| --------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------- |
-| `SUPABASE_URL`              | Supabase project URL                                                                                              | app + scripts                    |
-| `SUPABASE_ANON_KEY`         | Public-by-design auth key; RLS bounds what it sees                                                                | middleware, auth                 |
-| `SUPABASE_SERVICE_ROLE_KEY` | Bypasses RLS entirely — treat as a password                                                                       | server queries, pipeline scripts |
-| `SUPABASE_DB_URL`           | Direct Postgres (port 6543, Supavisor transaction mode)                                                           | migrations, backups              |
-| `GEMINI_API_KEY`            | Scoring, primary                                                                                                  | `scripts/score.ts`               |
-| `GROQ_API_KEY`              | Scoring, failover. One key only — Groq limits per org, extra keys multiply nothing                                | `scripts/score.ts`               |
-| `ALLOW_PROD_WRITES`         | Declared as a write guard in `.env.local`'s template comments, but **not yet enforced by any script** — known gap | (nothing, yet)                   |
-| `SITE_URL`                  | Canonical origin for metadata and share links                                                                     | `lib/site.ts`                    |
+## Security posture
 
-The same values are set as GitHub Actions secrets for the ingestion
-workflows, and in Vercel for the app.
+**This build has no authentication, on purpose**, because it is a judge-facing
+demo that must open without an account. Being explicit about what that means:
 
-### Scripts
+- `middleware.ts` is a pass-through; `lib/auth/server.ts` returns one stand-in
+  user so the shell keeps working.
+- That user is a **member, not an admin**. `isAdmin()` defers to the real role
+  check, so `/admin` stays closed. Removing a login step and granting every
+  visitor the corpus-editing screens are different decisions, and only the
+  first was intended.
+- The app runs on the Supabase **publishable** key, which is public by design.
+  It points at a throwaway demo database holding generated seed data whose
+  tables carry open policies. **No service-role key exists in this build**, and
+  no production data is reachable from it.
+- Restoring real auth is a revert of three files — `middleware.ts`,
+  `lib/auth/server.ts`, `lib/auth/roles.ts` — plus tightening the demo policies
+  and setting `SUPABASE_SERVICE_ROLE_KEY`.
 
-| Command                               | What it does                                                                     |
-| ------------------------------------- | -------------------------------------------------------------------------------- |
-| `npm run dev` / `build` / `start`     | Next.js                                                                          |
-| `npm run lint` / `typecheck` / `test` | The checks that must pass before any commit                                      |
-| `npm run ingest -- <source>`          | One source, end to end (fetch → gates → upsert)                                  |
-| `npm run score`                       | Score unscored/stale events (keyword pass, then LLM)                             |
-| `npm run seed`                        | Push `config/sources.ts` + profile hash into the DB                              |
-| `npm run reclassify -- <source>`      | Re-run geo rules over stored rows (`--all --dry` supported)                      |
-| `npm run connector:test -- <source>`  | Parse the live site, touch no DB — catches the remote site changing              |
-| `npm run luma:check`                  | Verify Luma calendar slugs before configuring them                               |
-| `npm run healthcheck`                 | Keep-alive ping + alert if a source has no successful run in 48h                 |
-| `npm run user:create -- <email> <pw>` | Create or re-password an account (terminal fallback; `/admin` is the normal way) |
-| `npm run admin:grant -- <email>`      | Bootstrap the admin role — deliberately terminal-only                            |
+See [SECURITY.md](SECURITY.md).
 
-## How accounts work
+## Credit
 
-Email + password, no sign-up, no email sending at all. The admin creates
-accounts from `/admin` (or `scripts/create-user.ts` at the terminal); the
-account existing _is_ the invite. A user on an admin-set password is
-routed to `/settings` until they choose their own; first login walks
-through interest onboarding. Admin is granted once, at the terminal, by
-`npm run admin:grant` — there is no grant-admin UI on purpose.
-
-## Where to read next
-
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — add a source, add a migration, add a page, verify like this project verifies.
-- [`AGENTS.md`](AGENTS.md) — the working agreement (plan first, one feature per session) and environment gotchas. Applies to humans too.
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — the pipeline and app maps, and the "where does X live" table.
-- [`docs/ROADMAP.md`](docs/ROADMAP.md) — what is next, one screen.
-- [`docs/CHANGELOG.md`](docs/CHANGELOG.md) — what shipped, dated, newest first.
-- [`docs/decisions/`](docs/decisions/README.md) — the settled decisions, one short file each, indexed.
-- [`docs/REBUILD-PLAN.md`](docs/REBUILD-PLAN.md) — the 2026-08-06 rebuild, kept as history.
-- `supabase/migrations/` — numbered SQL, each with a prose header saying why.
-
-One naming note: the package/repo slug is `chennai-events` (pre-rename,
-kept stable); the product is Olvable.
+Guild is built on **Olvable** (`ShaanGS/chennai-events`), my own event
+aggregator for Chennai — its ingestion pipeline, design system and shell are
+reused here as the surface a team forms around. The team-formation engine,
+schema and screens are new.
