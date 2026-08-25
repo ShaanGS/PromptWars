@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Guild
 
-## Getting Started
+Team formation for SRM. Built at the FAST hackathon (problem statement 2).
 
-First, run the development server:
+Everyone else builds people-search with skill filters. Guild is a **team composition
+engine**: it scores whole teams against what a project needs, not people against
+people. Coverage is a probabilistic OR — `1 − Π(1 − proficiency)` — so a second
+person with the same skill moves you from 80% to 90%, while the person who fills
+your gap moves you from zero. The primary object on screen is a gap.
+
+## What's inside
+
+- **The sandbox** (`/projects/[id]`) — open requirement slots pulse; candidates are
+  ranked by *marginal gain* to your exact roster; every duplicate is labeled with
+  who already covers it.
+- **Auto-draft** — greedy engine picks fill the slots one by one.
+- **Team X-ray** — bus-factor, availability dead zones, commitment gaps.
+- **Guild Score** (`/people`, `/p/[handle]`) — credibility × versatility × scarcity.
+- **Complementarity, not similarity** — "people you should meet" are the ones who
+  fill what you lack.
+- **Real events** (`/events`) — live listings ingested from Devfolio, Devpost, and
+  Unstop; a squad request is a project pinned to an event.
+
+## Stack
+
+Next.js 16 (App Router) · TypeScript strict · Supabase (Postgres + RLS + anonymous
+auth) · Tailwind 4 + shadcn/ui · Zod · pure-TS engine with vitest tests.
 
 ```bash
+npm install
+npm test        # engine invariants
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`/demo` drops you into a seeded workspace with zero forms. `DEMO_MODE=static`
+serves the same demo from bundled data with no network.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See `CLAUDE.md` (working agreements), `SPEC.md` (product + math), `tasks.md`
+(build log), `docs/` (decisions + session handoffs).
