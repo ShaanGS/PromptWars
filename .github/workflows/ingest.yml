@@ -1,0 +1,56 @@
+name: Ingest and score
+
+# Ingestion runs here rather than on Vercel Cron. Vercel Hobby caps functions
+# at 300s -- AllEvents alone cannot finish inside that at a 10s crawl delay,
+# and the scoring pass needs minutes more. Actions also gives retries, real
+# schedule precision, and 90 days of logs instead of one hour.
+on:
+  schedule:
+    # 01:30 UTC = 07:00 IST. Fresh before the day starts.
+    - cron: '30 1 * * *'
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Single source to ingest (blank = all enabled)'
+        required: false
+
+concurrency:
+  # A manual run must not race the scheduled one. The database has its own
+  # guard, but failing here is cheaper than failing there.
+  group: ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      # Pushes config/sources.ts and the interest profile hash into the DB.
+      - name: Seed config
+        run: npm run seed
+
+      - name: Ingest
+        run: |
+          if [ -n "${{ inputs.source }}" ]; then
+            npm run ingest -- "${{ inputs.source }}"
+          else
+            # Per-source so one broken connector cannot stop the others.
+            for s in allevents luma devfolio devpost unstop knowafest gdg figma mulesoft; do
+              npm run ingest -- "$s" || echo "::warning::ingest failed for $s"
+            done
+          fi
+
+      - name: Score
+        run: npm run score

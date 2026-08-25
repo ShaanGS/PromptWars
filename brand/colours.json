@@ -1,0 +1,26 @@
+{
+  "$description": "Olvable palette, agreed 2026-08-23. Light only. Mirrors app/globals.css; the CSS is what ships, this is for designers.",
+  "canvas": { "value": "#F5F6FA", "use": "Page background. Cool off-white, never pure white." },
+  "surface": { "value": "#FFFFFF", "use": "Cards, panels, inputs." },
+  "surface2": {
+    "value": "#EEF0F5",
+    "use": "Muted fills: segmented control track, skeletons, hover."
+  },
+  "line": { "value": "#E2E4EC", "use": "Hairline borders. Borders do the work of elevation." },
+  "ink": { "value": "#12131A", "use": "Text, the mark, primary buttons." },
+  "ink2": { "value": "#6B7080", "use": "Secondary text, labels, metadata." },
+  "ink3": { "value": "#9A9FB2", "use": "Placeholders, captions." },
+  "accent": {
+    "value": "#5B5BD6",
+    "use": "The one accent: 'going', the single primary action, the dot in the mark."
+  },
+  "pastels": {
+    "$note": "Categorical. Text on a pastel is always the ink of the same hue, never black.",
+    "sky": { "fill": "#DCEBFF", "ink": "#1D4F91" },
+    "mint": { "fill": "#D9F3E6", "ink": "#146C43" },
+    "lemon": { "fill": "#FFF1C2", "ink": "#7A5A00" },
+    "rose": { "fill": "#FFDDE8", "ink": "#9B2C52" },
+    "lilac": { "fill": "#E8E1FF", "ink": "#4B3A9E" },
+    "peach": { "fill": "#FFE4D1", "ink": "#8A4A16" }
+  }
+}

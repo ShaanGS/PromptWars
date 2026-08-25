@@ -1,0 +1,10 @@
+# LF in the repo for everything git considers text. This is what stops the
+# "LF will be replaced by CRLF" warning on every commit from this Windows
+# machine — checkout and commit both normalize to LF.
+* text=auto eol=lf
+
+# Binary assets, listed so autodetection never mangles one.
+*.png binary
+*.ico binary
+*.jpg binary
+*.webp binary

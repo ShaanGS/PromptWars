@@ -1,0 +1,199 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/*
+ * Olvable design tokens. Agreed 2026-08-23 from the style tile.
+ *
+ * Light only, on purpose: a half-done dark mode reads worse than none. The
+ * `dark` variant is kept so legacy `dark:` classes still compile; nothing
+ * ever adds the class, so they never activate.
+ *
+ * Rules the tokens encode:
+ *  - one accent (indigo), used for "going" and the single primary action
+ *  - pastels carry category meaning; text on a pastel is always the dark
+ *    stop of the same hue, never black
+ *  - borders do the work of elevation; shadows are near-zero
+ */
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* surfaces */
+  --canvas: #f5f6fa;
+  --surface: #ffffff;
+  --surface-2: #eef0f5;
+  --line: #e2e4ec;
+  --line-strong: #cdd0dc;
+
+  /* ink */
+  --ink: #12131a;
+  --ink-2: #6b7080;
+  --ink-3: #9a9fb2;
+
+  /* accent */
+  --accent: #5b5bd6;
+  --accent-hover: #4a4ac4;
+  --accent-soft: #eeeefb;
+  --accent-ink: #3b3ba6;
+
+  /* status */
+  --danger: #d8385e;
+  --danger-soft: #fde8ee;
+  --danger-ink: #9b1f3f;
+  --success: #1f8a5b;
+  --success-soft: #ddf5e8;
+  --success-ink: #146c43;
+  --warning-soft: #fff1c2;
+  --warning-ink: #7a5a00;
+
+  /* categorical pastels: fill + ink */
+  --sky: #dcebff;
+  --sky-ink: #1d4f91;
+  --mint: #d9f3e6;
+  --mint-ink: #146c43;
+  --lemon: #fff1c2;
+  --lemon-ink: #7a5a00;
+  --rose: #ffdde8;
+  --rose-ink: #9b2c52;
+  --lilac: #e8e1ff;
+  --lilac-ink: #4b3a9e;
+  --peach: #ffe4d1;
+  --peach-ink: #8a4a16;
+
+  /* shape */
+  --radius-ctl: 12px;
+  --radius-card: 16px;
+  --radius-panel: 20px;
+}
+
+@theme inline {
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-ink: var(--danger-ink);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-ink: var(--success-ink);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-ink: var(--warning-ink);
+
+  --color-sky: var(--sky);
+  --color-sky-ink: var(--sky-ink);
+  --color-mint: var(--mint);
+  --color-mint-ink: var(--mint-ink);
+  --color-lemon: var(--lemon);
+  --color-lemon-ink: var(--lemon-ink);
+  --color-rose: var(--rose);
+  --color-rose-ink: var(--rose-ink);
+  --color-lilac: var(--lilac);
+  --color-lilac-ink: var(--lilac-ink);
+  --color-peach: var(--peach);
+  --color-peach-ink: var(--peach-ink);
+
+  /* shadcn-style aliases still used by pre-redesign screens. They resolve
+     to the new tokens so old pages shift with the system instead of
+     fighting it. Remove once 2c is done. */
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-muted: var(--surface-2);
+  --color-muted-foreground: var(--ink-2);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--accent);
+  --color-primary: var(--ink);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--surface-2);
+  --color-secondary-foreground: var(--ink);
+  --color-destructive: var(--danger);
+
+  --radius-ctl: var(--radius-ctl);
+  --radius-card: var(--radius-card);
+  --radius-panel: var(--radius-panel);
+
+  --shadow-card: 0 1px 2px rgba(18, 19, 26, 0.04);
+  --shadow-float: 0 8px 24px rgba(18, 19, 26, 0.1), 0 2px 6px rgba(18, 19, 26, 0.06);
+}
+
+/*
+ * Card action feedback (2026-08-24). Behind prefers-reduced-motion: without
+ * the media query the classes are inert, so reduced-motion users get the
+ * plain state flip rather than a frozen mid-animation frame.
+ */
+.confetti-bit {
+  /* Invisible unless the animation below is running -- otherwise a
+     reduced-motion user gets six static dots parked on the button. */
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .going-pop {
+    animation: going-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .confetti-bit {
+    animation: confetti-bit 0.55s cubic-bezier(0.1, 0.7, 0.4, 1) forwards;
+  }
+}
+@keyframes going-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.14);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes confetti-bit {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--spin, 0deg)) translateX(6px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--spin, 0deg)) translateX(var(--dist, 30px))
+      scale(0.5);
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+  }
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}

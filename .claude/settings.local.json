@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(git --version)",
+      "Bash(curl -s -o /dev/null -w '  /api/public/opportunity/search-result code=%{http_code} size=%{size_download}\\\\n' --max-time 20 -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' 'https://unstop.com/api/public/opportunity/search-result?opportunity=hackathons&page=1&per_page=15')",
+      "Bash(curl -s --max-time 20 -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' -H 'Accept: application/json' 'https://unstop.com/api/public/opportunity/search-result?opportunity=hackathons&page=1&per_page=2')",
+      "Bash(curl -s --max-time 20 -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' https://ocgroups.dev/)",
+      "Bash(curl -s -o /dev/null -w '  code=%{http_code} size=%{size_download}\\\\n' --max-time 20 -L -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' https://chennai.tie.org/english/upcoming-events/)",
+      "Bash(curl -s --max-time 20 -L -A 'Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36' https://chennai.tie.org/english/upcoming-events/)",
+      "Bash(grep -oiE '<title>[^<]*|event-title|tribe-events|<h[23][^>]*>[^<]{5,60}')",
+      "Bash(curl -s --max-time 25 \"https://api.github.com/meta\" -H \"Accept: application/vnd.github+json\" -o /tmp/meta.json -w \"http=%{http_code}\\\\n\")",
+      "Bash(python -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(mkdir -p C:/Users/shaan/AppData/Local/Temp/claude/D--OneDrive-Documents-Claude-Projects-Event-stuff/6bf9260c-5664-4990-9fde-dc0b131f1d16/scratchpad)",
+      "Bash(curl -s --max-time 25 https://api.github.com/meta -H 'Accept: application/vnd.github+json' -o C:/Users/shaan/AppData/Local/Temp/claude/D--OneDrive-Documents-Claude-Projects-Event-stuff/6bf9260c-5664-4990-9fde-dc0b131f1d16/scratchpad/meta.json -w 'http=%{http_code}\\\\n')"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+name: Discovery sweep
+
+# Weekly, not daily: the premium-summit world does not move faster than
+# that, and the lead queue is human-reviewed — a daily pile would train the
+# reviewer to skim. Monday morning, before the week's planning.
+on:
+  schedule:
+    # 02:30 UTC Monday = 08:00 IST Monday.
+    - cron: '30 2 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: discover
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GOOGLE_CSE_KEY: ${{ secrets.GOOGLE_CSE_KEY }}
+      GOOGLE_CSE_CX: ${{ secrets.GOOGLE_CSE_CX }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Sweep
+        run: npm run discover

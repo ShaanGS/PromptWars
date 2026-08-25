@@ -1,0 +1,35 @@
+name: CI
+
+# The correctness gate: lint, format, typecheck, test, build — on every push
+# and PR. Until 2026-08-24 these checks passed only on the machine that ran
+# them; this is what makes "green" a fact about the repo instead of a claim.
+#
+# No secrets on purpose. The build must succeed without Supabase or LLM keys
+# so a fork or a fresh clone can prove itself; anything that needs a secret
+# at build time is a bug this workflow exists to catch.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  # New push to the same branch supersedes the old run.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run build

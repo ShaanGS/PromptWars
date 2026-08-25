@@ -1,0 +1,68 @@
+name: Healthcheck and keep-alive
+
+# Two jobs in one workflow because they share a schedule and a purpose:
+# noticing that the system has stopped working.
+#
+# The failure modes here are correlated -- scrapers break, the dashboard looks
+# empty, you stop opening it, and so you never see the in-app health strip.
+# This is the thing that breaks that loop.
+on:
+  schedule:
+    # Three times a day. The keep-alive matters as much as the alert: Supabase
+    # free projects pause after 7 days of low activity, and the docs only
+    # promise "a few requests a day" is enough. Three of Shaan's other
+    # projects are already paused, so this is not hypothetical.
+    - cron: '0 3,11,19 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      # Declaring ANY permission resets every other one to none -- which
+      # silently removed contents:read and made actions/checkout fail with
+      # "repository not found" on every scheduled run. Both must be listed.
+      contents: read
+      issues: write
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      - name: Ping and check source health
+        id: health
+        run: npm run healthcheck
+
+      - name: Open an issue if a source is stale
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Ingestion is stale'
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'ingestion',
+            })
+            // Don't open a second issue every eight hours.
+            if (existing.data.some((i) => i.title === title)) return
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              labels: ['ingestion'],
+              body: [
+                'The healthcheck found an enabled source with no successful run in 48 hours.',
+                '',
+                `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                '',
+                'Check `scrape_runs.error` for the stack, HTTP status and response snippet.',
+              ].join('\n'),
+            })

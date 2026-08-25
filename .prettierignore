@@ -1,0 +1,11 @@
+# Build output and lockfile — machine-written, churn without meaning.
+.next/
+node_modules/
+package-lock.json
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# SQL migrations are hand-shaped prose + SQL and must never be rewritten
+# after they have been applied. Prettier has no SQL parser anyway; listed
+# so nobody adds a plugin and reflows history.
+supabase/migrations/
