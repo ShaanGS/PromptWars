@@ -19,12 +19,18 @@ import { cn } from '@/lib/utils'
 import { Avatar, EmptyState } from '@/components/ui/bits'
 import { Button } from '@/components/ui/button'
 import { Card, SectionHeading } from '@/components/ui/card'
+import { Input } from '@/components/ui/field'
 import { Pill } from '@/components/ui/pill'
+import { matchesMember } from '@/lib/team/candidate-search'
 
 /** One greedy pick lands every 420ms -- slow enough to read the score climb. */
 const DRAFT_STEP_MS = 420
 
-/** How many candidates the ranked list shows. Beyond ten nobody scrolls. */
+/**
+ * How many candidates the ranked list shows by default. Beyond ten nobody
+ * scrolls -- but ten was also a hard ceiling on who could join the squad at
+ * all, so searching lifts it (see the search box below).
+ */
 const CANDIDATE_LIMIT = 10
 
 const pct = (n: number) => `${Math.round(n * 100)}%`
@@ -63,6 +69,7 @@ type Props = {
 export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) {
   const [teamIds, setTeamIds] = React.useState<string[]>(initialTeamIds)
   const [drafting, setDrafting] = React.useState(false)
+  const [query, setQuery] = React.useState('')
   const timer = React.useRef<ReturnType<typeof setInterval> | null>(null)
 
   const byId = React.useMemo(() => new Map(pool.map((m) => [m.id, m])), [pool])
@@ -82,7 +89,15 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
 
   const team = teamIds.map((id) => byId.get(id)).filter((m): m is Member => Boolean(m))
   const ts = scoreTeam(team, requirements)
-  const ranked = rankCandidates(team, requirements, pool).slice(0, CANDIDATE_LIMIT)
+
+  // Ranked once, then either truncated or filtered -- never re-ranked. A
+  // search must not change the order or the deltas, only which rows survive,
+  // or the number beside a name would depend on how it was found.
+  const allRanked = rankCandidates(team, requirements, pool)
+  const q = query.trim()
+  const ranked = q
+    ? allRanked.filter((g) => matchesMember(byId.get(g.candidateId), q))
+    : allRanked.slice(0, CANDIDATE_LIMIT)
   const risks = teamRisks(team, requirements)
   const openCount = ts.coverage.filter((c) => c.coverage < UNMET_THRESHOLD).length
 
@@ -124,6 +139,9 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
    */
   const runDraft = () => {
     if (drafting) return
+    // Auto-draft re-ranks the whole pool after every seat, so it must be
+    // watched against the whole list rather than through a filter.
+    setQuery('')
     const { picks } = autoDraft(pool, requirements, {
       start: team,
       maxSize: Math.max(requirements.length + 1, team.length + 1),
@@ -148,6 +166,9 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
   const reset = () => {
     stop()
     setTeamIds(initialTeamIds)
+    // Reset is the demo's abort. It has to restore the opening view whole,
+    // and a search left in the box would hide most of the ranked list.
+    setQuery('')
   }
 
   if (requirements.length === 0) {
@@ -167,6 +188,9 @@ export function Sandbox({ pool, requirements, initialTeamIds, ownerId }: Props) 
       requirements={requirements}
       team={team}
       drafting={drafting}
+      query={query}
+      onQuery={setQuery}
+      poolSize={pool.length}
       onAdd={add}
       onDraft={runDraft}
       onReset={reset}
@@ -406,6 +430,9 @@ function CandidateList({
   requirements,
   team,
   drafting,
+  query,
+  onQuery,
+  poolSize,
   onAdd,
   onDraft,
   onReset,
@@ -415,6 +442,9 @@ function CandidateList({
   requirements: Requirement[]
   team: Member[]
   drafting: boolean
+  query: string
+  onQuery: (q: string) => void
+  poolSize: number
   onAdd: (id: string) => void
   onDraft: () => void
   onReset: () => void
@@ -440,9 +470,26 @@ function CandidateList({
         </div>
       </div>
 
+      {/* Searching widens the list past the top ten rather than re-ranking
+          it, so a name found here carries the same number it would have had
+          all along -- including a negative one, which is the only way the
+          "do not recruit this person" case is visible on screen. */}
+      <Input
+        type="search"
+        value={query}
+        disabled={drafting}
+        onChange={(e) => onQuery(e.target.value)}
+        placeholder={`Search all ${poolSize} by name or skill`}
+        aria-label="Search the whole pool by name or skill"
+      />
+
       {ranked.length === 0 ? (
         <Card>
-          <p className="text-[14px] text-ink-2">Everyone in the pool is already on this squad.</p>
+          <p className="text-[14px] text-ink-2">
+            {query.trim()
+              ? `Nobody in the pool matches “${query.trim()}”.`
+              : 'Everyone in the pool is already on this squad.'}
+          </p>
         </Card>
       ) : (
         <ul className="flex flex-col gap-2">

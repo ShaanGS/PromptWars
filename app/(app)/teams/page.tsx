@@ -175,6 +175,12 @@ export default async function TeamsPage() {
         .filter((entry) => Boolean(entry.squad))
     : []
 
+  // The rail and the grid used to render the same squad twice, in different
+  // pastels, because the tone was keyed on grid position. Showing it once
+  // means the rail is a promotion out of the list rather than a copy of it.
+  const railIds = new Set(forYou.map((entry) => entry.squad.id))
+  const rest = squads.filter((s) => !railIds.has(s.id))
+
   return (
     // role="main" rather than <main>: Page is the shared shell wrapper and is
     // shared with Olvable's screens, so the landmark is declared per page.
@@ -199,12 +205,11 @@ export default async function TeamsPage() {
           {/* A ranked run of cards is a list, so a screen reader gets the count
               and "3 of 4" while arrowing through it. */}
           <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {forYou.map((entry, i) => (
+            {forYou.map((entry) => (
               <li key={entry.squad.id}>
                 <SquadCard
                   squad={entry.squad}
                   gain={{ delta: entry.gain.delta, fills: entry.gain.fills }}
-                  index={i}
                 />
               </li>
             ))}
@@ -215,8 +220,8 @@ export default async function TeamsPage() {
       <section className="mt-8">
         <SectionHeading
           icon={<UsersThree aria-hidden="true" weight="duotone" />}
-          title="All squads"
-          aside={squads.length ? `${squads.length} open` : undefined}
+          title={forYou.length ? 'Other squads' : 'All squads'}
+          aside={rest.length ? `${rest.length} open` : undefined}
         />
         {squads.length === 0 ? (
           <EmptyState
@@ -231,9 +236,9 @@ export default async function TeamsPage() {
           />
         ) : (
           <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {squads.map((squad, i) => (
+            {rest.map((squad) => (
               <li key={squad.id}>
-                <SquadCard squad={squad} index={i} />
+                <SquadCard squad={squad} />
               </li>
             ))}
           </ul>

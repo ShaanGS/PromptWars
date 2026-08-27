@@ -11,7 +11,7 @@ import {
 } from '@/lib/engine'
 import { cn } from '@/lib/utils'
 import { Avatar } from '@/components/ui/bits'
-import { CATEGORY_TONES, Pill } from '@/components/ui/pill'
+import { Pill, toneFor } from '@/components/ui/pill'
 
 /**
  * A squad as the board needs it: the project row, the requirements it posted,
@@ -59,13 +59,10 @@ const MAX_FACES = 4
 export function SquadCard({
   squad,
   gain,
-  index,
 }: {
   squad: Squad
   /** Present in the "looking for you" rail: what joining would be worth. */
   gain?: { delta: number; fills: MarginalGain['fills'] }
-  /** Position in its grid -- drives the pastel so a row never repeats a hue. */
-  index: number
 }) {
   const score = scoreTeam(squad.team, squad.reqs)
   const band = readiness(score.base)
@@ -100,8 +97,12 @@ export function SquadCard({
     <article className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-card transition-colors hover:border-line-strong">
       <div className="flex flex-1 flex-col p-4">
         <div className="flex items-start justify-between gap-2">
+          {/* The event pill is keyed on the event, not on grid position: the
+              same hackathon must wear the same colour wherever its card
+              appears, or two squads aimed at one event look unrelated and one
+              squad shown in two grids looks like two. */}
           {squad.event ? (
-            <Pill tone={CATEGORY_TONES[index % CATEGORY_TONES.length]} size="sm">
+            <Pill tone={toneFor(squad.event.id)} size="sm">
               {squad.event.title}
             </Pill>
           ) : (
