@@ -14,7 +14,9 @@ import { Page, PageHeader } from '@/components/shell/page-header'
 import { SectionHeading } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/bits'
 import { buttonVariants } from '@/components/ui/button'
-import { SquadCard, type Squad } from '@/components/team/squad-card'
+import { type Squad } from '@/components/team/squad-card'
+import { TeamRow } from '@/components/team/team-row'
+import { cn } from '@/lib/utils'
 
 /** How many "looking for you" squads lead the board before the full grid. */
 const GAP_FEED_LIMIT = 4
@@ -31,6 +33,7 @@ type ProfileRow = {
   id: string
   name: string | null
   handle: string | null
+  dept: string | null
   experience_level: number | null
   commitment_level: number | null
   availability_windows: unknown
@@ -63,20 +66,36 @@ function windows(value: unknown): AvailabilityWindow[] {
  * whole page depends on the profile pool anyway for the gap feed, so
  * embedding would fetch the same people twice.
  */
-export default async function TeamsPage() {
+const KINDS = [
+  { value: 'all', label: 'All' },
+  { value: 'hackathon', label: 'Hackathon' },
+  { value: 'research', label: 'Research' },
+  { value: 'startup', label: 'Startup' },
+  { value: 'side_project', label: 'Side project' },
+] as const
+
+export default async function TeamsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ kind?: string }>
+}) {
   await connection()
+  const { kind: rawKind } = await searchParams
+  // An unknown kind in the URL shows everything rather than nothing: a filter
+  // that silently empties the board is worse than one that ignores you.
+  const activeKind = KINDS.some((k) => k.value === rawKind) ? rawKind! : 'all'
   const db = createServiceClient()
 
   const [projectsRes, reqsRes, membershipsRes, profilesRes, skillsRes] = await Promise.all([
     db
       .from('projects')
-      .select('id, owner_profile_id, event_id, title, description, deadline')
+      .select('id, owner_profile_id, event_id, title, description, deadline, kind, effort')
       .order('deadline', { ascending: true, nullsFirst: false }),
     db.from('requirements').select('id, project_id, skill, role_label, weight, min_proficiency'),
     db.from('memberships').select('project_id, profile_id, status'),
     db
       .from('profiles')
-      .select('id, name, handle, experience_level, commitment_level, availability_windows'),
+      .select('id, name, handle, dept, experience_level, commitment_level, availability_windows'),
     db.from('skills').select('profile_id, skill, proficiency, proof_url'),
   ])
 
@@ -87,6 +106,8 @@ export default async function TeamsPage() {
     title: string
     description: string | null
     deadline: string | null
+    kind: string | null
+    effort: string | null
   }[]
 
   const eventIds = [...new Set(projectRows.map((p) => p.event_id).filter(Boolean))] as string[]
@@ -105,6 +126,9 @@ export default async function TeamsPage() {
     if (list) list.push(s)
     else skillsByProfile.set(s.profile_id, [s])
   }
+  const deptById = new Map(
+    ((profilesRes.data ?? []) as ProfileRow[]).map((p) => [p.id, p.dept ?? null]),
+  )
   const pool: Member[] = ((profilesRes.data ?? []) as ProfileRow[]).map((p) => ({
     id: p.id,
     name: p.name ?? p.handle ?? 'Someone',
@@ -168,6 +192,22 @@ export default async function TeamsPage() {
     }
   })
 
+  const detailById = new Map(
+    projectRows.map((p) => [
+      p.id,
+      {
+        kind: p.kind,
+        effort: p.effort,
+        owner: p.owner_profile_id
+          ? {
+              name: memberById.get(p.owner_profile_id)?.name ?? 'Someone',
+              dept: deptById.get(p.owner_profile_id) ?? null,
+            }
+          : null,
+      },
+    ]),
+  )
+
   const demo = await getDemoProfile()
   const me = demo ? (memberById.get(demo.id) ?? null) : null
   const squadById = new Map(squads.map((s) => [s.id, s]))
@@ -204,6 +244,10 @@ export default async function TeamsPage() {
   // means the rail is a promotion out of the list rather than a copy of it.
   const railIds = new Set(rail.map((entry) => entry.squad.id))
   const rest = squads.filter((s) => !railIds.has(s.id))
+  const shown =
+    activeKind === 'all'
+      ? rest
+      : rest.filter((s) => (detailById.get(s.id)?.kind ?? 'project') === activeKind)
 
   return (
     // role="main" rather than <main>: Page is the shared shell wrapper and is
@@ -231,17 +275,23 @@ export default async function TeamsPage() {
               railIsFallback ? 'None would improve yet — here is why' : `Ranked by what you'd add`
             }
           />
-          {/* A ranked run of cards is a list, so a screen reader gets the count
-              and "3 of 4" while arrowing through it. */}
-          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {rail.map((entry) => (
-              <li key={entry.squad.id}>
-                <SquadCard
-                  squad={entry.squad}
-                  gain={{ delta: entry.gain.delta, fills: entry.gain.fills }}
-                />
-              </li>
-            ))}
+          {/* A ranked run is a list, so a screen reader gets the count and
+              "3 of 4" while arrowing through it. */}
+          <ul className="flex flex-col gap-3">
+            {rail.map((entry) => {
+              const detail = detailById.get(entry.squad.id)
+              return (
+                <li key={entry.squad.id}>
+                  <TeamRow
+                    squad={entry.squad}
+                    kind={detail?.kind ?? null}
+                    effort={detail?.effort ?? null}
+                    owner={detail?.owner ?? null}
+                    gain={{ delta: entry.gain.delta, fills: entry.gain.fills }}
+                  />
+                </li>
+              )
+            })}
           </ul>
         </section>
       ) : null}
@@ -250,13 +300,43 @@ export default async function TeamsPage() {
         <SectionHeading
           icon={<UsersThree aria-hidden="true" weight="duotone" />}
           title={rail.length ? 'Other teams' : 'All teams'}
-          aside={rest.length ? `${rest.length} looking` : undefined}
+          aside={shown.length ? `${shown.length} looking` : undefined}
         />
-        {squads.length === 0 ? (
+
+        {/* Kind before anything else: a hackathon ask and a research ask are
+            different decisions, and it is the filter people reach for before
+            they have read a single description. Links, not client state --
+            the board stays a server render and the filter survives a share. */}
+        <nav aria-label="Filter by kind" className="mb-4 flex flex-wrap gap-1.5">
+          {KINDS.map((k) => {
+            const on = k.value === activeKind
+            return (
+              <Link
+                key={k.value}
+                href={k.value === 'all' ? '/teams' : `/teams?kind=${k.value}`}
+                aria-current={on ? 'true' : undefined}
+                className={cn(
+                  'inline-flex h-9 items-center rounded-full border px-3.5 text-[13.5px] font-medium transition-colors',
+                  on
+                    ? 'border-transparent bg-ink text-white'
+                    : 'border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink',
+                )}
+              >
+                {k.label}
+              </Link>
+            )
+          })}
+        </nav>
+
+        {shown.length === 0 ? (
           <EmptyState
             icon={<UsersThree aria-hidden="true" weight="duotone" />}
-            title="No teams yet"
-            body="Nobody has posted what they need yet. Be the first — say what you're building and which role is missing."
+            title={activeKind === 'all' ? 'No teams yet' : 'Nothing of that kind yet'}
+            body={
+              activeKind === 'all'
+                ? "Nobody has posted what they need yet. Be the first — say what you're building and which role is missing."
+                : 'Try another kind, or post the first one.'
+            }
             action={
               <Link href="/teams/new" className={buttonVariants({ variant: 'primary' })}>
                 Start a team
@@ -264,12 +344,20 @@ export default async function TeamsPage() {
             }
           />
         ) : (
-          <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {rest.map((squad) => (
-              <li key={squad.id}>
-                <SquadCard squad={squad} />
-              </li>
-            ))}
+          <ul className="flex flex-col gap-3">
+            {shown.map((squad) => {
+              const detail = detailById.get(squad.id)
+              return (
+                <li key={squad.id}>
+                  <TeamRow
+                    squad={squad}
+                    kind={detail?.kind ?? null}
+                    effort={detail?.effort ?? null}
+                    owner={detail?.owner ?? null}
+                  />
+                </li>
+              )
+            })}
           </ul>
         )}
       </section>
