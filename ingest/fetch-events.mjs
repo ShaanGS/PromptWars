@@ -18,8 +18,8 @@ import { fileURLToPath } from 'node:url'
 
 const OUT = join(dirname(fileURLToPath(import.meta.url)), 'events.json')
 const NOW = new Date()
-const PER_SOURCE_CAP = 10
-const TOTAL_CAP = 25
+const PER_SOURCE_CAP = 40
+const TOTAL_CAP = 100
 
 const BROWSER_UA =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'

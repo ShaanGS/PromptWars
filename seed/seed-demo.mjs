@@ -27,6 +27,24 @@ async function post(table, rows, onConflict) {
   return res.json()
 }
 
+/**
+ * Requirements and memberships carry no natural key to upsert on, so a second
+ * run used to insert a second copy of every row -- the squad that asked for
+ * five roles then asked for ten, and the board reported "6 of 10 open" for an
+ * unchanged team. Clearing a project's rows before reinserting is what makes
+ * the header's "every insert upserts" claim true for these two tables.
+ */
+async function replaceFor(table, projectIds, rows) {
+  if (!projectIds.length) return
+  const list = projectIds.map((id) => `"${id}"`).join(',')
+  const res = await fetch(`${URL}/rest/v1/${table}?project_id=in.(${list})`, {
+    method: 'DELETE',
+    headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+  })
+  if (!res.ok) throw new Error(`${table} clear: ${res.status} ${await res.text()}`)
+  await post(table, rows)
+}
+
 const hash = (s) => createHash('sha256').update(s).digest('hex').slice(0, 32)
 
 // ---------------------------------------------------------------- sources
@@ -432,8 +450,10 @@ const savedProjects = await post('projects', projectRows, 'title')
 const projByTitle = new Map(savedProjects.map((p) => [p.title, p.id]))
 console.log(`projects: ${savedProjects.length}`)
 
-await post(
+const seededProjectIds = [...projByTitle.values()]
+await replaceFor(
   'requirements',
+  seededProjectIds,
   SQUADS.flatMap((s) =>
     s.reqs.map(([skill, role_label, weight, min_proficiency]) => ({
       project_id: projByTitle.get(s.title),
