@@ -20,6 +20,7 @@ import {
   type Requirement,
 } from '@/lib/engine'
 import { createServiceClient } from '@/lib/supabase'
+import { cn } from '@/lib/utils'
 import {
   PROFILE_COLUMNS,
   REQUIREMENT_COLUMNS,
@@ -35,8 +36,8 @@ import {
 import { summariseAvailability } from '@/lib/team/availability-summary'
 import { Page } from '@/components/shell/page-header'
 import { SectionHeading } from '@/components/ui/card'
-import { Avatar } from '@/components/ui/bits'
-import { Pill } from '@/components/ui/pill'
+import { Avatar, toneClass } from '@/components/ui/bits'
+import { Pill, toneFor } from '@/components/ui/pill'
 
 type ProjectRow = { id: string; title: string; owner_profile_id: string }
 type MembershipRow = { project_id: string; profile_id: string; status: string }
@@ -131,6 +132,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
     .join(' · ')
 
   const availability = summariseAvailability(toWindows(me.availability_windows))
+  const backedCount = claims.filter((c) => c.proof_url).length
 
   const bars = [
     {
@@ -160,53 +162,63 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
         All people
       </Link>
 
-      <header className={`mt-3 ${CARD}`}>
-        <div className="flex flex-wrap items-start gap-4 sm:gap-5">
-          <Avatar name={me.name} size={72} />
-          <div className="min-w-0 flex-1">
+      {/* Same shape as the directory card -- band, avatar across it, then the
+          facts -- so arriving here from /people feels like the card opening
+          rather than a different screen. The band's colour is keyed on the
+          handle, so a person wears one colour in both places. */}
+      <header className="mt-3 overflow-hidden rounded-card border border-line bg-surface shadow-card">
+        <div className={cn('h-24 sm:h-28', toneClass(toneFor(me.handle)))} />
+        <div className="px-4 pb-4 sm:px-5 sm:pb-5">
+          <div className="-mt-10 sm:-mt-12">
+            <Avatar name={me.name} size={88} className="ring-4 ring-surface" />
+          </div>
+          <div className="mt-3 flex items-center gap-2">
             <h1 className="text-[32px] font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[36px]">
               {me.name}
             </h1>
-            <p className="mt-2 text-[15px] text-ink-2">{identity}</p>
+            {backedCount > 0 ? (
+              <SealCheck aria-hidden="true" weight="fill" className="size-5 shrink-0 text-accent" />
+            ) : null}
           </div>
-        </div>
-        {me.bio ? (
-          <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-2">{me.bio}</p>
-        ) : null}
+          <p className="mt-1.5 text-[15px] text-ink-2">{identity}</p>
+          {me.bio ? (
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-2">{me.bio}</p>
+          ) : null}
 
-        {/* The problem statement asks for matching on skills, interests,
+          {/* The problem statement asks for matching on skills, interests,
             availability, experience and commitment. Four of those were
             seeded on every profile and rendered nowhere, so the screen a
             human uses to decide "could I work with this person" answered
             only the first. */}
-        <ul className="mt-4 flex flex-wrap items-center gap-1.5">
-          {me.looking_for ? (
-            <li>
-              <Pill tone="lilac" size="sm">
-                <Target aria-hidden="true" weight="duotone" />
-                Looking for {me.looking_for.toLowerCase()}
-              </Pill>
-            </li>
-          ) : null}
-          {availability ? (
+          <ul className="mt-4 flex flex-wrap items-center gap-1.5">
+            {me.looking_for ? (
+              <li>
+                <Pill tone="lilac" size="sm">
+                  <Target aria-hidden="true" weight="duotone" />
+                  Looking for {me.looking_for.toLowerCase()}
+                </Pill>
+              </li>
+            ) : null}
+            {availability ? (
+              <li>
+                <Pill tone="neutral" size="sm">
+                  <Clock aria-hidden="true" weight="duotone" />
+                  {availability}
+                </Pill>
+              </li>
+            ) : null}
             <li>
               <Pill tone="neutral" size="sm">
-                <Clock aria-hidden="true" weight="duotone" />
-                {availability}
+                Experience {me.experience_level ?? 3}/5
               </Pill>
             </li>
-          ) : null}
-          <li>
-            <Pill tone="neutral" size="sm">
-              Experience {me.experience_level ?? 3}/5
-            </Pill>
-          </li>
-          <li>
-            <Pill tone="neutral" size="sm">
-              Commitment {me.commitment_level ?? 3}/5
-            </Pill>
-          </li>
-        </ul>
+            <li>
+              <Pill tone="neutral" size="sm">
+                Commitment {me.commitment_level ?? 3}/5
+              </Pill>
+            </li>
+          </ul>
+        </div>
       </header>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">

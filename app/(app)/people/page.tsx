@@ -1,6 +1,5 @@
 import { connection } from 'next/server'
-import Link from 'next/link'
-import { SealCheck, UsersThree } from '@phosphor-icons/react/dist/ssr'
+import { UsersThree } from '@phosphor-icons/react/dist/ssr'
 import { guildScore } from '@/lib/engine'
 import { createServiceClient } from '@/lib/supabase'
 import {
@@ -15,11 +14,8 @@ import {
   type SkillRow,
 } from '@/lib/team/mappers'
 import { Page, PageHeader } from '@/components/shell/page-header'
-import { Avatar, EmptyState } from '@/components/ui/bits'
-import { Pill } from '@/components/ui/pill'
-
-/** Skills past this many are folded into a "+N" pill so cards stay one height. */
-const SKILLS_SHOWN = 4
+import { EmptyState } from '@/components/ui/bits'
+import { PersonCard } from '@/components/team/person-card'
 
 /**
  * /people -- the directory, ordered by Guild Score.
@@ -80,91 +76,20 @@ export default async function PeoplePage() {
         />
       ) : (
         <ul className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {ranked.map(({ profile, skills: claims, gs }) => {
-            const meta = [profile.dept, profile.year ? `Year ${profile.year}` : null]
-              .filter(Boolean)
-              .join(' · ')
-            const shown = claims.slice(0, SKILLS_SHOWN)
-            const rest = claims.length - shown.length
-            const score = Math.round(gs.total * 100)
-
-            return (
-              <li key={profile.id}>
-                <Link
-                  href={`/p/${profile.handle}`}
-                  // Without this the link's name is the whole card read aloud,
-                  // starting with a bare "78" before the words "Guild score".
-                  aria-label={`${profile.name} — view profile`}
-                  className="group flex h-full flex-col rounded-card border border-line bg-surface p-4 shadow-card transition-colors hover:border-line-strong"
-                >
-                  <div className="flex items-start gap-3">
-                    <Avatar name={profile.name} size={44} />
-                    <div className="min-w-0 flex-1">
-                      {/* h2, not h3: the page's only other heading is the h1 in
-                        PageHeader, and h1 -> h3 is a broken outline. */}
-                      <h2 className="truncate text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink underline-offset-2 group-hover:underline">
-                        {profile.name}
-                      </h2>
-                      <p className="mt-1 truncate text-[13.5px] text-ink-2">
-                        {meta || `@${profile.handle}`}
-                      </p>
-                    </div>
-                    <div
-                      role="meter"
-                      aria-valuenow={score}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-label={`Guild Score for ${profile.name}`}
-                      className="shrink-0 text-right"
-                    >
-                      <p
-                        aria-hidden="true"
-                        className="text-[28px] font-semibold leading-none tracking-[-0.02em] tabular-nums text-ink"
-                      >
-                        {score}
-                      </p>
-                      <p
-                        aria-hidden="true"
-                        className="mt-1.5 text-[10.5px] font-medium uppercase tracking-[0.08em] text-ink-3"
-                      >
-                        Guild score
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-4">
-                    {shown.length === 0 ? (
-                      <Pill tone="outline" size="sm">
-                        No skills listed
-                      </Pill>
-                    ) : (
-                      shown.map((s) =>
-                        s.proof_url ? (
-                          // The mint tint and the seal both say "verified"; the
-                          // word says it too, so colour is never the only signal.
-                          <Pill key={s.skill} tone="mint" size="sm">
-                            <SealCheck aria-hidden="true" weight="fill" />
-                            <span className="sr-only">Verified: </span>
-                            {s.skill}
-                          </Pill>
-                        ) : (
-                          <Pill key={s.skill} tone="neutral" size="sm">
-                            {s.skill}
-                          </Pill>
-                        ),
-                      )
-                    )}
-                    {rest > 0 ? (
-                      <Pill tone="outline" size="sm">
-                        +{rest}
-                        <span className="sr-only"> more skills</span>
-                      </Pill>
-                    ) : null}
-                  </div>
-                </Link>
-              </li>
-            )
-          })}
+          {ranked.map(({ profile, skills: claims, gs }) => (
+            <li key={profile.id}>
+              <PersonCard
+                handle={profile.handle}
+                name={profile.name}
+                dept={profile.dept}
+                year={profile.year}
+                lookingFor={profile.looking_for}
+                availabilityWindows={profile.availability_windows}
+                score={Math.round(gs.total * 100)}
+                claims={claims}
+              />
+            </li>
+          ))}
         </ul>
       )}
     </Page>
