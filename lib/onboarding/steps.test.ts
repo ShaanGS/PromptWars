@@ -8,17 +8,25 @@ import {
   toggleSkill,
 } from './steps'
 
+const stepIndex = (name: (typeof ONBOARDING_STEPS)[number]) => ONBOARDING_STEPS.indexOf(name)
+
 describe('canContinue', () => {
-  it('blocks the skills step until at least one skill is picked', () => {
-    expect(canContinue(EMPTY_DRAFT, 0)).toBe(false)
-    expect(canContinue({ ...EMPTY_DRAFT, skills: ['react'] }, 0)).toBe(true)
+  it('blocks the about step until there is a name to route to', () => {
+    expect(canContinue(EMPTY_DRAFT, stepIndex('about'))).toBe(false)
+    expect(canContinue({ ...EMPTY_DRAFT, name: 'Shaan' }, stepIndex('about'))).toBe(true)
   })
 
-  // Availability and experience open on defaults, so gating them would stop
-  // someone on a question the form has already answered for them.
+  it('blocks the skills step until at least one skill is picked', () => {
+    expect(canContinue(EMPTY_DRAFT, stepIndex('skills'))).toBe(false)
+    expect(canContinue({ ...EMPTY_DRAFT, skills: ['react'] }, stepIndex('skills'))).toBe(true)
+  })
+
+  // Every other step opens on a default, so gating one would stop someone on
+  // a control that already shows them an answer.
   it('never blocks the steps that open on a default', () => {
-    expect(canContinue(EMPTY_DRAFT, 1)).toBe(true)
-    expect(canContinue(EMPTY_DRAFT, 2)).toBe(true)
+    for (const name of ['looking', 'availability', 'experience', 'review'] as const) {
+      expect(canContinue(EMPTY_DRAFT, stepIndex(name))).toBe(true)
+    }
   })
 })
 

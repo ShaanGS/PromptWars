@@ -1,3 +1,4 @@
+import type { AvailabilityWindow } from '@/lib/engine'
 import type { OnboardingDraft } from './steps'
 
 /**
@@ -80,6 +81,8 @@ export function validateProfileDraft(input: ProfileDraft, taken: Iterable<string
       name,
       handle: uniqueHandle(base, taken),
       draft: {
+        name,
+        lookingFor: input.lookingFor,
         // Not blocking on it: the column needs a value, but stopping someone
         // on stage over their course name is friction for nothing.
         dept: (input.dept ?? '').trim().slice(0, 40) || 'Student',
@@ -107,7 +110,7 @@ function clampLevel(value: number, min: number, max: number): number {
  * those are the hours the seeded pool uses and overlap is only meaningful
  * against the same clock.
  */
-export function toAvailabilityWindows(draft: OnboardingDraft) {
+export function toAvailabilityWindows(draft: OnboardingDraft): AvailabilityWindow[] {
   const perDay = Math.min(Math.max(draft.hoursPerWeek / 5, 1), 6)
   // Clamped to 23:00 rather than allowed to roll over. "24:00" is not a time
   // the engine's parser accepts, and a window it rejects contributes zero
@@ -116,8 +119,14 @@ export function toAvailabilityWindows(draft: OnboardingDraft) {
   const end = (start: number) =>
     `${String(Math.min(Math.round(start + perDay), 23)).padStart(2, '0')}:00`
 
-  const weekdays = [1, 2, 3, 4, 5].map((day) => ({ day, start: '18:00', end: end(18) }))
-  const weekend = [6, 0].map((day) => ({ day, start: '09:00', end: end(9) }))
+  // `as const` so the days stay the engine's 0-6 literal union rather than
+  // widening to number, which no consumer of AvailabilityWindow accepts.
+  const weekdays = ([1, 2, 3, 4, 5] as const).map((day) => ({
+    day,
+    start: '18:00',
+    end: end(18),
+  }))
+  const weekend = ([6, 0] as const).map((day) => ({ day, start: '09:00', end: end(9) }))
 
   if (draft.days === 'weekdays') return weekdays
   if (draft.days === 'weekends') return weekend

@@ -61,7 +61,7 @@ export async function createProfile(input: ProfileDraft): Promise<CreateProfileR
       experience_level: draft.experienceLevel,
       commitment_level: draft.commitmentLevel,
       availability_windows: toAvailabilityWindows(draft),
-      looking_for: 'Hackathon Team',
+      looking_for: draft.lookingFor,
       // Seeded rows are the demo's backdrop; this one is a real person who
       // turned up. `npm run seed` resets toward git and must not claim it.
       is_seed: false,
