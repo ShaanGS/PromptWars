@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { SealCheck } from '@phosphor-icons/react/dist/ssr'
-import { Avatar, toneClass } from '@/components/ui/bits'
+import { ArrowUpRight, Clock, SealCheck, UserCircle } from '@phosphor-icons/react/dist/ssr'
+import { toneClass } from '@/components/ui/bits'
 import { Pill, toneFor } from '@/components/ui/pill'
 import { summariseAvailability } from '@/lib/team/availability-summary'
 import { toWindows } from '@/lib/team/mappers'
@@ -12,18 +12,18 @@ const SKILLS_SHOWN = 4
 export type PersonCardSkill = { skill: string; proof_url: string | null }
 
 /**
- * A person, as the directory shows them.
+ * A person, on the same skeleton as an event card.
  *
- * The layout owes its shape to the profile cards people already know -- a
- * colour band, the avatar sitting across it, then a row of counts -- because
- * that shape is read without instructions. What it refuses to borrow is the
- * numbers. Followers and posts would be invented here, and the three counts
- * that are NOT invented happen to be the three the ranking runs on: the Guild
- * Score, how many skills someone claims, and how many of those they backed
- * with a link. The card and the model agree, which is the whole product.
+ * Deliberately not its own design. The event cards are the part of this app
+ * that reads as finished, and the reason is structural rather than decorative:
+ * a tall media block gives the card presence, one number is the hero inside
+ * it, and everything below is a fixed rhythm -- title, meta line, pills, a
+ * hairline, then the action. A thin colour strip and a stack of equal-weight
+ * rows cannot compete with that, however the colours are chosen.
  *
- * The band's colour is keyed on the handle, so a person wears one colour
- * everywhere and the grid never reshuffles hues when the ranking moves.
+ * So a person gets the same frame: initials where the date goes, the Guild
+ * Score where the relevance band goes, availability where the venue goes.
+ * Two card types, one grammar, no new vocabulary for the eye to learn.
  */
 export function PersonCard({
   handle,
@@ -43,7 +43,7 @@ export function PersonCard({
   availabilityWindows: unknown
   /** Guild Score, already rounded to 0-100. */
   score: number
-  /** Verified-first, strongest-first -- the order the pills are shown in. */
+  /** Backed-first, strongest-first -- the order the pills are shown in. */
   claims: PersonCardSkill[]
 }) {
   const meta = [dept, year ? `Year ${year}` : null].filter(Boolean).join(' · ') || `@${handle}`
@@ -51,46 +51,65 @@ export function PersonCard({
   const rest = claims.length - shown.length
   const backed = claims.filter((c) => c.proof_url).length
   const availability = summariseAvailability(toWindows(availabilityWindows))
+  const href = `/p/${handle}`
+
+  const initials =
+    name
+      .split(/[\s@._-]+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((w) => w[0]?.toUpperCase() ?? '')
+      .join('') || '?'
 
   return (
-    <Link
-      href={`/p/${handle}`}
-      // Without this the link's accessible name is the whole card read out,
-      // which starts on a bare number before any of the words explaining it.
-      aria-label={`${name} — view profile`}
-      className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-card transition-colors hover:border-line-strong"
-    >
-      <div className={cn('h-14', toneClass(toneFor(handle)))} />
-
-      <div className="flex flex-1 flex-col px-4 pb-4">
-        {/* Pulled up over the band, the way a profile header reads. */}
-        <div className="-mt-7">
-          <Avatar name={name} size={56} className="ring-4 ring-surface" />
+    <article className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-card transition-colors hover:border-line-strong">
+      <Link href={href} className="relative block shrink-0" aria-label={name}>
+        {/* The media block, with initials where a banner's date sits. */}
+        <div className={cn('relative flex h-40 w-full items-end p-4', toneClass(toneFor(handle)))}>
+          <UserCircle
+            aria-hidden="true"
+            size={28}
+            weight="duotone"
+            className="absolute right-4 top-4 opacity-50"
+          />
+          <p className="text-[44px] font-semibold leading-none tracking-[-0.03em]">{initials}</p>
         </div>
 
-        <div className="mt-2.5 flex items-center gap-1.5">
-          {/* h2, not h3: the page's only other heading is the h1 in
-              PageHeader, and h1 -> h3 is a broken outline. */}
-          <h2 className="truncate text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink underline-offset-2 group-hover:underline">
+        {/* Same chip, same corner, same job as the event card's relevance
+            band: the one number that ranks this card. */}
+        <span className="pointer-events-none absolute left-3 top-3 inline-flex h-6 items-center gap-1 rounded-full bg-surface/95 px-2.5 text-[12px] font-medium text-ink backdrop-blur-sm">
+          Guild Score
+          <span className="tabular-nums text-ink-3">{score}</span>
+        </span>
+
+        {backed > 0 ? (
+          <span className="pointer-events-none absolute bottom-3 right-3 inline-flex h-7 items-center gap-1 rounded-full bg-surface/95 px-3 text-[12.5px] font-medium text-ink backdrop-blur-sm">
+            <SealCheck aria-hidden="true" weight="fill" className="size-3.5 text-accent" />
+            {backed} backed
+          </span>
+        ) : null}
+      </Link>
+
+      <div className="flex flex-1 flex-col p-4">
+        {/* h2, not h3: the page's only other heading is the h1 in PageHeader,
+            and h1 -> h3 is a broken outline. */}
+        <h2 className="line-clamp-2 text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+          <Link href={href} className="underline-offset-2 hover:underline">
             {name}
-          </h2>
-          {backed > 0 ? (
-            <SealCheck
-              aria-hidden="true"
-              weight="fill"
-              className="size-[15px] shrink-0 text-accent"
-            />
-          ) : null}
-        </div>
-        <p className="mt-0.5 truncate text-[13.5px] text-ink-2">{meta}</p>
+          </Link>
+        </h2>
 
-        <dl className="mt-3.5 grid grid-cols-3 gap-2 border-y border-line py-3">
-          <Stat label="Guild Score" value={score} />
-          <Stat label="Skills" value={claims.length} />
-          <Stat label="Backed" value={backed} />
-        </dl>
+        <p className="mt-1.5 truncate text-[13.5px] text-ink-2">{meta}</p>
 
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        {lookingFor ? (
+          <p className="mt-2.5">
+            <Pill tone="accent-soft" size="sm">
+              Looking for {lookingFor.toLowerCase()}
+            </Pill>
+          </p>
+        ) : null}
+
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-4">
           {shown.length === 0 ? (
             <Pill tone="outline" size="sm">
               No skills listed
@@ -120,27 +139,27 @@ export function PersonCard({
           ) : null}
         </div>
 
-        {lookingFor || availability ? (
-          <p className="mt-auto truncate pt-3 text-[12.5px] text-ink-3">
-            {[lookingFor ? `Looking for ${lookingFor.toLowerCase()}` : null, availability]
-              .filter(Boolean)
-              .join(' · ')}
-          </p>
-        ) : null}
+        <div className="mt-3 flex items-center gap-2 border-t border-line pt-3">
+          {availability ? (
+            <p className="flex min-w-0 items-center gap-1.5 text-[13px] text-ink-2">
+              <Clock aria-hidden="true" size={15} weight="bold" className="shrink-0 text-ink-3" />
+              <span className="truncate">{availability}</span>
+            </p>
+          ) : (
+            <span className="text-[13px] text-ink-3">No hours set</span>
+          )}
+          {/* Forty of these on one page, so the name goes in the accessible
+              name -- "View" alone is WCAG 2.4.4. */}
+          <Link
+            href={href}
+            aria-label={`View ${name}'s profile`}
+            className="ml-auto inline-flex h-9 shrink-0 items-center gap-1 rounded-full bg-ink px-3.5 text-[13px] font-medium text-white transition-colors hover:bg-ink/85"
+          >
+            View
+            <ArrowUpRight aria-hidden="true" size={14} weight="bold" />
+          </Link>
+        </div>
       </div>
-    </Link>
-  )
-}
-
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="min-w-0">
-      <dt className="truncate text-[10.5px] font-medium uppercase tracking-[0.07em] text-ink-3">
-        {label}
-      </dt>
-      <dd className="mt-1 text-[19px] font-semibold leading-none tracking-[-0.02em] tabular-nums text-ink">
-        {value}
-      </dd>
-    </div>
+    </article>
   )
 }

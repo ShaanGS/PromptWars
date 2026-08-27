@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { DateTime } from 'luxon'
-import { ArrowUpRight, CalendarBlank } from '@phosphor-icons/react/dist/ssr'
+import { ArrowUpRight, UsersThree } from '@phosphor-icons/react/dist/ssr'
 import { DEFAULT_TZ } from '@/lib/dates/types'
 import {
   scoreTeam,
@@ -29,19 +29,6 @@ export type Squad = {
   team: Member[]
 }
 
-/**
- * Readiness band. Same vocabulary as lib/theme's relevance bands -- a label,
- * a dot, and a number -- because a card only gets to teach one badge grammar
- * and the feed already taught this one.
- */
-function readiness(base: number): { label: string; dot: string } {
-  const pct = base * 100
-  if (pct >= 85) return { label: 'Ready', dot: 'bg-accent' }
-  if (pct >= 60) return { label: 'Getting there', dot: 'bg-success' }
-  if (pct >= 35) return { label: 'Thin', dot: 'bg-lemon-ink' }
-  return { label: 'Needs people', dot: 'bg-line-strong' }
-}
-
 function labelFor(req: Requirement): string {
   return req.roleLabel ?? req.skill
 }
@@ -65,7 +52,6 @@ export function SquadCard({
   gain?: { delta: number; fills: MarginalGain['fills'] }
 }) {
   const score = scoreTeam(squad.team, squad.reqs)
-  const band = readiness(score.base)
 
   // Coverage comes back one entry per requirement, so the open gaps are just
   // the ones the engine could not fill above the threshold.
@@ -73,8 +59,6 @@ export function SquadCard({
     const entry = score.coverage.find((c) => c.requirementId === r.id)
     return (entry?.coverage ?? 0) < UNMET_THRESHOLD
   })
-
-  const filled = squad.reqs.length - unmet.length
 
   const deadline = squad.deadline ? DateTime.fromISO(squad.deadline, { zone: DEFAULT_TZ }) : null
   // The roster count moved into the stat row below, so this line carries only
@@ -93,120 +77,116 @@ export function SquadCard({
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-card transition-colors hover:border-line-strong">
-      {/* The event is the band, not a pill in the corner. A squad exists
-          because of the thing it is entering, so that is what the card leads
-          with -- and the colour is keyed on the event id, so one hackathon
-          wears one colour wherever its card appears. */}
-      <div
-        className={cn(
-          'flex h-11 items-center justify-between gap-2 px-4',
-          squad.event ? toneClass(toneFor(squad.event.id)) : 'bg-surface-2 text-ink-2',
-        )}
-      >
-        <span className="truncate text-[12.5px] font-semibold">
-          {squad.event ? squad.event.title : 'Project'}
-        </span>
-        {/* A count, not a percentage. The badge used to print pure coverage
-            ("36") one click away from a screen showing the composite score
-            ("55%") for the same team, with nothing on either explaining the
-            gap. "2 of 5 roles filled" is the same sentence in both places. */}
-        <span className="inline-flex h-6 shrink-0 items-center gap-1 rounded-full bg-surface/90 px-2.5 text-[12px] font-medium text-ink">
-          <span aria-hidden="true" className={cn('size-1.5 rounded-full', band.dot)} />
-          <span className="tabular-nums">
-            {filled} of {squad.reqs.length}
+      <Link href={href} className="relative block shrink-0" aria-label={squad.title}>
+        {/* The same media block the event cards use, with the number that
+            decides whether to click as the hero. A team's is how much of it
+            is still missing -- the event card puts the date there for the
+            same reason: it is the fact you scan for. */}
+        <div
+          className={cn(
+            'relative flex h-40 w-full items-end p-4',
+            squad.event ? toneClass(toneFor(squad.event.id)) : 'bg-surface-2 text-ink-2',
+          )}
+        >
+          <UsersThree
+            aria-hidden="true"
+            size={28}
+            weight="duotone"
+            className="absolute right-4 top-4 opacity-50"
+          />
+          <div className="leading-none">
+            <p className="text-[44px] font-semibold tracking-[-0.03em]">{unmet.length}</p>
+            <p className="mt-1 text-[14px] font-medium opacity-80">
+              {unmet.length === 1 ? 'role still open' : 'roles still open'}
+              {unmet.length === 0 ? '' : ` of ${squad.reqs.length}`}
+            </p>
+          </div>
+        </div>
+
+        {meta ? (
+          <span className="pointer-events-none absolute bottom-3 right-3 inline-flex h-7 items-center rounded-full bg-surface/95 px-3 text-[12.5px] font-medium text-ink backdrop-blur-sm">
+            {meta}
           </span>
-          roles filled
-        </span>
-      </div>
+        ) : null}
+
+        {squad.event ? (
+          <span className="pointer-events-none absolute inset-x-3 top-3 flex">
+            <span className="inline-flex h-6 max-w-full items-center truncate rounded-full bg-surface/95 px-2.5 text-[12px] font-medium text-ink backdrop-blur-sm">
+              {squad.event.title}
+            </span>
+          </span>
+        ) : null}
+      </Link>
 
       <div className="flex flex-1 flex-col p-4">
         <h3 className="line-clamp-2 text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">
-          <Link href={href} className="hover:underline underline-offset-2">
+          <Link href={href} className="underline-offset-2 hover:underline">
             {squad.title}
           </Link>
         </h3>
-
-        <div
-          className="mt-3 flex -space-x-2"
-          role="img"
-          aria-label={faceLabel ?? 'Nobody on the team yet'}
-        >
-          {faces.length ? (
-            faces.map((m) => (
-              <Avatar key={m.id} name={m.name} size={30} className="ring-2 ring-surface" />
-            ))
-          ) : (
-            <span className="text-[13px] text-ink-3">No one yet</span>
-          )}
-          {squad.team.length > MAX_FACES ? (
-            <span
-              aria-hidden="true"
-              className="inline-flex size-[30px] items-center justify-center rounded-full bg-surface-2 text-[11.5px] font-semibold text-ink-2 ring-2 ring-surface"
-            >
-              +{squad.team.length - MAX_FACES}
-            </span>
-          ) : null}
-        </div>
 
         {gain ? (
           // Marginal gain is signed: a sixth body on a team that needs
           // nothing costs overlap. Rendering it as "+-5.4%" was the one place
           // the card contradicted the model it is reporting.
-          <p
-            className={cn(
-              'mt-2.5 text-[13.5px] font-medium',
-              gain.delta >= 0 ? 'text-accent' : 'text-ink-3',
-            )}
-          >
-            {gain.delta >= 0 ? '+' : '−'}
-            {Math.abs(gain.delta * 100).toFixed(1)}%
-            <span className="sr-only"> to their team score</span>
-            {role ? (
-              <span className="font-normal text-ink-2"> if you take {labelFor(role)}</span>
-            ) : null}
+          <p className="mt-2.5">
+            <Pill tone={gain.delta >= 0 ? 'accent-soft' : 'neutral'} size="sm">
+              {gain.delta >= 0 ? '+' : '−'}
+              {Math.abs(gain.delta * 100).toFixed(1)}% to their score
+              {role ? ` · you'd take ${labelFor(role)}` : ''}
+            </Pill>
           </p>
         ) : squad.description ? (
-          <p className="mt-2.5 line-clamp-2 text-[13.5px] leading-relaxed text-ink-2">
+          <p className="mt-2 line-clamp-2 text-[13.5px] leading-relaxed text-ink-2">
             {squad.description}
           </p>
         ) : null}
 
-        {unmet.length ? (
-          <div className="mt-3 flex flex-wrap items-center gap-1.5">
-            <span className="text-[12.5px] font-medium text-ink-3">Needs</span>
-            {unmet.slice(0, MAX_NEEDS).map((r) => (
-              <Pill key={r.id} tone="outline" size="sm">
-                {labelFor(r)}
-              </Pill>
-            ))}
-            {unmet.length > MAX_NEEDS ? (
-              <Pill tone="neutral" size="sm">
-                +{unmet.length - MAX_NEEDS}
-              </Pill>
-            ) : null}
-          </div>
-        ) : null}
-
-        <div className="mt-auto flex items-center gap-2 border-t border-line pt-3">
-          {meta ? (
-            <p className="flex min-w-0 items-center gap-1.5 text-[13px] text-ink-2">
-              <CalendarBlank
-                aria-hidden="true"
-                size={14}
-                weight="bold"
-                className="shrink-0 text-ink-3"
-              />
-              <span className="truncate">{meta}</span>
-            </p>
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-4">
+          {unmet.length ? (
+            <>
+              {unmet.slice(0, MAX_NEEDS).map((r) => (
+                <Pill key={r.id} tone="outline" size="sm">
+                  {labelFor(r)}
+                </Pill>
+              ))}
+              {unmet.length > MAX_NEEDS ? (
+                <Pill tone="neutral" size="sm">
+                  +{unmet.length - MAX_NEEDS}
+                </Pill>
+              ) : null}
+            </>
           ) : (
-            <span className="text-[13px] text-ink-3">{squad.team.length} joined</span>
+            <Pill tone="mint" size="sm">
+              Every role filled
+            </Pill>
+          )}
+        </div>
+
+        <div className="mt-3 flex items-center gap-2 border-t border-line pt-3">
+          {squad.team.length ? (
+            <div className="flex -space-x-2" role="img" aria-label={faceLabel ?? undefined}>
+              {faces.map((m) => (
+                <Avatar key={m.id} name={m.name} size={28} className="ring-2 ring-surface" />
+              ))}
+              {squad.team.length > MAX_FACES ? (
+                <span
+                  aria-hidden="true"
+                  className="inline-flex size-7 items-center justify-center rounded-full bg-surface-2 text-[11.5px] font-semibold text-ink-2 ring-2 ring-surface"
+                >
+                  +{squad.team.length - MAX_FACES}
+                </span>
+              ) : null}
+            </div>
+          ) : (
+            <span className="text-[13px] text-ink-3">No one yet</span>
           )}
           {/* Nine cards on the board means nine of this link, so the team's
               name goes in the name -- "Open" alone is WCAG 2.4.4. */}
           <Link
             href={href}
             aria-label={`Open ${squad.title}`}
-            className="ml-auto inline-flex shrink-0 items-center gap-1 text-[13.5px] font-medium text-accent underline-offset-2 hover:underline"
+            className="ml-auto inline-flex h-9 shrink-0 items-center gap-1 rounded-full bg-ink px-3.5 text-[13px] font-medium text-white transition-colors hover:bg-ink/85"
           >
             Open
             <ArrowUpRight aria-hidden="true" size={14} weight="bold" />
