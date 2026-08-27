@@ -157,8 +157,18 @@ export function SquadCard({
         ) : null}
 
         {gain ? (
-          <p className="mt-2.5 text-[13.5px] font-medium text-accent">
-            +{(gain.delta * 100).toFixed(1)}%<span className="sr-only"> to their team score</span>
+          // Marginal gain is signed: a sixth body on a team that needs
+          // nothing costs overlap. Rendering it as "+-5.4%" was the one place
+          // the card contradicted the model it is reporting.
+          <p
+            className={cn(
+              'mt-2.5 text-[13.5px] font-medium',
+              gain.delta >= 0 ? 'text-accent' : 'text-ink-3',
+            )}
+          >
+            {gain.delta >= 0 ? '+' : '−'}
+            {Math.abs(gain.delta * 100).toFixed(1)}%
+            <span className="sr-only"> to their team score</span>
             {role ? (
               <span className="font-normal text-ink-2"> if you take {labelFor(role)}</span>
             ) : null}

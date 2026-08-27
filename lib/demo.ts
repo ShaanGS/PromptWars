@@ -1,4 +1,5 @@
 import { cache } from 'react'
+import { cookies } from 'next/headers'
 import { createServiceClient } from '@/lib/supabase'
 import type { AvailabilityWindow } from '@/lib/engine'
 
@@ -13,6 +14,15 @@ import type { AvailabilityWindow } from '@/lib/engine'
  * after every reseed.
  */
 export const DEMO_PROFILE_HANDLE = 'aarav'
+
+/**
+ * Where "you" is remembered after onboarding creates a profile.
+ *
+ * A cookie rather than a session because there is no auth (see SECURITY.md),
+ * and per-visitor rather than global because two people opening the demo on
+ * two phones must not become the same person.
+ */
+export const GUILD_HANDLE_COOKIE = 'guild-handle'
 
 export type DemoSkill = {
   skill: string
@@ -51,11 +61,28 @@ const COLUMNS =
 export const getDemoProfile = cache(async function getDemoProfile(): Promise<DemoProfile | null> {
   try {
     const db = createServiceClient()
-    const { data, error } = await db
+
+    // Whoever onboarding last created on this device, falling back to the
+    // seeded identity. Reading the cookie is what makes the rankings answer
+    // to the person asking rather than to a constant.
+    const jar = await cookies()
+    const handle = jar.get(GUILD_HANDLE_COOKIE)?.value || DEMO_PROFILE_HANDLE
+
+    let { data, error } = await db
       .from('profiles')
       .select(COLUMNS)
-      .eq('handle', DEMO_PROFILE_HANDLE)
+      .eq('handle', handle)
       .maybeSingle()
+
+    // A cookie can outlive the row it names -- a reseed drops user profiles.
+    // Falling back beats showing an empty shell to somebody who onboarded.
+    if ((error || !data) && handle !== DEMO_PROFILE_HANDLE) {
+      ;({ data, error } = await db
+        .from('profiles')
+        .select(COLUMNS)
+        .eq('handle', DEMO_PROFILE_HANDLE)
+        .maybeSingle())
+    }
 
     if (error || !data) return null
 

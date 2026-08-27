@@ -3,7 +3,13 @@ import Link from 'next/link'
 import { Sparkle, UsersThree } from '@phosphor-icons/react/dist/ssr'
 import { createServiceClient } from '@/lib/supabase'
 import { getDemoProfile } from '@/lib/demo'
-import { gapFeed, type AvailabilityWindow, type Member, type Requirement } from '@/lib/engine'
+import {
+  gapFeed,
+  marginalGain,
+  type AvailabilityWindow,
+  type Member,
+  type Requirement,
+} from '@/lib/engine'
 import { Page, PageHeader } from '@/components/shell/page-header'
 import { SectionHeading } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/bits'
@@ -175,10 +181,28 @@ export default async function TeamsPage() {
         .filter((entry) => Boolean(entry.squad))
     : []
 
+  // gapFeed keeps only positive gains, which is right for a recommendation
+  // and wrong for an empty screen: somebody who has just created a profile
+  // and would not yet improve any squad saw the whole rail disappear, which
+  // reads as the feature being broken rather than as the model's answer.
+  // The fallback shows the same squads ranked the same way and says plainly
+  // that the number is not an endorsement.
+  const closest =
+    me && forYou.length === 0
+      ? squads
+          .filter((s) => !s.team.some((m) => m.id === me.id))
+          .map((squad) => ({ squad, gain: marginalGain(squad.team, squad.reqs, me) }))
+          .sort((a, b) => b.gain.delta - a.gain.delta)
+          .slice(0, GAP_FEED_LIMIT)
+      : []
+
+  const rail = forYou.length ? forYou : closest
+  const railIsFallback = forYou.length === 0 && closest.length > 0
+
   // The rail and the grid used to render the same squad twice, in different
   // pastels, because the tone was keyed on grid position. Showing it once
   // means the rail is a promotion out of the list rather than a copy of it.
-  const railIds = new Set(forYou.map((entry) => entry.squad.id))
+  const railIds = new Set(rail.map((entry) => entry.squad.id))
   const rest = squads.filter((s) => !railIds.has(s.id))
 
   return (
@@ -195,17 +219,19 @@ export default async function TeamsPage() {
         }
       />
 
-      {forYou.length ? (
+      {rail.length ? (
         <section className="mt-8">
           <SectionHeading
             icon={<Sparkle aria-hidden="true" weight="duotone" />}
-            title="Squads looking for you"
-            aside={`Ranked by what you'd add`}
+            title={railIsFallback ? 'Closest to what you bring' : 'Squads looking for you'}
+            aside={
+              railIsFallback ? 'None would improve yet — here is why' : `Ranked by what you'd add`
+            }
           />
           {/* A ranked run of cards is a list, so a screen reader gets the count
               and "3 of 4" while arrowing through it. */}
           <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {forYou.map((entry) => (
+            {rail.map((entry) => (
               <li key={entry.squad.id}>
                 <SquadCard
                   squad={entry.squad}
@@ -220,7 +246,7 @@ export default async function TeamsPage() {
       <section className="mt-8">
         <SectionHeading
           icon={<UsersThree aria-hidden="true" weight="duotone" />}
-          title={forYou.length ? 'Other squads' : 'All squads'}
+          title={rail.length ? 'Other squads' : 'All squads'}
           aside={rest.length ? `${rest.length} open` : undefined}
         />
         {squads.length === 0 ? (

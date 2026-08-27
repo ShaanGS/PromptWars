@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardTitle } from '@/components/ui/card'
 import { FormNote } from '@/components/ui/field'
 import { TagGrid, PrefsForm } from './interest-picker'
-import { updateInterests } from '@/app/(app)/welcome/actions'
+import { updateInterests } from '@/app/(app)/interests/actions'
 
 /** /interests: the two onboarding controls on one page, with a Save. */
 export function InterestsEditor({

@@ -13,6 +13,10 @@
  */
 
 export type OnboardingDraft = {
+  /** `profiles.dept` is NOT NULL, and it is what every card prints under a
+   *  name, so a blank one is both a failed insert and an empty card. */
+  dept: string
+  year: number
   skills: string[]
   days: 'weekdays' | 'weekends' | 'both'
   hoursPerWeek: number
@@ -25,6 +29,8 @@ export const ONBOARDING_STEPS = ['skills', 'availability', 'experience'] as cons
 export type OnboardingStep = (typeof ONBOARDING_STEPS)[number]
 
 export const EMPTY_DRAFT: OnboardingDraft = {
+  dept: '',
+  year: 3,
   skills: [],
   days: 'both',
   hoursPerWeek: 10,

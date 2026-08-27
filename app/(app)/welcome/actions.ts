@@ -1,73 +1,108 @@
 'use server'
 
-import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
-import { getSessionUser } from '@/lib/auth/server'
-import { saveInterests } from '@/lib/interests'
 import { createServiceClient } from '@/lib/supabase'
-import type { InterestPrefs } from '@/config/interest-tags'
-
-export type OnboardingResult = { ok: true } | { ok: false; message: string }
+import { GUILD_HANDLE_COOKIE } from '@/lib/demo'
+import {
+  toAvailabilityWindows,
+  validateProfileDraft,
+  type FieldError,
+  type ProfileDraft,
+} from '@/lib/onboarding/draft'
 
 /**
- * Save everything from the wizard in one go, mark the user onboarded, and
- * send them to their feed. Seed taps are written as 'interested' so they
- * show up in Saved and on the calendar from minute one.
+ * Onboarding's write.
+ *
+ * Guild used to rank a fixed pool against a hard-coded identity, which made
+ * the strongest thing about it -- that the ranking answers to WHO is asking
+ * -- impossible to show. Creating a profile puts a real row in the pool, and
+ * every surface re-ranks against it immediately: the board's "squads looking
+ * for you", the directory's Guild Score, the marginal gain beside your name
+ * in a sandbox.
+ *
+ * It does not disturb what is already on screen. `marginalGain(c)` is
+ * `score(team ∪ {c}) − score(team)`, which reads only the roster and the one
+ * candidate, so an extra person in the pool cannot move anybody else's delta.
+ * The Guild Score's scarcity term does read the pool, so the directory's
+ * numbers shift by the one profile's worth of supply -- which is the point.
  */
-export async function completeOnboarding(input: {
-  tags: string[]
-  prefs: InterestPrefs
-  seedEventIds: string[]
-}): Promise<OnboardingResult | void> {
-  const user = await getSessionUser()
-  if (!user) redirect('/login')
-  if (!Array.isArray(input.tags) || input.tags.length === 0) {
-    return { ok: false, message: 'Pick at least one interest.' }
-  }
 
-  try {
-    const seeds = (input.seedEventIds ?? []).slice(0, 12)
-    await saveInterests(user.id, {
-      tags: input.tags,
-      prefs: input.prefs ?? {},
-      seedEventIds: seeds,
-      complete: true,
-    })
-    if (seeds.length) {
-      const db = createServiceClient()
-      await db.from('user_event_actions').upsert(
-        seeds.map((event_id) => ({
-          user_id: user.id,
-          event_id,
-          state: 'interested',
-          updated_at: new Date().toISOString(),
-        })),
-        { onConflict: 'user_id,event_id' },
-      )
-    }
-  } catch (err) {
-    return { ok: false, message: err instanceof Error ? err.message : 'Could not save.' }
-  }
+export type CreateProfileResult = { ok: true; handle: string } | { ok: false; errors: FieldError[] }
 
-  revalidatePath('/', 'layout')
-  redirect('/')
+function fail(field: string, message: string): CreateProfileResult {
+  return { ok: false, errors: [{ field, message }] }
 }
 
-/** /interests: same save, no redirect, never un-completes. */
-export async function updateInterests(input: {
-  tags: string[]
-  prefs: InterestPrefs
-}): Promise<OnboardingResult> {
-  const user = await getSessionUser()
-  if (!user) redirect('/login')
-  if (!Array.isArray(input.tags) || input.tags.length === 0) {
-    return { ok: false, message: 'Keep at least one interest.' }
+export async function createProfile(input: ProfileDraft): Promise<CreateProfileResult> {
+  const db = createServiceClient()
+
+  // Handles are the profile's URL, so uniqueness is checked against what is
+  // actually stored rather than assumed from the name.
+  const { data: existing, error: readError } = await db.from('profiles').select('handle')
+  if (readError) {
+    return fail('form', 'Could not reach the pool just now. Try again.')
   }
-  try {
-    await saveInterests(user.id, { tags: input.tags, prefs: input.prefs ?? {}, complete: true })
-  } catch (err) {
-    return { ok: false, message: err instanceof Error ? err.message : 'Could not save.' }
+  const taken = ((existing ?? []) as { handle: string | null }[])
+    .map((r) => r.handle)
+    .filter((h): h is string => Boolean(h))
+
+  const parsed = validateProfileDraft(input, taken)
+  if (!parsed.ok) return { ok: false, errors: parsed.errors }
+  const { name, handle, draft } = parsed.value
+
+  const { data: created, error: insertError } = await db
+    .from('profiles')
+    .insert({
+      handle,
+      name,
+      dept: draft.dept,
+      year: draft.year,
+      experience_level: draft.experienceLevel,
+      commitment_level: draft.commitmentLevel,
+      availability_windows: toAvailabilityWindows(draft),
+      looking_for: 'Hackathon Team',
+      // Seeded rows are the demo's backdrop; this one is a real person who
+      // turned up. `npm run seed` resets toward git and must not claim it.
+      is_seed: false,
+    })
+    .select('id, handle')
+    .maybeSingle()
+
+  if (insertError || !created) {
+    return fail('form', 'Could not save that profile. Try again.')
   }
+
+  const row = created as { id: string; handle: string }
+
+  // A profile with no skills is a person the engine can never rank above
+  // zero, so a failed skills insert undoes the profile rather than leaving
+  // someone permanently unrankable and wondering why.
+  const { error: skillsError } = await db.from('skills').insert(
+    draft.skills.map((skill) => ({
+      profile_id: row.id,
+      skill,
+      // Self-reported and unproved, which the model already prices at
+      // UNVERIFIED_DAMP. Claiming otherwise here would be the one lie the
+      // whole scoring argument cannot survive.
+      proficiency: 0.7,
+      proof_url: null,
+    })),
+  )
+  if (skillsError) {
+    await db.from('profiles').delete().eq('id', row.id)
+    return fail('skills', 'Could not save those skills. Try again.')
+  }
+
+  const jar = await cookies()
+  jar.set(GUILD_HANDLE_COOKIE, row.handle, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365,
+    sameSite: 'lax',
+  })
+
+  // Every Guild surface reads the pool and the identity, so the whole tree is
+  // stale the moment this returns.
   revalidatePath('/', 'layout')
-  return { ok: true }
+  return { ok: true, handle: row.handle }
 }

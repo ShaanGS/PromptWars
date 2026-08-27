@@ -13,6 +13,8 @@ import {
   type OnboardingDraft,
 } from '@/lib/onboarding/steps'
 import { UNVERIFIED_DAMP } from '@/lib/engine'
+import { createProfile } from '@/app/(app)/welcome/actions'
+import { Input, inputClass } from '@/components/ui/field'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -41,17 +43,54 @@ export function GuildWizard({
 }) {
   const router = useRouter()
   const [step, setStep] = React.useState(0)
+  const [name, setName] = React.useState('')
   const [draft, setDraft] = React.useState<OnboardingDraft>(EMPTY_DRAFT)
+  const [error, setError] = React.useState<string | null>(null)
+  const [pending, startTransition] = React.useTransition()
 
   const set = <K extends keyof OnboardingDraft>(key: K, value: OnboardingDraft[K]) =>
     setDraft((d) => ({ ...d, [key]: value }))
 
-  const leave = () => {
-    // A year is long enough that a judge who skips never sees this again on
-    // the same device, and a cookie rather than a database row because there
-    // is nowhere per-visitor to write to.
+  /**
+   * Toggling reads the draft inside the updater, never from the render that
+   * queued it. Two chips tapped inside one frame both computed their next
+   * array from the same stale value, so the second silently discarded the
+   * first -- a skill the person watched themselves select never reached the
+   * profile.
+   */
+  const toggle = (skill: string) =>
+    setDraft((d) => ({ ...d, skills: toggleSkill(d.skills, skill) }))
+
+  const markSeen = () => {
+    // A year is long enough that somebody who skips never sees this again on
+    // the same device, and a cookie rather than a row because a skipper has
+    // no profile to write the fact to.
     document.cookie = 'guild-onboarded=1; path=/; max-age=31536000; samesite=lax'
+  }
+
+  /** Skip: no profile, straight to the board as the seeded identity. */
+  const skip = () => {
+    markSeen()
     router.push('/teams')
+  }
+
+  /**
+   * Finish: writes a real row. The redirect is to the new profile rather
+   * than the board, because the point being made is "that person now
+   * exists and is ranked", and the profile is where the score is shown.
+   */
+  const finish = () => {
+    setError(null)
+    startTransition(async () => {
+      const res = await createProfile({ ...draft, name })
+      if (!res.ok) {
+        setError(res.errors[0]?.message ?? 'Could not save that.')
+        return
+      }
+      markSeen()
+      router.push(`/p/${res.handle}`)
+      router.refresh()
+    })
   }
 
   const current = ONBOARDING_STEPS[clampStep(step)]
@@ -63,7 +102,7 @@ export function GuildWizard({
           rather than buried at the end -- someone who wants the product and
           not the form should never have to guess how to leave. */}
       <div className="flex items-center justify-end">
-        <Button variant="ghost" size="sm" onClick={leave}>
+        <Button variant="ghost" size="sm" onClick={skip} disabled={pending}>
           Skip
         </Button>
       </div>
@@ -94,6 +133,55 @@ export function GuildWizard({
               first few; the rest are what people in the pool already bring.
             </p>
 
+            <div className="mt-5">
+              <label
+                htmlFor="ob-name"
+                className="mb-2 block text-[13px] font-medium uppercase tracking-[0.06em] text-ink-3"
+              >
+                Your name
+              </label>
+              <Input
+                id="ob-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Shaan Guru"
+                autoComplete="name"
+                maxLength={60}
+              />
+
+              <div className="mt-3 grid grid-cols-[minmax(0,1fr)_120px] gap-2">
+                <div>
+                  <label htmlFor="ob-dept" className="sr-only">
+                    Course or department
+                  </label>
+                  <Input
+                    id="ob-dept"
+                    value={draft.dept}
+                    onChange={(e) => set('dept', e.target.value)}
+                    placeholder="CSE"
+                    maxLength={40}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="ob-year" className="sr-only">
+                    Year of study
+                  </label>
+                  <select
+                    id="ob-year"
+                    value={draft.year}
+                    onChange={(e) => set('year', Number(e.target.value))}
+                    className={inputClass}
+                  >
+                    {[1, 2, 3, 4, 5].map((y) => (
+                      <option key={y} value={y}>
+                        Year {y}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-5 flex flex-wrap gap-2">
               {skillVocabulary.map((skill) => {
                 const on = draft.skills.includes(skill)
@@ -102,7 +190,7 @@ export function GuildWizard({
                     key={skill}
                     type="button"
                     aria-pressed={on}
-                    onClick={() => set('skills', toggleSkill(draft.skills, skill))}
+                    onClick={() => toggle(skill)}
                     className={cn(
                       'inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-[14px] font-medium transition-colors',
                       on
@@ -212,14 +300,21 @@ export function GuildWizard({
 
             <Card className="mt-6">
               <p className="text-[13.5px] leading-relaxed text-ink-2">
-                {meName
-                  ? `This demo is read-only, so nothing here is saved. You'll explore as ${meName}, a seeded profile with a full history — that keeps every number on the board reproducible.`
-                  : 'This demo is read-only, so nothing here is saved — that keeps every number on the board reproducible.'}
+                This creates a real profile in the pool. Every open squad is re-scored against it
+                straight away, so the board stops ranking squads in general and starts ranking them
+                by what <em>you</em> would add.
+                {meName ? ` Skip instead and you explore as ${meName}, the seeded profile.` : ''}
               </p>
             </Card>
           </section>
         ) : null}
       </div>
+
+      {error ? (
+        <p role="alert" className="mt-4 text-[13.5px] font-medium text-danger">
+          {error}
+        </p>
+      ) : null}
 
       <div className="mt-8 flex items-center justify-between gap-3 pb-2">
         {step > 0 ? (
@@ -232,15 +327,15 @@ export function GuildWizard({
         )}
 
         {isLastStep(step) ? (
-          <Button variant="accent" size="lg" onClick={leave}>
-            See the Team Board
+          <Button variant="accent" size="lg" onClick={finish} disabled={pending}>
+            {pending ? 'Creating…' : 'Create my profile'}
             <ArrowRight aria-hidden="true" weight="bold" />
           </Button>
         ) : (
           <Button
             variant="accent"
             size="lg"
-            disabled={!canContinue(draft, step)}
+            disabled={!canContinue(draft, step) || (step === 0 && name.trim().length < 2)}
             onClick={() => setStep(step + 1)}
           >
             Continue

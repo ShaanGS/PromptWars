@@ -19,6 +19,14 @@ const db = vi.hoisted(() => {
 
 vi.mock('@/lib/supabase', () => ({ createServiceClient: db.createServiceClient }))
 
+/**
+ * Identity follows a cookie now, so the module reaches for next/headers. The
+ * default is "no cookie set", which is the seeded-identity path these tests
+ * are about; the cookie path is asserted separately below.
+ */
+const jar = vi.hoisted(() => ({ get: vi.fn(() => undefined) }))
+vi.mock('next/headers', () => ({ cookies: async () => jar }))
+
 const { DEMO_PROFILE_HANDLE, getDemoProfile } = await import('./demo')
 
 const row = {
@@ -36,6 +44,7 @@ const row = {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  jar.get.mockReturnValue(undefined)
   db.createServiceClient.mockReturnValue({ from: db.from })
   db.from.mockReturnValue({ select: db.select })
   db.select.mockReturnValue({ eq: db.eq })
@@ -104,5 +113,32 @@ describe('getDemoProfile — the seeded row', () => {
     db.maybeSingle.mockResolvedValue({ data: { ...row, availability_windows: null }, error: null })
     const profile = await getDemoProfile()
     expect(profile?.availability_windows).toEqual([])
+  })
+})
+
+describe('getDemoProfile — whoever onboarding created on this device', () => {
+  it('looks up the handle in the cookie instead of the seeded one', async () => {
+    jar.get.mockReturnValue({ value: 'shaanguru' })
+    db.maybeSingle.mockResolvedValue({ data: { ...row, handle: 'shaanguru' }, error: null })
+
+    const me = await getDemoProfile()
+
+    expect(db.eq).toHaveBeenCalledWith('handle', 'shaanguru')
+    expect(me?.handle).toBe('shaanguru')
+  })
+
+  // A cookie outlives the row it names: reseeding drops created profiles.
+  // Showing the seeded identity beats showing an empty shell.
+  it('falls back to the seeded handle when the cookie names a row that is gone', async () => {
+    jar.get.mockReturnValue({ value: 'ghost' })
+    db.maybeSingle
+      .mockResolvedValueOnce({ data: null, error: null })
+      .mockResolvedValueOnce({ data: row, error: null })
+
+    const me = await getDemoProfile()
+
+    expect(db.eq).toHaveBeenNthCalledWith(1, 'handle', 'ghost')
+    expect(db.eq).toHaveBeenNthCalledWith(2, 'handle', DEMO_PROFILE_HANDLE)
+    expect(me?.handle).toBe(DEMO_PROFILE_HANDLE)
   })
 })
