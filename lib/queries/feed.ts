@@ -91,6 +91,10 @@ export async function getDashboardData(
       .select(EVENT_COLUMNS)
       .eq('status', 'active')
       .in('source_id', sourceFilter)
+      // Closing-soon bypasses applyFilters, so it needs the banner rule of
+      // its own or the one card grid on the feed that skips it shows the
+      // pastel blocks the rest of the app no longer does.
+      .not('image_url', 'is', null)
       .not('registration_deadline', 'is', null)
       .gte('registration_deadline', nowIso)
       .lte('registration_deadline', in7Days)
@@ -113,6 +117,9 @@ export async function getDashboardData(
       .select('*', { count: 'exact', head: true })
       .eq('status', 'active')
       .in('source_id', sourceFilter)
+      // Counts the same population the lists show, or the "Upcoming N" tile
+      // promises rows that browsing cannot reach.
+      .not('image_url', 'is', null)
       .gte('starts_at', nowIso),
     // One round trip for the whole health strip. This used to be two queries
     // per source -- sixteen sequential round trips that dominated page latency.

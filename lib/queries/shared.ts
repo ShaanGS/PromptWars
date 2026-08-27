@@ -97,6 +97,17 @@ export interface EventList {
 export function applyFilters(query: any, filters: Filters, nowIso: string): any {
   let q = query
 
+  // Demo posture, 2026-08-28: a listing with no banner renders as a pastel
+  // date block, and five of those scattered through twenty real banners read
+  // as broken cards rather than as a deliberate fallback. Filtering here
+  // rather than in EventCard keeps the counts honest -- every list selects
+  // with `count: 'exact'` on this same builder, so the "N open entries"
+  // subtitle and the pagination agree with what is on screen. Detail routes
+  // do not pass through here, so an imageless event stays reachable by URL
+  // and a squad pointed at one keeps its working event link. A `manual`
+  // source event (lib/pipeline/manual.ts) has no image and so is hidden too.
+  q = q.not('image_url', 'is', null)
+
   // The relevance floor is skipped when the user explicitly asks to see the
   // low-scoring pile, which is the whole point of keeping those rows.
   if (!filters.showLow) {
