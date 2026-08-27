@@ -302,7 +302,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
             <SectionHeading
               icon={<PuzzlePiece aria-hidden="true" weight="duotone" />}
               title="Skills"
-              aside={claims.length ? `${claims.filter((c) => c.proof_url).length} verified` : null}
+              aside={claims.length ? `${claims.filter((c) => c.proof_url).length} backed` : null}
             />
             {claims.length === 0 ? (
               <p className="text-[14px] text-ink-2">No skills claimed yet.</p>
@@ -319,7 +319,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
                         {s.proof_url ? (
                           <Pill tone="mint" size="sm">
                             <SealCheck aria-hidden="true" weight="fill" />
-                            Verified
+                            Backed
                           </Pill>
                         ) : null}
                       </p>
@@ -338,8 +338,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
                         </a>
                       ) : (
                         <p className="mt-1 text-[13px] text-ink-3">
-                          Unverified — an unproved claim counts {UNVERIFIED_DAMP}× when a squad is
-                          scored.
+                          No link yet — counts {UNVERIFIED_DAMP}× until it is backed by real work.
                         </p>
                       )}
                     </div>

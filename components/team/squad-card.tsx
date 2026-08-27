@@ -66,7 +66,6 @@ export function SquadCard({
 }) {
   const score = scoreTeam(squad.team, squad.reqs)
   const band = readiness(score.base)
-  const pct = Math.round(score.base * 100)
 
   // Coverage comes back one entry per requirement, so the open gaps are just
   // the ones the engine could not fill above the threshold.
@@ -74,6 +73,8 @@ export function SquadCard({
     const entry = score.coverage.find((c) => c.requirementId === r.id)
     return (entry?.coverage ?? 0) < UNMET_THRESHOLD
   })
+
+  const filled = squad.reqs.length - unmet.length
 
   const deadline = squad.deadline ? DateTime.fromISO(squad.deadline, { zone: DEFAULT_TZ }) : null
   // The roster count moved into the stat row below, so this line carries only
@@ -105,19 +106,28 @@ export function SquadCard({
         <span className="truncate text-[12.5px] font-semibold">
           {squad.event ? squad.event.title : 'Project'}
         </span>
-        {/* The dot repeats the band, it never carries it alone: the label and
-            the number say the same thing in text. */}
+        {/* A count, not a percentage. The badge used to print pure coverage
+            ("36") one click away from a screen showing the composite score
+            ("55%") for the same team, with nothing on either explaining the
+            gap. "2 of 5 roles filled" is the same sentence in both places. */}
         <span className="inline-flex h-6 shrink-0 items-center gap-1 rounded-full bg-surface/90 px-2.5 text-[12px] font-medium text-ink">
           <span aria-hidden="true" className={cn('size-1.5 rounded-full', band.dot)} />
-          {band.label}
-          <span className="tabular-nums text-ink-3">{pct}</span>
-          <span className="sr-only">percent of roles covered</span>
+          <span className="tabular-nums">
+            {filled} of {squad.reqs.length}
+          </span>
+          roles filled
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-4">
+        <h3 className="line-clamp-2 text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+          <Link href={href} className="hover:underline underline-offset-2">
+            {squad.title}
+          </Link>
+        </h3>
+
         <div
-          className="flex -space-x-2"
+          className="mt-3 flex -space-x-2"
           role="img"
           aria-label={faceLabel ?? 'Nobody on the team yet'}
         >
@@ -137,24 +147,6 @@ export function SquadCard({
             </span>
           ) : null}
         </div>
-
-        <h3 className="mt-2.5 line-clamp-2 text-[16.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">
-          <Link href={href} className="hover:underline underline-offset-2">
-            {squad.title}
-          </Link>
-        </h3>
-
-        {meta ? (
-          <p className="mt-1.5 flex items-center gap-1.5 text-[13.5px] text-ink-2">
-            <CalendarBlank
-              aria-hidden="true"
-              size={15}
-              weight="bold"
-              className="shrink-0 text-ink-3"
-            />
-            <span className="truncate">{meta}</span>
-          </p>
-        ) : null}
 
         {gain ? (
           // Marginal gain is signed: a sixth body on a team that needs
@@ -195,37 +187,32 @@ export function SquadCard({
           </div>
         ) : null}
 
-        <div className="mt-auto pt-4">
-          <dl className="grid grid-cols-3 gap-2 border-t border-line pt-3">
-            <Stat label="Roles" value={squad.reqs.length} />
-            <Stat label="Open" value={unmet.length} />
-            <Stat label="Joined" value={squad.team.length} />
-          </dl>
-          {/* Nine cards on the board means nine of this link, so the squad's
+        <div className="mt-auto flex items-center gap-2 border-t border-line pt-3">
+          {meta ? (
+            <p className="flex min-w-0 items-center gap-1.5 text-[13px] text-ink-2">
+              <CalendarBlank
+                aria-hidden="true"
+                size={14}
+                weight="bold"
+                className="shrink-0 text-ink-3"
+              />
+              <span className="truncate">{meta}</span>
+            </p>
+          ) : (
+            <span className="text-[13px] text-ink-3">{squad.team.length} joined</span>
+          )}
+          {/* Nine cards on the board means nine of this link, so the team's
               name goes in the name -- "Open" alone is WCAG 2.4.4. */}
           <Link
             href={href}
             aria-label={`Open ${squad.title}`}
-            className="mt-3 inline-flex h-10 w-full items-center justify-center gap-1 rounded-ctl bg-ink px-3.5 text-[13.5px] font-medium text-white transition-colors hover:bg-ink/85"
+            className="ml-auto inline-flex shrink-0 items-center gap-1 text-[13.5px] font-medium text-accent underline-offset-2 hover:underline"
           >
-            Open team
+            Open
             <ArrowUpRight aria-hidden="true" size={14} weight="bold" />
           </Link>
         </div>
       </div>
     </article>
-  )
-}
-
-function Stat({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="min-w-0">
-      <dt className="truncate text-[10.5px] font-medium uppercase tracking-[0.07em] text-ink-3">
-        {label}
-      </dt>
-      <dd className="mt-1 text-[18px] font-semibold leading-none tracking-[-0.02em] tabular-nums text-ink">
-        {value}
-      </dd>
-    </div>
   )
 }

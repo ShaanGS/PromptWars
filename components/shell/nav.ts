@@ -36,10 +36,10 @@ export const NAV_PRIMARY: NavItem[] = [
   // Guild is a team-formation platform: the two supply-side surfaces come
   // first and own the root. The event corpus below them is what a squad forms
   // around -- supporting material, not the product.
-  { href: '/teams', label: 'Team Board', icon: Handshake, exact: true, tab: true },
+  { href: '/teams', label: 'Teams', icon: Handshake, exact: true, tab: true },
   { href: '/people', label: 'People', icon: UsersThree, tab: true },
   { href: '/hackathons', label: 'Hackathons', icon: Trophy, tab: true },
-  { href: '/events', label: 'All events', icon: ListBullets },
+  { href: '/events', label: 'Events', icon: ListBullets },
   { href: '/feed', label: 'Feed', icon: House },
   { href: '/calendar', label: 'Calendar', icon: CalendarBlank },
   { href: '/saved', label: 'Saved', icon: BookmarkSimple },

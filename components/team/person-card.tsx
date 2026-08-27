@@ -85,7 +85,7 @@ export function PersonCard({
         <p className="mt-0.5 truncate text-[13.5px] text-ink-2">{meta}</p>
 
         <dl className="mt-3.5 grid grid-cols-3 gap-2 border-y border-line py-3">
-          <Stat label="Guild score" value={score} />
+          <Stat label="Guild Score" value={score} />
           <Stat label="Skills" value={claims.length} />
           <Stat label="Backed" value={backed} />
         </dl>

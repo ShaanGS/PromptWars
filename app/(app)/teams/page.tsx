@@ -209,12 +209,15 @@ export default async function TeamsPage() {
     // role="main" rather than <main>: Page is the shared shell wrapper and is
     // shared with Olvable's screens, so the landmark is declared per page.
     <Page role="main">
+      {/* Named, when we know the name. The board's whole claim is that the
+          ranking answers to who is asking, so greeting the person it is
+          ranking for is the claim stated rather than argued. */}
       <PageHeader
-        title="Team Board"
-        subtitle="Find your next team. Or post what you need."
+        title={demo ? `Welcome back, ${demo.name.split(' ')[0]}.` : 'Teams'}
+        subtitle="Here's who's building right now, and where you can jump in."
         actions={
           <Link href="/teams/new" className={buttonVariants({ variant: 'primary' })}>
-            Post a request
+            Start a team
           </Link>
         }
       />
@@ -256,7 +259,7 @@ export default async function TeamsPage() {
             body="Nobody has posted what they need yet. Be the first — say what you're building and which role is missing."
             action={
               <Link href="/teams/new" className={buttonVariants({ variant: 'primary' })}>
-                Post a request
+                Start a team
               </Link>
             }
           />
