@@ -144,7 +144,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
     {
       label: 'Scarcity',
       value: gs.scarcity,
-      hint: 'How short the open squads are of what you have.',
+      hint: 'How short the open teams are of what you have.',
     },
   ]
 
@@ -395,7 +395,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
             <section className={CARD}>
               <SectionHeading
                 icon={<Target aria-hidden="true" weight="duotone" />}
-                title="Squads that need you"
+                title="Teams that need you"
               />
               <ul className="-mx-2">
                 {gaps.map(({ projectId, gain }) => {
@@ -410,14 +410,14 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
                     <li key={projectId}>
                       <Link
                         href={`/squad/${projectId}`}
-                        aria-label={`${project?.title ?? 'Untitled squad'} — joining adds ${(
+                        aria-label={`${project?.title ?? 'Untitled team'} — joining adds ${(
                           gain.delta * 100
                         ).toFixed(1)}% to their team score`}
                         className="flex items-start gap-3 rounded-ctl px-2 py-2.5 transition-colors hover:bg-surface-2"
                       >
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-[14.5px] font-medium text-ink">
-                            {project?.title ?? 'Untitled squad'}
+                            {project?.title ?? 'Untitled team'}
                           </p>
                           <p className="mt-0.5 truncate text-[13px] text-ink-2">
                             {filled.length
@@ -447,7 +447,7 @@ function rareSentence(r: { skill: string; demand: number; supply: number }): str
   const asks = r.demand === 1 ? 'asks' : 'ask'
   const supply =
     r.supply === 0
-      ? 'nobody in the pool can cover it'
-      : `${r.supply === 1 ? '1 person' : `${r.supply} people`} in the pool can cover it`
+      ? 'nobody here can cover it'
+      : `${r.supply === 1 ? '1 person' : `${r.supply} people`} can cover it`
   return `${roles} ${asks} for ${r.skill}, and ${supply}.`
 }

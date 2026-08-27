@@ -119,7 +119,7 @@ export function SquadCard({
         <div
           className="flex -space-x-2"
           role="img"
-          aria-label={faceLabel ?? 'Nobody on the roster yet'}
+          aria-label={faceLabel ?? 'Nobody on the team yet'}
         >
           {faces.length ? (
             faces.map((m) => (
@@ -199,7 +199,7 @@ export function SquadCard({
           <dl className="grid grid-cols-3 gap-2 border-t border-line pt-3">
             <Stat label="Roles" value={squad.reqs.length} />
             <Stat label="Open" value={unmet.length} />
-            <Stat label="On team" value={squad.team.length} />
+            <Stat label="Joined" value={squad.team.length} />
           </dl>
           {/* Nine cards on the board means nine of this link, so the squad's
               name goes in the name -- "Open" alone is WCAG 2.4.4. */}
@@ -208,7 +208,7 @@ export function SquadCard({
             aria-label={`Open ${squad.title}`}
             className="mt-3 inline-flex h-10 w-full items-center justify-center gap-1 rounded-ctl bg-ink px-3.5 text-[13.5px] font-medium text-white transition-colors hover:bg-ink/85"
           >
-            Open squad
+            Open team
             <ArrowUpRight aria-hidden="true" size={14} weight="bold" />
           </Link>
         </div>

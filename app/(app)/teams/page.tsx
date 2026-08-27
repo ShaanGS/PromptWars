@@ -223,7 +223,7 @@ export default async function TeamsPage() {
         <section className="mt-8">
           <SectionHeading
             icon={<Sparkle aria-hidden="true" weight="duotone" />}
-            title={railIsFallback ? 'Closest to what you bring' : 'Squads looking for you'}
+            title={railIsFallback ? 'Closest to what you bring' : 'Teams that need you'}
             aside={
               railIsFallback ? 'None would improve yet — here is why' : `Ranked by what you'd add`
             }
@@ -246,14 +246,14 @@ export default async function TeamsPage() {
       <section className="mt-8">
         <SectionHeading
           icon={<UsersThree aria-hidden="true" weight="duotone" />}
-          title={rail.length ? 'Other squads' : 'All squads'}
-          aside={rest.length ? `${rest.length} open` : undefined}
+          title={rail.length ? 'Other teams' : 'All teams'}
+          aside={rest.length ? `${rest.length} looking` : undefined}
         />
         {squads.length === 0 ? (
           <EmptyState
             icon={<UsersThree aria-hidden="true" weight="duotone" />}
-            title="No squads yet"
-            body="Nobody has posted what they need. Be the first — say what you're building and which role is missing."
+            title="No teams yet"
+            body="Nobody has posted what they need yet. Be the first — say what you're building and which role is missing."
             action={
               <Link href="/teams/new" className={buttonVariants({ variant: 'primary' })}>
                 Post a request

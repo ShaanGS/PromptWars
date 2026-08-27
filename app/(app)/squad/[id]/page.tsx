@@ -176,7 +176,7 @@ export default async function SquadPage({ params }: { params: Promise<{ id: stri
               </Pill>
             </Link>
           ) : (
-            'Squad'
+            'Team'
           )
         }
         title={project.title}
@@ -196,7 +196,7 @@ export default async function SquadPage({ params }: { params: Promise<{ id: stri
           pill reading "2 on the roster" above a five-person team is the one
           number on this screen that contradicts the demo. The sandbox owns
           the roster and shows it live. */}
-      <ul aria-label="Squad at a glance" className="mt-4 flex flex-wrap items-center gap-1.5">
+      <ul aria-label="Team at a glance" className="mt-4 flex flex-wrap items-center gap-1.5">
         <li>
           <Pill tone="neutral" size="sm">
             {requirements.length} role{requirements.length === 1 ? '' : 's'}
@@ -204,7 +204,7 @@ export default async function SquadPage({ params }: { params: Promise<{ id: stri
         </li>
         <li>
           <Pill tone="neutral" size="sm">
-            {pool.length} in the pool
+            {pool.length} people
           </Pill>
         </li>
       </ul>

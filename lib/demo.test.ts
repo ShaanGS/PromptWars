@@ -24,7 +24,9 @@ vi.mock('@/lib/supabase', () => ({ createServiceClient: db.createServiceClient }
  * default is "no cookie set", which is the seeded-identity path these tests
  * are about; the cookie path is asserted separately below.
  */
-const jar = vi.hoisted(() => ({ get: vi.fn(() => undefined) }))
+const jar = vi.hoisted(() => ({
+  get: vi.fn<(name: string) => { value: string } | undefined>(() => undefined),
+}))
 vi.mock('next/headers', () => ({ cookies: async () => jar }))
 
 const { DEMO_PROFILE_HANDLE, getDemoProfile } = await import('./demo')

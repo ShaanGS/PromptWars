@@ -195,7 +195,7 @@ export function NewSquadForm({
           htmlFor="sq-event"
           optional
           error={errors.eventId}
-          hint="Squads aimed at an event show its name on the board."
+          hint="Teams aimed at an event show its name on the board."
         >
           <select
             id="sq-event"
@@ -399,8 +399,8 @@ function Supply({ skill, known, clearing }: { skill: string; known: boolean; cle
     return (
       <p className="mt-3 flex items-center gap-1.5 text-[13px] text-warning-ink">
         <WarningCircle aria-hidden="true" size={15} weight="bold" />
-        Nobody in the pool claims <span className="font-medium">{skill}</span> yet — this slot will
-        stay open.
+        Nobody here claims <span className="font-medium">{skill}</span> yet — this slot will stay
+        open.
       </p>
     )
   }

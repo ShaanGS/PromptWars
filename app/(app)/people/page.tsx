@@ -64,7 +64,7 @@ export default async function PeoplePage() {
     <Page role="main">
       <PageHeader
         title="People"
-        subtitle="Ranked by Guild Score: proof you can show, breadth of skill, and how short the open squads are of what you have."
+        subtitle="Ranked by Guild Score: proof you can show, breadth of skill, and how many open teams need what you have."
       />
 
       {ranked.length === 0 ? (

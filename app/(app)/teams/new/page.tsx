@@ -70,7 +70,7 @@ export default async function NewSquadPage({
       <PageHeader
         eyebrow="Team Board"
         title={aimedAt ? `Post a team for ${aimedAt.title}` : 'Post a request'}
-        subtitle="Describe what the project needs, and Guild ranks every person in the pool by what they would add to it."
+        subtitle="Say what the project needs. Guild ranks everyone by how much they would add to your team."
       />
       <NewSquadForm events={events} supply={supply} initialEventId={preselected} />
     </Page>
