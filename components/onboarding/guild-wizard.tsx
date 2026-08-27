@@ -17,7 +17,6 @@ import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Segmented } from '@/components/ui/segmented'
-import { Wordmark } from '@/components/brand-mark'
 
 /**
  * Guild's onboarding.
@@ -58,12 +57,12 @@ export function GuildWizard({
   const current = ONBOARDING_STEPS[clampStep(step)]
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-[720px] flex-col px-4 py-8 sm:py-12">
-      <div className="flex items-center justify-between gap-4">
-        <Wordmark size="sm" />
-        {/* Skip is present on every step, not buried at the end. Someone who
-            wants the product rather than the form should never have to guess
-            how to leave. */}
+    <div className="mx-auto flex min-h-dvh w-full max-w-[720px] flex-col px-4 pb-28 pt-8 sm:pt-12 lg:pb-16">
+      {/* No wordmark here: the shell already renders one, in the sidebar on
+          desktop and the top bar on a phone. Skip is present on every step
+          rather than buried at the end -- someone who wants the product and
+          not the form should never have to guess how to leave. */}
+      <div className="flex items-center justify-end">
         <Button variant="ghost" size="sm" onClick={leave}>
           Skip
         </Button>

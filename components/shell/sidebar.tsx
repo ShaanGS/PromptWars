@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { Wordmark } from '@/components/brand-mark'
 import { Avatar } from '@/components/ui/bits'
 import { cn } from '@/lib/utils'
-import { NAV_ADMIN, NAV_PRIMARY, isActive, type NavItem } from './nav'
+import { NAV_ADMIN, NAV_PRIMARY, NAV_SETUP, isActive, type NavItem } from './nav'
 
 /** Who the viewer is acting as, from the seeded Guild profile. */
 export type SidebarIdentity = { name: string; handle: string; dept: string | null }
@@ -35,6 +35,7 @@ export function Sidebar({ me, admin }: { me: SidebarIdentity | null; admin: bool
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         <Group items={NAV_PRIMARY} pathname={pathname} />
+        <Group title="Setup" items={NAV_SETUP} pathname={pathname} />
         {admin ? <Group title="Admin" items={NAV_ADMIN} pathname={pathname} /> : null}
       </nav>
 

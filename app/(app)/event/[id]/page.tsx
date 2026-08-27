@@ -12,11 +12,13 @@ import {
   HourglassHigh,
   MapPin,
   Ticket,
+  UsersThree,
   Warning,
 } from '@phosphor-icons/react/dist/ssr'
 import { getSessionUser } from '@/lib/auth/server'
 import { getEventById } from '@/lib/queries'
 import { getInterests } from '@/lib/interests'
+import { squadsForEvent } from '@/lib/team/squads-for-event'
 import { fitFor } from '@/lib/ranking'
 import { formatRange, googleCalendarUrl, relativeDeadline } from '@/lib/dates/format'
 import { DEFAULT_TZ } from '@/lib/dates/types'
@@ -28,6 +30,7 @@ import { Page } from '@/components/shell/page-header'
 import { SOURCE_LABELS, categoryOf } from '@/components/event-card'
 import { EventImage } from '@/components/feed/event-image'
 import { CardActions } from '@/components/card-actions'
+import { SquadCard } from '@/components/team/squad-card'
 import { ShareButton } from '@/components/share/share-button'
 import { Pill } from '@/components/ui/pill'
 import { DataRow, toneClass } from '@/components/ui/bits'
@@ -56,6 +59,7 @@ export default async function EventPage({ params }: { params: Promise<{ id: stri
   if (!detail) notFound()
 
   const { event, alsoListedOn } = detail
+  const squads = await squadsForEvent(event.id)
   const title = displayTitle(event.title)
   const source = SOURCE_LABELS[event.source_id] ?? event.source_id
   const band = bandFor(event.relevance_score)
@@ -279,7 +283,43 @@ export default async function EventPage({ params }: { params: Promise<{ id: stri
           </div>
         </aside>
 
+        {/* The loop the product exists to close: a listing is not just
+            something to read, it is something to form a team for. Squads
+            already aiming at this event are the social proof; the button is
+            the way in, and it arrives at the form with the event chosen. */}
         <section className="min-w-0 lg:col-start-1 lg:row-start-2">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-ink">
+              {squads.length
+                ? `${squads.length} team${squads.length === 1 ? '' : 's'} forming here`
+                : 'No teams yet'}
+            </h2>
+            <Link
+              href={`/teams/new?event=${event.id}`}
+              className={buttonVariants({ variant: 'primary', size: 'sm' })}
+            >
+              <UsersThree weight="bold" />
+              Post a team for this
+            </Link>
+          </div>
+
+          {squads.length ? (
+            <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+              {squads.map((squad) => (
+                <li key={squad.id}>
+                  <SquadCard squad={squad} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 text-[15px] text-ink-3">
+              Nobody has posted what they need for this one. Say what you are building and which
+              role is missing, and Guild ranks the pool against it.
+            </p>
+          )}
+        </section>
+
+        <section className="min-w-0 lg:col-start-1 lg:row-start-3">
           <h2 className="text-[17px] font-semibold tracking-[-0.01em] text-ink">About</h2>
           {about ? (
             <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{about}</p>

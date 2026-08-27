@@ -23,8 +23,13 @@ type SkillRow = { skill: string; proficiency: number | string | null; proof_url:
  * and the browser runs `effectiveProficiency` over them, the same function the
  * server ran to rank the board.
  */
-export default async function NewSquadPage() {
+export default async function NewSquadPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ event?: string }>
+}) {
   await connection()
+  const { event: requestedEventId } = await searchParams
   const db = createServiceClient()
 
   const [eventsRes, skillsRes] = await Promise.all([
@@ -53,14 +58,21 @@ export default async function NewSquadPage() {
     list.push({ proficiency: proficiency as number, verified: Boolean(row.proof_url) })
   }
 
+  // Arriving from a hackathon's own page preselects it. Checked against the
+  // list the form was given rather than trusted: an id from the URL that is
+  // not an option would select nothing and silently drop the whole reason
+  // someone clicked through.
+  const preselected = events.some((e) => e.id === requestedEventId) ? requestedEventId : ''
+  const aimedAt = preselected ? events.find((e) => e.id === preselected) : null
+
   return (
     <Page>
       <PageHeader
         eyebrow="Team Board"
-        title="Post a request"
+        title={aimedAt ? `Post a team for ${aimedAt.title}` : 'Post a request'}
         subtitle="Describe what the project needs, and Guild ranks every person in the pool by what they would add to it."
       />
-      <NewSquadForm events={events} supply={supply} />
+      <NewSquadForm events={events} supply={supply} initialEventId={preselected} />
     </Page>
   )
 }

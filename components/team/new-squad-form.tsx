@@ -55,13 +55,22 @@ const WEIGHTS = [
 
 const BLANK: RequirementDraft = { skill: '', roleLabel: '', weight: '2', minProficiency: '0.4' }
 
-export function NewSquadForm({ events, supply }: { events: EventOption[]; supply: SkillSupply }) {
+export function NewSquadForm({
+  events,
+  supply,
+  initialEventId = '',
+}: {
+  events: EventOption[]
+  supply: SkillSupply
+  /** Preselected when the form is opened from a hackathon's own page. */
+  initialEventId?: string
+}) {
   const router = useRouter()
   const [pending, start] = useTransition()
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
-  const [eventId, setEventId] = useState('')
+  const [eventId, setEventId] = useState(initialEventId)
   const [kind, setKind] = useState<string>('hackathon')
   const [effort, setEffort] = useState<string>('10-15 hrs/week')
   const [rows, setRows] = useState<RequirementDraft[]>([{ ...BLANK }])
