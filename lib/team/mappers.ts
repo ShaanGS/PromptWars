@@ -17,6 +17,9 @@ export type ProfileRow = {
   dept: string | null
   year: number | null
   bio: string | null
+  /** Free text from the seed ("Hackathon Team", "Research Project"). The
+   *  statement's "interested" noun; the engine does not score it. */
+  looking_for?: string | null
   experience_level: number
   commitment_level: number
   availability_windows: unknown
@@ -39,7 +42,7 @@ export type RequirementRow = {
 }
 
 export const PROFILE_COLUMNS =
-  'id, handle, name, dept, year, bio, experience_level, commitment_level, availability_windows'
+  'id, handle, name, dept, year, bio, looking_for, experience_level, commitment_level, availability_windows'
 export const SKILL_COLUMNS = 'profile_id, skill, proficiency, proof_url'
 export const REQUIREMENT_COLUMNS = 'id, project_id, skill, role_label, weight, min_proficiency'
 

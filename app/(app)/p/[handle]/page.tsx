@@ -4,6 +4,7 @@ import Link from 'next/link'
 import {
   ArrowLeft,
   ArrowSquareOut,
+  Clock,
   Handshake,
   Medal,
   PuzzlePiece,
@@ -26,10 +27,12 @@ import {
   groupSkills,
   toMember,
   toRequirement,
+  toWindows,
   type ProfileRow,
   type RequirementRow,
   type SkillRow,
 } from '@/lib/team/mappers'
+import { summariseAvailability } from '@/lib/team/availability-summary'
 import { Page } from '@/components/shell/page-header'
 import { SectionHeading } from '@/components/ui/card'
 import { Avatar } from '@/components/ui/bits'
@@ -127,6 +130,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
     .filter(Boolean)
     .join(' · ')
 
+  const availability = summariseAvailability(toWindows(me.availability_windows))
+
   const bars = [
     {
       label: 'Credibility',
@@ -168,6 +173,40 @@ export default async function ProfilePage({ params }: { params: Promise<{ handle
         {me.bio ? (
           <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-2">{me.bio}</p>
         ) : null}
+
+        {/* The problem statement asks for matching on skills, interests,
+            availability, experience and commitment. Four of those were
+            seeded on every profile and rendered nowhere, so the screen a
+            human uses to decide "could I work with this person" answered
+            only the first. */}
+        <ul className="mt-4 flex flex-wrap items-center gap-1.5">
+          {me.looking_for ? (
+            <li>
+              <Pill tone="lilac" size="sm">
+                <Target aria-hidden="true" weight="duotone" />
+                Looking for {me.looking_for.toLowerCase()}
+              </Pill>
+            </li>
+          ) : null}
+          {availability ? (
+            <li>
+              <Pill tone="neutral" size="sm">
+                <Clock aria-hidden="true" weight="duotone" />
+                {availability}
+              </Pill>
+            </li>
+          ) : null}
+          <li>
+            <Pill tone="neutral" size="sm">
+              Experience {me.experience_level ?? 3}/5
+            </Pill>
+          </li>
+          <li>
+            <Pill tone="neutral" size="sm">
+              Commitment {me.commitment_level ?? 3}/5
+            </Pill>
+          </li>
+        </ul>
       </header>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
