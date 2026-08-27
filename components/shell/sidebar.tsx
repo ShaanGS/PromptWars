@@ -2,18 +2,20 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { SignOut } from '@phosphor-icons/react'
 import { Wordmark } from '@/components/brand-mark'
 import { Avatar } from '@/components/ui/bits'
 import { cn } from '@/lib/utils'
-import { NAV_ADMIN, NAV_PRIMARY, NAV_SETUP, isActive, type NavItem } from './nav'
+import { NAV_ADMIN, NAV_PRIMARY, isActive, type NavItem } from './nav'
+
+/** Who the viewer is acting as, from the seeded Guild profile. */
+export type SidebarIdentity = { name: string; handle: string; dept: string | null }
 
 /**
  * Desktop sidebar. Light, on the canvas, separated by a hairline -- the
  * three-column references all read as one surface, and that is what makes
  * a feed of white cards look composed rather than floating.
  */
-export function Sidebar({ email, admin }: { email: string; admin: boolean }) {
+export function Sidebar({ me, admin }: { me: SidebarIdentity | null; admin: boolean }) {
   const pathname = usePathname()
   return (
     <aside className="sticky top-0 hidden h-dvh w-[248px] shrink-0 flex-col border-r border-line bg-surface lg:flex">
@@ -33,29 +35,30 @@ export function Sidebar({ email, admin }: { email: string; admin: boolean }) {
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         <Group items={NAV_PRIMARY} pathname={pathname} />
-        <Group title="Setup" items={NAV_SETUP} pathname={pathname} />
         {admin ? <Group title="Admin" items={NAV_ADMIN} pathname={pathname} /> : null}
       </nav>
 
-      <div className="border-t border-line p-3">
-        <div className="flex items-center gap-3 rounded-ctl px-2 py-2">
-          <Avatar name={email} size={36} />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-[13.5px] font-medium text-ink" title={email}>
-              {email}
-            </p>
-            <form method="post" action="/auth/signout">
-              <button
-                type="submit"
-                className="mt-0.5 flex items-center gap-1 text-[12.5px] font-medium text-ink-2 transition-colors hover:text-ink"
-              >
-                <SignOut size={13} weight="bold" />
-                Sign out
-              </button>
-            </form>
-          </div>
+      {/* The identity every ranking on the board is relative to. It used to
+          read `demo@olvable.app` above a Sign out button, which promised a
+          session this build does not have and named the wrong product. The
+          seeded profile is the honest answer to "whose marginal gain is
+          this", and it links to the screen that shows the working. */}
+      {me ? (
+        <div className="border-t border-line p-3">
+          <Link
+            href={`/p/${me.handle}`}
+            className="flex items-center gap-3 rounded-ctl px-2 py-2 transition-colors hover:bg-surface-2"
+          >
+            <Avatar name={me.name} size={36} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[13.5px] font-medium text-ink">{me.name}</p>
+              <p className="mt-0.5 truncate text-[12.5px] text-ink-2">
+                {me.dept ? `${me.dept} · your profile` : 'Your profile'}
+              </p>
+            </div>
+          </Link>
         </div>
-      </div>
+      ) : null}
     </aside>
   )
 }

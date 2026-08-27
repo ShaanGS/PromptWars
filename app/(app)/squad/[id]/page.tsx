@@ -2,7 +2,7 @@ import { connection } from 'next/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { DateTime } from 'luxon'
-import { CalendarBlank, Ticket, UsersThree } from '@phosphor-icons/react/dist/ssr'
+import { CalendarBlank, Ticket } from '@phosphor-icons/react/dist/ssr'
 import { createServiceClient } from '@/lib/supabase'
 import type { AvailabilityWindow, Member, Requirement } from '@/lib/engine'
 import { DEFAULT_TZ } from '@/lib/dates/types'
@@ -191,13 +191,12 @@ export default async function SquadPage({ params }: { params: Promise<{ id: stri
         }
       />
 
+      {/* No roster count here. This list is server-rendered outside the
+          sandbox, so a seat taken in the browser could never move it, and a
+          pill reading "2 on the roster" above a five-person team is the one
+          number on this screen that contradicts the demo. The sandbox owns
+          the roster and shows it live. */}
       <ul aria-label="Squad at a glance" className="mt-4 flex flex-wrap items-center gap-1.5">
-        <li>
-          <Pill tone="neutral" size="sm">
-            <UsersThree aria-hidden="true" weight="duotone" />
-            {initialTeamIds.length} on the roster
-          </Pill>
-        </li>
         <li>
           <Pill tone="neutral" size="sm">
             {requirements.length} role{requirements.length === 1 ? '' : 's'}
