@@ -31,6 +31,13 @@ export type LookingFor = (typeof LOOKING_FOR)[number]
 export type OnboardingDraft = {
   name: string
   lookingFor: LookingFor
+  /** GitHub username, when one was linked. Kept so the profile can say where
+   *  its backed claims came from. */
+  githubLogin: string | null
+  /** Skills we fetched evidence for. These save WITH a proof_url, so they
+   *  count in full rather than at the unverified damp -- the whole point of
+   *  reading the repos instead of believing the box. */
+  githubEvidence: { skill: string; proofUrl: string; reason: string }[]
   /** `profiles.dept` is NOT NULL, and it is what every card prints under a
    *  name, so a blank one is both a failed insert and an empty card. */
   dept: string
@@ -56,6 +63,8 @@ export type OnboardingStep = (typeof ONBOARDING_STEPS)[number]
 export const EMPTY_DRAFT: OnboardingDraft = {
   name: '',
   lookingFor: 'Hackathon Team',
+  githubLogin: null,
+  githubEvidence: [],
   dept: '',
   year: 3,
   skills: [],

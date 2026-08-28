@@ -75,19 +75,28 @@ export async function createProfile(input: ProfileDraft): Promise<CreateProfileR
 
   const row = created as { id: string; handle: string }
 
+  // Evidence wins where both exist. A skill we found in a repo we actually
+  // fetched carries that repo as its proof and counts in full; a skill only
+  // ticked in a box stays unproved and is damped. Writing a proof_url we had
+  // not fetched would be the one lie the scoring argument cannot survive.
+  const proofBySkill = new Map(draft.githubEvidence.map((e) => [e.skill, e.proofUrl]))
+  const everySkill = [...new Set([...draft.skills, ...proofBySkill.keys()])]
+
   // A profile with no skills is a person the engine can never rank above
   // zero, so a failed skills insert undoes the profile rather than leaving
   // someone permanently unrankable and wondering why.
   const { error: skillsError } = await db.from('skills').insert(
-    draft.skills.map((skill) => ({
-      profile_id: row.id,
-      skill,
-      // Self-reported and unproved, which the model already prices at
-      // UNVERIFIED_DAMP. Claiming otherwise here would be the one lie the
-      // whole scoring argument cannot survive.
-      proficiency: 0.7,
-      proof_url: null,
-    })),
+    everySkill.map((skill) => {
+      const proof = proofBySkill.get(skill) ?? null
+      return {
+        profile_id: row.id,
+        skill,
+        // Backed claims sit higher because the evidence is the difference,
+        // and the engine then applies no damp to them at all.
+        proficiency: proof ? 0.8 : 0.7,
+        proof_url: proof,
+      }
+    }),
   )
   if (skillsError) {
     await db.from('profiles').delete().eq('id', row.id)

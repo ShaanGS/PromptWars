@@ -61,7 +61,14 @@ export function validateProfileDraft(input: ProfileDraft, taken: Iterable<string
     errors.push({ field: 'name', message: `Keep it under ${NAME_MAX} characters.` })
   }
 
-  const skills = [...new Set((input.skills ?? []).filter((s) => typeof s === 'string' && s))]
+  // Evidence counts as a skill: somebody who linked GitHub and picked no
+  // chips has still told us more than somebody who ticked three boxes.
+  const evidenceSkills = (input.githubEvidence ?? []).map((e) => e.skill)
+  const skills = [
+    ...new Set(
+      [...(input.skills ?? []), ...evidenceSkills].filter((s) => typeof s === 'string' && s),
+    ),
+  ]
   if (skills.length === 0) {
     errors.push({ field: 'skills', message: 'Pick at least one skill so squads can rank you.' })
   }
@@ -83,6 +90,8 @@ export function validateProfileDraft(input: ProfileDraft, taken: Iterable<string
       draft: {
         name,
         lookingFor: input.lookingFor,
+        githubLogin: input.githubLogin ?? null,
+        githubEvidence: input.githubEvidence ?? [],
         // Not blocking on it: the column needs a value, but stopping someone
         // on stage over their course name is friction for nothing.
         dept: (input.dept ?? '').trim().slice(0, 40) || 'Student',

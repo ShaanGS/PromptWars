@@ -7,6 +7,7 @@ import {
   ArrowRight,
   Check,
   Flask,
+  GithubLogo,
   Globe,
   Handshake,
   Rocket,
@@ -29,6 +30,7 @@ import { UNVERIFIED_DAMP } from '@/lib/engine'
 import { summariseAvailability } from '@/lib/team/availability-summary'
 import { toAvailabilityWindows } from '@/lib/onboarding/draft'
 import { createProfile } from '@/app/(app)/welcome/actions'
+import { linkGitHub } from '@/app/(app)/welcome/github'
 import { Input, inputClass } from '@/components/ui/field'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -76,6 +78,9 @@ export function GuildWizard({
   const [step, setStep] = React.useState(0)
   const [draft, setDraft] = React.useState<OnboardingDraft>(EMPTY_DRAFT)
   const [error, setError] = React.useState<string | null>(null)
+  const [gh, setGh] = React.useState('')
+  const [ghNote, setGhNote] = React.useState<string | null>(null)
+  const [ghBusy, setGhBusy] = React.useState(false)
   const [pending, startTransition] = React.useTransition()
 
   const set = <K extends keyof OnboardingDraft>(key: K, value: OnboardingDraft[K]) =>
@@ -88,6 +93,31 @@ export function GuildWizard({
    * first -- a skill the person watched themselves select never reached the
    * profile.
    */
+  /**
+   * The one place a claim stops being self-reported. What comes back is
+   * written straight into the draft with the repo as its proof, so the
+   * damp never applies to it -- which is why the button says what it found
+   * rather than just ticking chips silently.
+   */
+  const lookupGitHub = async () => {
+    if (!gh.trim() || ghBusy) return
+    setGhBusy(true)
+    setGhNote(null)
+    const res = await linkGitHub(gh)
+    setGhBusy(false)
+    if (!res.ok) {
+      setGhNote(res.message)
+      return
+    }
+    setDraft((d) => ({
+      ...d,
+      githubLogin: res.login,
+      githubEvidence: res.evidence,
+      skills: [...new Set([...d.skills, ...res.evidence.map((e) => e.skill)])],
+    }))
+    setGhNote(`Read ${res.login}'s public repos — ${res.evidence.length} skills backed.`)
+  }
+
   const toggle = (skill: string) =>
     setDraft((d) => ({ ...d, skills: toggleSkill(d.skills, skill) }))
 
@@ -233,7 +263,70 @@ export function GuildWizard({
               the rest are what people here already bring.
             </p>
 
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-5 rounded-card border border-line bg-surface p-4">
+              <label
+                htmlFor="ob-gh"
+                className="flex items-center gap-2 text-[14px] font-medium text-ink"
+              >
+                <GithubLogo aria-hidden="true" weight="fill" className="size-[18px]" />
+                Have a GitHub?
+              </label>
+              <p className="mt-1 text-[13.5px] leading-relaxed text-ink-2">
+                We read your public repos and back those skills with the repo that proves them.
+                Backed claims count in full instead of {UNVERIFIED_DAMP}×.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <Input
+                  id="ob-gh"
+                  value={gh}
+                  onChange={(e) => setGh(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      void lookupGitHub()
+                    }
+                  }}
+                  placeholder="your-username"
+                  autoComplete="off"
+                  spellCheck={false}
+                />
+                <Button
+                  type="button"
+                  onClick={() => void lookupGitHub()}
+                  disabled={ghBusy || !gh.trim()}
+                >
+                  {ghBusy ? 'Reading…' : 'Read repos'}
+                </Button>
+              </div>
+              {ghNote ? (
+                <p role="status" className="mt-2 text-[13px] text-ink-2">
+                  {ghNote}
+                </p>
+              ) : null}
+
+              {draft.githubEvidence.length ? (
+                <ul className="mt-3 flex flex-col gap-1.5 border-t border-line pt-3">
+                  {draft.githubEvidence.map((e) => (
+                    <li key={e.skill} className="flex items-center gap-2 text-[13px]">
+                      <Pill tone="mint" size="sm">
+                        <SealCheck aria-hidden="true" weight="fill" />
+                        {e.skill}
+                      </Pill>
+                      <a
+                        href={e.proofUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="truncate text-ink-2 underline-offset-2 hover:text-ink hover:underline"
+                      >
+                        {e.reason}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
               {skillVocabulary.map((skill) => {
                 const on = draft.skills.includes(skill)
                 return (
