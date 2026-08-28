@@ -1,6 +1,7 @@
 import type { Icon } from '@phosphor-icons/react'
 import {
   Binoculars,
+  Function,
   BookmarkSimple,
   CalendarBlank,
   Gear,
@@ -39,6 +40,10 @@ export const NAV_PRIMARY: NavItem[] = [
   { href: '/teams', label: 'Teams', icon: Handshake, exact: true, tab: true },
   { href: '/people', label: 'People', icon: UsersThree, tab: true },
   { href: '/hackathons', label: 'Hackathons', icon: Trophy, tab: true },
+  // The model, written out. It is the answer to the first question anyone
+  // technical asks, so it is a room in the app rather than a paragraph in a
+  // README nobody opens mid-conversation.
+  { href: '/method', label: 'Method', icon: Function },
   { href: '/events', label: 'Events', icon: ListBullets },
   { href: '/feed', label: 'Feed', icon: House },
   { href: '/calendar', label: 'Calendar', icon: CalendarBlank },
